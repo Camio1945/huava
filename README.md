@@ -79,7 +79,21 @@ I want it to be short, hu is my family name, and java is the programming languag
 
 ---
 
+### 2. Why MySQL over PostgreSQL?
+
+PostgreSQL is faster , MySQL is more popular, both are great choice. But I may want to use distributed RDBMS in the future, which is TiDB, and TiDB is compatible with MySQL protocol, so I choose MySQL.
+
+---
+
 # Changelog
 
-## 0.0.1-SNAPSHOT
+---
+
+### 0.0.1-SNAPSHOT
 Initial version, make sure that the basic CRUD code with Mybatis-Plus can be compiled to native image using GraalVM.
+
+---
+
+### 0.0.2-SNAPSHOT
+
+1. 
