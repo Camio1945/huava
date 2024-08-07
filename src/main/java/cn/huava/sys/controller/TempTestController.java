@@ -3,7 +3,9 @@ package cn.huava.sys.controller;
 import cn.huava.sys.mapper.SysUserMapper;
 import cn.huava.sys.pojo.po.SysUser;
 import cn.huava.sys.service.SysUserService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -12,12 +14,20 @@ import org.springframework.web.bind.annotation.*;
  * @author Camio1945
  */
 @RestController
+@AllArgsConstructor
 @RequestMapping("/temp/test")
 public class TempTestController {
-  @Autowired private SysUserService sysUserService;
+  private SysUserService sysUserService;
+  private PasswordEncoder passwordEncoder;
 
-  @GetMapping
+  @GetMapping("/")
   public String test() {
-    return sysUserService.test().getUserName();
+    String encode = passwordEncoder.encode("123456");
+    return  "" + encode;
+  }
+
+  @GetMapping("/secured")
+  public String secured() {
+    return "Hello, Secured";
   }
 }

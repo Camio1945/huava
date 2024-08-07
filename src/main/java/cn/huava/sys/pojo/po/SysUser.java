@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 用户对象 sys_user
+ * 后台用户
  *
  * @author ruoyi
  */

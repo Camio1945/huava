@@ -18,7 +18,7 @@ create table sys_user
     phonenumber     varchar(11)  default '' comment '手机号码',
     sex             char(1)      default '0' comment '用户性别（0男 1女 2未知）',
     avatar          varchar(100) default '' comment '头像路径',
-    password        varchar(50)  default '' comment '密码',
+    password        varchar(60)  default '' comment '密码',
     salt            varchar(20)  default '' comment '盐加密',
     status          char(1)      default '0' comment '账号状态（0正常 1停用）',
     del_flag        char(1)      default '0' comment '删除标志（0代表存在 2代表删除）',
@@ -38,9 +38,9 @@ create table sys_user
 -- 初始化-用户信息表数据
 -- ----------------------------
 insert into sys_user
-values (1, 103, 'admin', '若依', '00', 'ry@163.com', '15888888888', '1', '', '29c67a30398638269fe600f73a054934',
+values (1, 103, 'admin', '若依', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$lfPbkm1vP1C0dxqmN6Ze9.pBiSSFEXR3zPByrkEto.hPNE8K35yHW',
         '111111', '0', '0', '127.0.0.1', null, null, 'admin', sysdate(), '', null, '管理员');
 insert into sys_user
-values (2, 105, 'ry', '若依', '00', 'ry@qq.com', '15666666666', '1', '', '8e6d98b90472783cc73c17047ddccf36', '222222',
+values (2, 105, 'ry', '若依', '00', 'ry@qq.com', '15666666666', '1', '', '$2a$10$lfPbkm1vP1C0dxqmN6Ze9.pBiSSFEXR3zPByrkEto.hPNE8K35yHW', '222222',
         '0', '0', '127.0.0.1', null, null, 'admin', sysdate(), '', null, '测试员');
 

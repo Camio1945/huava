@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.3.1</version>
+    <version>3.3.2</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
   <groupId>cn.huava</groupId>
@@ -17,10 +17,16 @@
     <java.version>22</java.version>
   </properties>
   <dependencies>
-    <!-- spring boot web -->
+    <!-- Spring Boot Web -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+
+    <!-- Spring Security -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security</artifactId>
     </dependency>
 
     <!-- MyBatis Plus -->

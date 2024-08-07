@@ -1,4 +1,4 @@
-package cn.huava.common.configuration;
+package cn.huava.common.config;
 
 import com.baomidou.mybatisplus.annotation.IEnum;
 import com.baomidou.mybatisplus.core.MybatisParameterHandler;
@@ -86,14 +86,14 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 
 /**
- * This configuration will move to mybatis-spring-native. 来源：<a
+ * This configuration will move to mybatis-spring-native. Kudos to <a
  * href="https://github.com/nieqiurong/mybatis-native-demo">mybatis-native-demo</a>
  *
  * @author Camio1945
  */
 @Configuration(proxyBeanMethods = false)
-@ImportRuntimeHints(MyBatisNativeConfiguration.MyBaitsRuntimeHintsRegistrar.class)
-public class MyBatisNativeConfiguration {
+@ImportRuntimeHints(MyBatisNativeConfig.MyBaitsRuntimeHintsRegistrar.class)
+public class MyBatisNativeConfig {
 
   @Bean
   static MyBatisMapperFactoryBeanPostProcessor myBatisMapperFactoryBeanPostProcessor() {
