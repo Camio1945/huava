@@ -25,7 +25,7 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
  * @author Camio1945
  */
 @Configuration
-// @EnableWebSecurity
+@EnableWebSecurity
 @AllArgsConstructor
 public class SecurityConfig {
   // private final SysUserLoginUserDetailsServiceImpl sysUserLoginUserDetailsService;

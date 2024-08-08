@@ -1,0 +1,31 @@
+@startuml
+' 以下是全局默认的样式（不能使用 Fira Code 字体，否则显示不了中文）
+skinparam DefaultFontName Microsoft YaHei
+skinparam DefaultFontSize 16
+skinparam ArrowColor DeepSkyBlue
+' 以下是参与者（类）的样式
+skinparam ParticipantFontColor White
+skinparam ParticipantBorderColor DeepSkyBlue
+skinparam ParticipantBackgroundColor DodgerBlue
+skinparam ParticipantFontSize 18
+' 以下是流程图代码
+actor User
+User --> "AuthorizationFilter\n.doFilter(...)"
+"AuthorizationFilter\n.doFilter(...)" -> "RequestMatcher\nDelegating\nAuthorizationManager": check(...)
+"RequestMatcher\nDelegating\nAuthorizationManager" -> "Authorization\nManager":check(...)
+"Authorization\nManager" -> "Authorization\nManager": **for loop mappings**
+"RequestMatcher\nDelegating\nAuthorizationManager" <- "Authorization\nManager"
+"AuthorizationFilter\n.doFilter(...)" <- "RequestMatcher\nDelegating\nAuthorizationManager"
+"AuthorizationFilter\n.doFilter(...)" -> "AuthorizationFilter\n.doFilter(...)": throw new AccessDeniedException\n("Access Denied");
+"AuthorizationFilter\n.doFilter(...)" -> "Exception\nTranslation\nFilter":doFilter(...) in the catch (Exception ex) code block
+"Exception\nTranslation\nFilter" -> "Exception\nTranslation\nFilter":handleSpringSecurityException(...)
+"Exception\nTranslation\nFilter" -> "Exception\nTranslation\nFilter":handleAccessDeniedException(...)
+"Exception\nTranslation\nFilter" -> "Exception\nTranslation\nFilter":sendStartAuthentication(...)
+"Exception\nTranslation\nFilter" -> "Delegating\nAuthentication\nEntryPoint":commence(...)
+"Delegating\nAuthentication\nEntryPoint" -> "LoginUrl\nAuthentication\nEntryPoint":commence(...)
+"LoginUrl\nAuthentication\nEntryPoint" -> "Default\nRedirect\nStrategy":sendRedirect(...)\nto the login page
+"Default\nRedirect\nStrategy" --> "Default\nLoginPage\nGeneratingFilter":doFilter(...)
+"Default\nLoginPage\nGeneratingFilter" -> "Default\nLoginPage\nGeneratingFilter":generate\nLoginPageHtml(..)
+"Default\nLoginPage\nGeneratingFilter" -> "Default\nLoginPage\nGeneratingFilter":response.getWriter()\n.write(loginPageHtml);
+User <-- "Default\nLoginPage\nGeneratingFilter"
+@enduml

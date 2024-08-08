@@ -18,12 +18,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/temp/test")
 public class TempTestController {
   private SysUserService sysUserService;
-  private PasswordEncoder passwordEncoder;
+  // private PasswordEncoder passwordEncoder;
 
   @GetMapping("/")
   public String test() {
-    String encode = passwordEncoder.encode("123456");
-    return  "" + encode;
+    // String encode = passwordEncoder.encode("123456");
+    // return  "" + encode;
+    return "";
   }
 
   @GetMapping("/secured")
