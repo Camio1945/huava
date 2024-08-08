@@ -45,6 +45,7 @@ public class SecurityConfig {
         // .authenticationProvider(preProvider)
         // .oauth2Login(withDefaults())
         .formLogin(withDefaults())
+        .rememberMe(withDefaults())
         // .httpBasic(withDefaults())
         .build();
   }

@@ -10,7 +10,7 @@
   </parent>
   <groupId>cn.huava</groupId>
   <artifactId>huava</artifactId>
-  <version>0.0.3-SNAPSHOT</version>
+  <version>0.0.4-SNAPSHOT</version>
   <name>huava</name>
   <description>huava</description>
   <properties>

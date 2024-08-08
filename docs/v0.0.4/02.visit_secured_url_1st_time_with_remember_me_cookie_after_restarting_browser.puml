@@ -1,0 +1,28 @@
+@startuml
+' The following is the global default style (do not use Fira Code font, otherwise the Chinese will not be displayed)
+skinparam DefaultFontName Microsoft YaHei
+skinparam DefaultFontSize 16
+skinparam ArrowColor DeepSkyBlue
+' The following is the style of the actor (class)
+skinparam TitleFontSize 20
+skinparam ParticipantFontColor White
+skinparam ParticipantBorderColor DeepSkyBlue
+skinparam ParticipantBackgroundColor DodgerBlue
+skinparam ParticipantFontSize 18
+' Here is the flowchart code
+title Visit secured url for the first time with remember-me cookie after restarting the browser
+actor User
+User --> "RememberMe\nAuthenticationFilter": doFilter(...)
+"RememberMe\nAuthenticationFilter" -> "Abstract\nRememberMeServices": autoLogin(...)
+"Abstract\nRememberMeServices" -> "TokenBased\nRememberMeServices": processAutoLoginCookie(...)
+"TokenBased\nRememberMeServices" -> "TokenBased\nRememberMeServices": load user by username, \ncheck token signature
+"Abstract\nRememberMeServices" <- "TokenBased\nRememberMeServices":
+"Abstract\nRememberMeServices" -> "Abstract\nRememberMeServices": createSuccessfulAuthentication(...)
+"RememberMe\nAuthenticationFilter" <- "Abstract\nRememberMeServices": return rememberMeAuth
+"RememberMe\nAuthenticationFilter" --> "RememberMe\nAuthenticationFilter": omitted RememberMeAuthenticationProvider.authenticate(...)\nsince it normally returns the same rememberMeAuth
+"RememberMe\nAuthenticationFilter" --> "HttpSessionSecurity\nContextRepository":**setContextInSession(...)** \nsession.setAttribute(this.springSecurityContextKey, context); // the context contains rememberMeAuth
+"RememberMe\nAuthenticationFilter" <-- "HttpSessionSecurity\nContextRepository"
+"RememberMe\nAuthenticationFilter" --> "TempTest\nController":secured() the secured resource: http://localhost:22345/temp/test/secured
+
+User <-- "TempTest\nController"
+@enduml

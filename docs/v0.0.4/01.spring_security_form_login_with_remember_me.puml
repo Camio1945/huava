@@ -1,0 +1,22 @@
+@startuml
+' The following is the global default style (do not use Fira Code font, otherwise the Chinese will not be displayed)
+skinparam DefaultFontName Microsoft YaHei
+skinparam DefaultFontSize 16
+skinparam ArrowColor DeepSkyBlue
+' The following is the style of the actor (class)
+skinparam ParticipantFontColor White
+skinparam ParticipantBorderColor DeepSkyBlue
+skinparam ParticipantBackgroundColor DodgerBlue
+skinparam ParticipantFontSize 18
+' Here is the flowchart code
+title Note: This flowchart emitted some duplicates in file docs/v0.0.3/04.spring_security_form_login.puml
+actor User
+User --> "AbstractAuthentication\nProcessingFilter": doFilter(...)\n/login with remember me
+"AbstractAuthentication\nProcessingFilter" -> "AbstractAuthentication\nProcessingFilter": successfulAuthentication(...)
+"AbstractAuthentication\nProcessingFilter" -> "Abstract\nRememberMeServices": loginSuccess(...)
+"Abstract\nRememberMeServices" -> "TokenBased\nRememberMeServices": onLoginSuccess(...)
+"Abstract\nRememberMeServices" <- "TokenBased\nRememberMeServices": **setCookie**(...) child call parent\n set username, password, expiryTime in cookie
+"Abstract\nRememberMeServices" <- "TokenBased\nRememberMeServices":
+"AbstractAuthentication\nProcessingFilter" <- "Abstract\nRememberMeServices":
+User <-- "AbstractAuthentication\nProcessingFilter"
+@enduml

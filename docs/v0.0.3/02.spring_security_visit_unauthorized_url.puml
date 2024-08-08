@@ -1,14 +1,14 @@
 @startuml
-' 以下是全局默认的样式（不能使用 Fira Code 字体，否则显示不了中文）
+' The following is the global default style (do not use Fira Code font, otherwise the Chinese will not be displayed)
 skinparam DefaultFontName Microsoft YaHei
 skinparam DefaultFontSize 16
 skinparam ArrowColor DeepSkyBlue
-' 以下是参与者（类）的样式
+' The following is the style of the actor (class)
 skinparam ParticipantFontColor White
 skinparam ParticipantBorderColor DeepSkyBlue
 skinparam ParticipantBackgroundColor DodgerBlue
 skinparam ParticipantFontSize 18
-' 以下是流程图代码
+' Here is the flowchart code
 actor User
 User --> "AuthorizationFilter\n.doFilter(...)"
 "AuthorizationFilter\n.doFilter(...)" -> "RequestMatcher\nDelegating\nAuthorizationManager": check(...)

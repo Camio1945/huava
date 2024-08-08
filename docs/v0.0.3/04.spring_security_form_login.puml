@@ -1,17 +1,17 @@
 @startuml
-' 以下是全局默认的样式（不能使用 Fira Code 字体，否则显示不了中文）
+' The following is the global default style (do not use Fira Code font, otherwise the Chinese will not be displayed)
 skinparam DefaultFontName Microsoft YaHei
 skinparam DefaultFontSize 16
 skinparam ArrowColor DeepSkyBlue
-' 以下是参与者（类）的样式
+' The following is the style of the actor (class)
 skinparam ParticipantFontColor White
 skinparam ParticipantBorderColor DeepSkyBlue
 skinparam ParticipantBackgroundColor DodgerBlue
 skinparam ParticipantFontSize 18
-' 以下是流程图代码
+' Here is the flowchart code
 actor User
-User --> "AbstractAuthentication\nProcessingFilter\n.doFilter(...)": /login username, password
-"AbstractAuthentication\nProcessingFilter\n.doFilter(...)" -> "UsernamePassword\nAuthenticationFilter":attemptAuthentication(...)
+User --> "AbstractAuthentication\nProcessingFilter": doFilter(...)\n/login username, password
+"AbstractAuthentication\nProcessingFilter" -> "UsernamePassword\nAuthenticationFilter":attemptAuthentication(...)
 "UsernamePassword\nAuthenticationFilter" --> "AbstractUserDetails\nAuthenticationProvider":authenticate(...)\nomitted ProviderManager
 "AbstractUserDetails\nAuthenticationProvider" -> "DaoAuthentication\nProvider":retrieveUser(...)
 "DaoAuthentication\nProvider" -> "SysUserLoginUser\nDetailsServiceImpl":**loadUserByUsername(...)**
@@ -19,9 +19,9 @@ User --> "AbstractAuthentication\nProcessingFilter\n.doFilter(...)": /login user
 "AbstractUserDetails\nAuthenticationProvider" <- "DaoAuthentication\nProvider"
 "AbstractUserDetails\nAuthenticationProvider" -> "DaoAuthentication\nProvider":additionalAuthenticationChecks(...)
 "DaoAuthentication\nProvider" --> "DaoAuthentication\nProvider":**compare password**
-"AbstractAuthentication\nProcessingFilter\n.doFilter(...)" <-- "DaoAuthentication\nProvider":Authentication authenticationResult = attemptAuthentication(...);
-"AbstractAuthentication\nProcessingFilter\n.doFilter(...)" -> "AbstractAuthentication\nProcessingFilter\n.doFilter(...)":successfulAuthentication(...)
-"AbstractAuthentication\nProcessingFilter\n.doFilter(...)" --> "HttpSessionSecurity\nContextRepository":**setContextInSession(...)** : session.setAttribute(this.springSecurityContextKey, context); // the context contains authenticationResult
-"AbstractAuthentication\nProcessingFilter\n.doFilter(...)" <-- "HttpSessionSecurity\nContextRepository"
-User <-- "AbstractAuthentication\nProcessingFilter\n.doFilter(...)"
+"AbstractAuthentication\nProcessingFilter" <-- "DaoAuthentication\nProvider":Authentication authenticationResult = attemptAuthentication(...);
+"AbstractAuthentication\nProcessingFilter" -> "AbstractAuthentication\nProcessingFilter":successfulAuthentication(...)
+"AbstractAuthentication\nProcessingFilter" --> "HttpSessionSecurity\nContextRepository":**setContextInSession(...)** : session.setAttribute(this.springSecurityContextKey, context); // the context contains authenticationResult
+"AbstractAuthentication\nProcessingFilter" <-- "HttpSessionSecurity\nContextRepository"
+User <-- "AbstractAuthentication\nProcessingFilter"
 @enduml
