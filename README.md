@@ -6,7 +6,7 @@ A scaffold for building Java Web applications which can be compiled to native im
 
 # Principles
 
-1. Use the latest Java, even if it is not LTS. 
+1. Use the latest Java, even if it is not LTS.
 
 2. Support GraalVM native image.
 
@@ -40,6 +40,7 @@ docs/sql/v0.0.1/huava-init-v0.0.1.sql
 Prerequisites: gcc, zlib-devel.
 
 Example for RedHat-based Linux:
+
 ```shell
 yum install -y gcc zlib-devel
 cd huava
@@ -70,7 +71,6 @@ mvnw -Pnative clean native:compile
 
 ---
 
-
 # Q&A
 
 ### 1. Why the name huava?
@@ -85,15 +85,19 @@ PostgreSQL is faster , MySQL is more popular, both are great choice. But I may w
 
 ---
 
+### 3. Encountered "Caused by: java.lang.ClassNotFoundException: ...$$Lambda/0x..."
+
+Cause: The code uses lambda expression, which is not supported by GraalVM.
+
+Solution: Register your class in [LambdaRegistrationFeature.java](src%2Fmain%2Fjava%2Fcn%2Fhuava%2Fcommon%2Fconfig%2FLambdaRegistrationFeature.java) file, in the `duringSetup` method (examples are already there).
+
+---
+
 # Changelog
 
 ---
 
-### 0.0.1-SNAPSHOT
-Initial version, make sure that the basic CRUD code with Mybatis-Plus can be compiled to native image using GraalVM.
+# Note
 
----
+v.0.0.2 ~ v.0.0.4 does not support GraalVM native image.
 
-### 0.0.2-SNAPSHOT
-
-1. 

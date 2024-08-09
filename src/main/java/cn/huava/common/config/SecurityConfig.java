@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.RememberMeConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,6 +20,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+
+import javax.sql.DataSource;
 
 /**
  * 安全配置
@@ -28,53 +33,37 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 @EnableWebSecurity
 @AllArgsConstructor
 public class SecurityConfig {
-  // private final SysUserLoginUserDetailsServiceImpl sysUserLoginUserDetailsService;
-  // private final PreAuthenticatedAuthenticationProvider preProvider;
+  private final DataSource dataSource;
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
     return httpSecurity
         .authorizeHttpRequests(
             registry -> {
-              // registry is
+              // registry is the type of
               // AuthorizeHttpRequestsConfigurer$AuthorizationManagerRequestMatcherRegistry
               registry.requestMatchers("/temp/test/").permitAll();
               registry.requestMatchers("/").permitAll();
               registry.anyRequest().authenticated();
             })
-        // .authenticationProvider(preProvider)
-        // .oauth2Login(withDefaults())
         .formLogin(withDefaults())
-        .rememberMe(withDefaults())
-        // .httpBasic(withDefaults())
+        .rememberMe(rememberMeCustomizer())
         .build();
+  }
+
+  private Customizer<RememberMeConfigurer<HttpSecurity>> rememberMeCustomizer() {
+    return rememberMeConfigurer -> rememberMeConfigurer.tokenRepository(jdbcTokenRepository());
+  }
+
+  @Bean
+  public JdbcTokenRepositoryImpl jdbcTokenRepository() {
+    JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
+    tokenRepository.setDataSource(dataSource);
+    return tokenRepository;
   }
 
   @Bean
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
-
-  // @Bean
-  // public DaoAuthenticationProvider authenticationProvider(UserDetailsService myUserService) {
-  //   DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
-  //   auth.setUserDetailsService(myUserService);
-  //   // auth.setPasswordEncoder(passwordEncoder());
-  //   return auth;
-  // }
-
-  // @Bean
-  // public UserDetailsService userDetailsService() {
-  //   return sysUserLoginUserDetailsService;
-  // }
-
-  // @Bean
-  // public UserDetailsService userDetailsService() {
-  //   return new InMemoryUserDetailsManager(
-  //       User.withDefaultPasswordEncoder()
-  //           .username("user")
-  //           .password("password")
-  //           .roles("USER")
-  //           .build());
-  // }
 }
