@@ -90,6 +90,8 @@
             <buildArg>--enable-url-protocols=https</buildArg>
             <!-- used to solve the problem of garbled Chinese characters in the database -->
             <buildArg>-H:+AddAllCharsets</buildArg>
+            <!-- GraalVM native image does not support Lambda by default, so we need to register the classes here -->
+            <buildArg>--features=cn.huava.common.config.LambdaRegistrationFeature</buildArg>
           </buildArgs>
         </configuration>
       </plugin>

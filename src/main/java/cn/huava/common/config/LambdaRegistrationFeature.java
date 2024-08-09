@@ -9,7 +9,6 @@ import org.graalvm.nativeimage.hosted.RuntimeSerialization;
  *
  * @author Camio1945
  */
-@SuppressWarnings("unused")
 public class LambdaRegistrationFeature implements Feature {
 
   @Override
