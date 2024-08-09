@@ -101,3 +101,10 @@ Solution: Register your class in [LambdaRegistrationFeature.java](src%2Fmain%2Fj
 
 v.0.0.2 ~ v.0.0.4 does not support GraalVM native image.
 
+---
+
+# Kudos to
+
+[若依管理系统](https://ruoyi.vip/)
+
+
