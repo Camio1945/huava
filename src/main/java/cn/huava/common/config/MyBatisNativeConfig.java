@@ -16,6 +16,7 @@ import com.baomidou.mybatisplus.extension.handlers.FastjsonTypeHandler;
 import com.baomidou.mybatisplus.extension.handlers.GsonTypeHandler;
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
+import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.impl.DefaultClaimsBuilder;
 import io.jsonwebtoken.impl.io.StandardCompressionAlgorithms;
 import io.jsonwebtoken.impl.security.*;
@@ -113,6 +114,9 @@ public class MyBatisNativeConfig {
     @Override
     public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
       Stream.of(
+              Jwts.class,
+              StandardKeyAlgorithms.class,
+              KeysBridge.class,
               StandardKeyOperations.class,
               DefaultClaimsBuilder.class,
               StandardCompressionAlgorithms.class,
