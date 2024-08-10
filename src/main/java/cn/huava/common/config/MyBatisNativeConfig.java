@@ -113,6 +113,7 @@ public class MyBatisNativeConfig {
     @Override
     public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
       Stream.of(
+              StandardKeyOperations.class,
               DefaultClaimsBuilder.class,
               StandardCompressionAlgorithms.class,
               DefaultDynamicJwkBuilder.class,
