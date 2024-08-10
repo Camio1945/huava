@@ -15,6 +15,7 @@
   <description>huava</description>
   <properties>
     <java.version>22</java.version>
+    <jjwt.version>0.12.6</jjwt.version>
   </properties>
   <dependencies>
     <!-- Spring Boot Web -->
@@ -32,7 +33,13 @@
     <dependency>
       <groupId>io.jsonwebtoken</groupId>
       <artifactId>jjwt</artifactId>
-      <version>0.12.6</version>
+      <version>${jjwt.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.jsonwebtoken</groupId>
+      <artifactId>jjwt-impl</artifactId>
+      <version>${jjwt.version}</version>
     </dependency>
 
     <!-- MyBatis Plus -->
