@@ -12,8 +12,7 @@ skinparam ParticipantFontSize 18
 actor User
 User --> "AuthorizationFilter\n.doFilter(...)"
 "AuthorizationFilter\n.doFilter(...)" -> "RequestMatcher\nDelegating\nAuthorizationManager": check(...)
-"RequestMatcher\nDelegating\nAuthorizationManager" -> "Authorization\nManager":check(...)
-"Authorization\nManager" -> "Authorization\nManager": **for loop mappings**
+"RequestMatcher\nDelegating\nAuthorizationManager" -> "Authorization\nManager":check(...)\n**for loop mappings**
 "RequestMatcher\nDelegating\nAuthorizationManager" <- "Authorization\nManager"
 "AuthorizationFilter\n.doFilter(...)" <- "RequestMatcher\nDelegating\nAuthorizationManager"
 "AuthorizationFilter\n.doFilter(...)" -> "AuthorizationFilter\n.doFilter(...)": throw new AccessDeniedException\n("Access Denied");

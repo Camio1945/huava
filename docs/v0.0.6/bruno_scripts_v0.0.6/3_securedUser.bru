@@ -1,0 +1,15 @@
+meta {
+  name: 3_securedUser
+  type: http
+  seq: 6
+}
+
+get {
+  url: http://localhost:22345/temp/test/securedUser
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsYWtzaGl0aGEiLCJpYXQiOjE3MjMyNzE1ODQsImV4cCI6MTcyMzI3NTE4NH0.3U4KLIVT4V29joZSnrzZopR3TgmU1CeVnFslnLx7K70
+}

@@ -1,28 +1,21 @@
 package cn.huava.common.config;
 
-import static org.springframework.security.config.Customizer.withDefaults;
 
-// import cn.huava.sys.auth.PreAuthenticatedAuthenticationProvider;
-// import cn.huava.sys.service.SysUserLoginUserDetailsServiceImpl;
+import cn.huava.common.filter.JwtAuthenticationFilter;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.RememberMeConfigurer;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
-import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
-
-import javax.sql.DataSource;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * 安全配置
@@ -31,39 +24,36 @@ import javax.sql.DataSource;
  */
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 @AllArgsConstructor
 public class SecurityConfig {
-  private final DataSource dataSource;
+  private JwtAuthenticationFilter jwtAuthenticationFilter;
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
     return httpSecurity
+        .csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(
             registry -> {
               // registry is the type of
               // AuthorizeHttpRequestsConfigurer$AuthorizationManagerRequestMatcherRegistry
-              registry.requestMatchers("/temp/test/").permitAll();
-              registry.requestMatchers("/").permitAll();
+              registry.requestMatchers("/sysUserJwtAuth/**").permitAll();
+              registry.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
               registry.anyRequest().authenticated();
             })
-        .formLogin(withDefaults())
-        .rememberMe(rememberMeCustomizer())
-        .build();
-  }
-
-  private Customizer<RememberMeConfigurer<HttpSecurity>> rememberMeCustomizer() {
-    return rememberMeConfigurer -> rememberMeConfigurer.tokenRepository(jdbcTokenRepository());
+        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+ .build();
   }
 
   @Bean
-  public JdbcTokenRepositoryImpl jdbcTokenRepository() {
-    JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
-    tokenRepository.setDataSource(dataSource);
-    return tokenRepository;
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig)
+      throws Exception {
+    return authConfig.getAuthenticationManager();
   }
 
   @Bean
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
+
 }

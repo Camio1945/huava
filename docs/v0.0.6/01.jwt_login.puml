@@ -1,0 +1,25 @@
+@startuml
+' The following is the global default style (do not use Fira Code font, otherwise the Chinese will not be displayed)
+skinparam DefaultFontName Microsoft YaHei
+skinparam DefaultFontSize 16
+skinparam ArrowColor DeepSkyBlue
+' The following is the style of the actor (class)
+skinparam ParticipantFontColor White
+skinparam ParticipantBorderColor DeepSkyBlue
+skinparam ParticipantBackgroundColor DodgerBlue
+skinparam ParticipantFontSize 18
+' Here is the flowchart code
+title JWT login flowchart
+actor User
+User --> "SysUserJwt\nAuthController": login(...)
+"SysUserJwt\nAuthController" -> "SysUserJwt\nAuthService": login(...)
+"SysUserJwt\nAuthService" -> "SysUserJwt\nAuthService": build UsernamePasswordAuthenticationToken
+"SysUserJwt\nAuthService" -> "Authentication\nManager": authenticate(...)
+"Authentication\nManager" --> "SysUserLoginUser\nDetailsServiceImpl": loadUserByUsername(...)
+"Authentication\nManager" <-- "SysUserLoginUser\nDetailsServiceImpl"
+"SysUserJwt\nAuthService" <- "Authentication\nManager"
+"SysUserJwt\nAuthService" -> "JwtToken\nProvider":generateToken(...)
+"SysUserJwt\nAuthService" <- "JwtToken\nProvider":return token (username, roles, expiration, signature, ...)
+"SysUserJwt\nAuthController" <- "SysUserJwt\nAuthService"
+User <-- "SysUserJwt\nAuthController"
+@enduml

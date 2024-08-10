@@ -1,0 +1,15 @@
+meta {
+  name: 2_securedAdmin
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://localhost:22345/temp/test/securedAdmin
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2huIiwiaWF0IjoxNzIzMjgyOTA4LCJleHAiOjE3MjMyODY1MDh9.JexmVYwG1gugwOBujkj2x5rlYlO8vumrz7ViqPBz318
+}

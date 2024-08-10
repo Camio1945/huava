@@ -10,7 +10,7 @@
   </parent>
   <groupId>cn.huava</groupId>
   <artifactId>huava</artifactId>
-  <version>0.0.5-SNAPSHOT</version>
+  <version>0.0.6-SNAPSHOT</version>
   <name>huava</name>
   <description>huava</description>
   <properties>
@@ -27,6 +27,12 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>io.jsonwebtoken</groupId>
+      <artifactId>jjwt</artifactId>
+      <version>0.12.6</version>
     </dependency>
 
     <!-- MyBatis Plus -->
