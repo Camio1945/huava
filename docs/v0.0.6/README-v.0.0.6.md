@@ -26,7 +26,7 @@ Login with JWT.
 
 4. Use [Bruno](https://www.usebruno.com/) open [bruno_scripts_v0.0.6](bruno_scripts_v0.0.6) folder as a collection.
 
-5. Run the `1_sysUserLoginWithJwt` api with Bruno. This api will log in with username john and password john, and return a JWT access token, copy the token (needed by next step).
+5. Run the `1_sysUserLoginWithJwt` api with Bruno (you may need to change the URL's ip address to you own ip). This api will log in with username john and password john, and return a JWT access token, copy the token (needed by next step).
 
 6. Open the `2_securedAdmin` api with Bruno, go to `Auth` tab, choose `Bearer Token`, paste the token in the `Token` field, and run the api. If every thing goes well, you will get a `"Hello, Secured Admin!"`  response, because john has role `ROLE_ADMIN`. 
 

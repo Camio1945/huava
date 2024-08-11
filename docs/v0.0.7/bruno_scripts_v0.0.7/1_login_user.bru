@@ -1,0 +1,18 @@
+meta {
+  name: 1_login_user
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/sysUserJwtAuth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "username": "lakshitha",
+    "password": "lakshitha"
+  }
+}

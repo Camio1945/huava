@@ -1,5 +1,6 @@
-package cn.huava.common.config;
+package cn.huava.common.graalvm;
 
+import cn.huava.common.config.SecurityConfig;
 import cn.huava.common.provider.JwtTokenProvider;
 import cn.huava.sys.service.SysUserLoginUserDetailsServiceImpl;
 import org.graalvm.nativeimage.hosted.Feature;
@@ -10,7 +11,7 @@ import org.graalvm.nativeimage.hosted.RuntimeSerialization;
  *
  * @author Camio1945
  */
-public class LambdaRegistrationFeature implements Feature {
+public class LambdaRegistrarFeature implements Feature {
 
   @Override
   public void duringSetup(DuringSetupAccess access) {

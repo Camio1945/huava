@@ -4,10 +4,9 @@ import cn.huava.common.controller.BaseController;
 import cn.huava.sys.mapper.SysUserMapper;
 import cn.huava.sys.pojo.po.SysUser;
 import cn.huava.sys.service.SysUserService;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -15,34 +14,36 @@ import org.springframework.web.bind.annotation.*;
  */
 @Slf4j
 @RestController
-// @AllArgsConstructor
 @RequestMapping("/sys/user")
 public class SysUserController extends BaseController<SysUserService, SysUserMapper, SysUser> {
-  // private SysUserService sysUserService;
 
-  // public SysUserController(ServiceImpl<BaseMapper<SysUser>, SysUser> service) {
-  //   super(service);
-  // }
+  @Override
+  @PreAuthorize("hasRole('ADMIN')")
+  public ResponseEntity<SysUser> getById(Long id) {
+    return super.getById(id);
+  }
 
-  // @GetMapping("/{id}")
-  // public SysUser getById(@PathVariable Long id) {
-  //   return sysUserService.getById(id);
-  // }
-  //
-  // @PostMapping
-  // public boolean add(@RequestBody SysUser sysUser) {
-  //   return sysUserService.add(sysUser);
-  // }
-  //
-  // @PatchMapping
-  // public boolean update(@RequestBody SysUser sysUser) {
-  //   System.out.println("System.out.println 中文测试");
-  //   LOGGER.info("LOGGER.info 中文测试");
-  //   return sysUserService.update(sysUser);
-  // }
-  //
-  // @DeleteMapping("/{id}")
-  // public boolean delete(@PathVariable Long id) {
-  //   return sysUserService.delete(id);
-  // }
+  @Override
+  @PreAuthorize("hasRole('ADMIN')")
+  public ResponseEntity<SysUser> create(SysUser entity) {
+    return super.create(entity);
+  }
+
+  @Override
+  @PreAuthorize("hasRole('ADMIN')")
+  public ResponseEntity<SysUser> update(SysUser entity) {
+    return super.update(entity);
+  }
+
+  @Override
+  @PreAuthorize("hasRole('ADMIN')")
+  public ResponseEntity<SysUser> patch(SysUser entity, String... fields) {
+    return super.patch(entity, fields);
+  }
+
+  @Override
+  @PreAuthorize("hasRole('ADMIN')")
+  public ResponseEntity<Void> delete(Long id) {
+    return super.delete(id);
+  }
 }

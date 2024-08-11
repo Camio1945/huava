@@ -1,0 +1,29 @@
+meta {
+  name: 3_createSysUser
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/sys/user/create
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2huIiwicm9sZXMiOiJST0xFX0FETUlOIiwiaWF0IjoxNzIzMzQ3MzQwLCJleHAiOjE3MjMzNTA5NDB9.xk72dnIIA5YNXckr7yDTwk6fcX4ssmC83Jx_RUNugF4
+}
+
+body:json {
+  {
+    "userId": 5,
+    "deptId": 103,
+    "loginName": "hello",
+    "userName": "hello",
+    "userType": "00",
+    "email": "hello@qq.com",
+    "phoneNumber": "",
+    "sex": "0",
+    "password": "$2a$12$HeVk0EIlGIWq5hNKf2Ziq.9iTs2cAHUFaZG.8s7ahbPto.0gApDti"
+  }
+}

@@ -1,4 +1,4 @@
-package cn.huava.common.config;
+package cn.huava.common.graalvm;
 
 import com.baomidou.mybatisplus.annotation.IEnum;
 import com.baomidou.mybatisplus.core.MybatisParameterHandler;
@@ -33,6 +33,7 @@ import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import lombok.NonNull;
 import org.apache.commons.logging.LogFactory;
 import org.apache.ibatis.annotations.DeleteProvider;
 import org.apache.ibatis.annotations.InsertProvider;
@@ -90,14 +91,14 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 
 /**
- * This configuration will move to mybatis-spring-native. Kudos to <a
+ *  . Kudos to <a
  * href="https://github.com/nieqiurong/mybatis-native-demo">mybatis-native-demo</a>
  *
  * @author Camio1945
  */
 @Configuration(proxyBeanMethods = false)
-@ImportRuntimeHints(MyBatisNativeConfig.MyBaitsRuntimeHintsRegistrar.class)
-public class MyBatisNativeConfig {
+@ImportRuntimeHints(RuntimeHintsRegistrarConfig.NativeRuntimeHintsRegistrar.class)
+public class RuntimeHintsRegistrarConfig {
 
   @Bean
   static MyBatisMapperFactoryBeanPostProcessor myBatisMapperFactoryBeanPostProcessor() {
@@ -109,7 +110,7 @@ public class MyBatisNativeConfig {
     return new MyBatisBeanFactoryInitializationAotProcessor();
   }
 
-  static class MyBaitsRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
+  static class NativeRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
 
     @Override
     public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
@@ -225,7 +226,7 @@ public class MyBatisNativeConfig {
       if (beanNames.length == 0) {
         return null;
       }
-      return (context, code) -> {
+      return (context, _) -> {
         RuntimeHints hints = context.getRuntimeHints();
         for (String beanName : beanNames) {
           BeanDefinition beanDefinition = beanFactory.getBeanDefinition(beanName.substring(1));
@@ -313,8 +314,7 @@ public class MyBatisNativeConfig {
         } else {
           result = (Class<?>) src;
         }
-      } else if (src instanceof ParameterizedType) {
-        ParameterizedType parameterizedType = (ParameterizedType) src;
+      } else if (src instanceof ParameterizedType parameterizedType) {
         int index =
             (parameterizedType.getRawType() instanceof Class
                     && Map.class.isAssignableFrom((Class<?>) parameterizedType.getRawType())
@@ -342,13 +342,15 @@ public class MyBatisNativeConfig {
     private ConfigurableBeanFactory beanFactory;
 
     @Override
-    public void setBeanFactory(BeanFactory beanFactory) {
+    public void setBeanFactory(@NonNull BeanFactory beanFactory) {
       this.beanFactory = (ConfigurableBeanFactory) beanFactory;
     }
 
     @Override
     public void postProcessMergedBeanDefinition(
-        RootBeanDefinition beanDefinition, Class<?> beanType, String beanName) {
+        @NonNull RootBeanDefinition beanDefinition,
+        @NonNull Class<?> beanType,
+        @NonNull String beanName) {
       if (ClassUtils.isPresent(MAPPER_FACTORY_BEAN, this.beanFactory.getBeanClassLoader())) {
         resolveMapperFactoryBeanTypeIfNecessary(beanDefinition);
       }

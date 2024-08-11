@@ -10,7 +10,7 @@
   </parent>
   <groupId>cn.huava</groupId>
   <artifactId>huava</artifactId>
-  <version>0.0.6-SNAPSHOT</version>
+  <version>0.0.7-SNAPSHOT</version>
   <name>huava</name>
   <description>huava</description>
   <properties>
@@ -110,7 +110,7 @@
             <!-- used to solve the problem of garbled Chinese characters in the database -->
             <buildArg>-H:+AddAllCharsets</buildArg>
             <!-- GraalVM native image does not support Lambda by default, so we need to register the classes here -->
-            <buildArg>--features=cn.huava.common.config.LambdaRegistrationFeature</buildArg>
+            <buildArg>--features=cn.huava.common.graalvm.LambdaRegistrarFeature</buildArg>
           </buildArgs>
         </configuration>
       </plugin>

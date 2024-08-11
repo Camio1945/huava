@@ -1,0 +1,42 @@
+meta {
+  name: 6_deleteSysUserById
+  type: http
+  seq: 8
+}
+
+delete {
+  url: {{baseUrl}}/sys/user/delete/5
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2huIiwicm9sZXMiOiJST0xFX0FETUlOIiwiaWF0IjoxNzIzMzQ3MzQwLCJleHAiOjE3MjMzNTA5NDB9.xk72dnIIA5YNXckr7yDTwk6fcX4ssmC83Jx_RUNugF4
+}
+
+body:json {
+  {
+    "createBy": "admin",
+    "createTime": "2024-08-05 13:38:19",
+    "updateBy": "",
+    "updateTime": null,
+    "remark": "测试员222",
+    "userId": 2,
+    "deptId": 105,
+    "loginName": "ry",
+    "userName": "若依222",
+    "userType": "00",
+    "email": "ry222@qq.com",
+    "phoneNumber": "15666666666",
+    "sex": "1",
+    "avatar": "",
+    "password": "8e6d98b90472783cc73c17047ddccf36",
+    "salt": "222222",
+    "status": "0",
+    "delFlag": "0",
+    "loginIp": "127.0.0.1",
+    "loginDate": null,
+    "pwdUpdateDate": null,
+    "params": {}
+  }
+}
