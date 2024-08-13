@@ -99,6 +99,32 @@ It's unnecessary and inefficient to use OAuth 2.0 in a monolithic application, b
 
 ---
 
+### 5. Why the services has only one layer but not two (interface and implement)?
+
+In my own experience, one service usually corresponds to a table in the database, and one service interface usually has only one implementation during the whole lifetime of a project. So my opinion is that if an interface has only one implementation for good, it's better to use just one single layer.
+
+---
+
+### 6. Why keep a table's services in a folder but not in a single service class?
+
+I don't want large classes. A class that has more than 200 lines is a large class for me. I want to split large methods into small classes.
+
+If a method has more than 10 lines of valid code (comment not included), it is a large method for me. Then it will be extracted into multiple methods, but that will make the single service class less clear, so it is better to move them to a separate sub-service class.
+
+---
+
+### 6. Why does the main service class's name end with `AceService` but not `MainService` or just `Service`?
+
+I want the main service class to be alphabetically first, so I named it `AceService`.
+
+---
+
+### 7. Why are all the sub-service classes not public and their methods protected?
+
+In this way, We can make the main service class a facade, the only entrance to the outside world, to achieve low coupling.
+
+---
+
 # Changelog
 
 ---

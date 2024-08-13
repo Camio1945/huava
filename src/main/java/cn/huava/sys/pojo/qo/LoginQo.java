@@ -1,4 +1,4 @@
-package cn.huava.sys.pojo.query;
+package cn.huava.sys.pojo.qo;
 
 import lombok.Data;
 
@@ -8,7 +8,7 @@ import lombok.Data;
  * @author Camio1945
  */
 @Data
-public class LoginQuery {
+public class LoginQo {
   private String username;
   private String password;
 }

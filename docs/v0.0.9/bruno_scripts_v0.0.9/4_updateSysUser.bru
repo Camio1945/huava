@@ -1,11 +1,11 @@
 meta {
-  name: 3_createSysUser
+  name: 4_updateSysUser
   type: http
-  seq: 5
+  seq: 6
 }
 
-post {
-  url: {{baseUrl}}/sys/user/create
+put {
+  url: {{baseUrl}}/sys/user/update
   body: json
   auth: bearer
 }
@@ -16,14 +16,27 @@ auth:bearer {
 
 body:json {
   {
-    "userId": 5,
-    "deptId": 103,
-    "loginName": "hello",
-    "userName": "hello",
+    "createBy": "admin",
+    "createTime": "2024-08-05 13:38:19",
+    "updateBy": "",
+    "updateTime": null,
+    "remark": "测试员222",
+    "userId": 2,
+    "deptId": 105,
+    "loginName": "ry",
+    "userName": "若依222",
     "userType": "00",
-    "email": "hello@qq.com",
-    "phoneNumber": "",
-    "sex": "0",
-    "password": "$2a$12$HeVk0EIlGIWq5hNKf2Ziq.9iTs2cAHUFaZG.8s7ahbPto.0gApDti"
+    "email": "ry222@qq.com",
+    "phoneNumber": "15666666666",
+    "sex": "1",
+    "avatar": "",
+    "password": "8e6d98b90472783cc73c17047ddccf36",
+    "salt": "222222",
+    "status": "0",
+    "delFlag": "0",
+    "loginIp": "127.0.0.1",
+    "loginDate": null,
+    "pwdUpdateDate": null,
+    "params": {}
   }
 }

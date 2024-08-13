@@ -14,14 +14,14 @@ import java.security.interfaces.RSAPublicKey;
 import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.*;
@@ -46,10 +46,15 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SecurityConfig {
-  private final UserDetailsService userDetailsService;
   private final SysPasswordAuthProvider sysPasswordAuthProvider;
+
+  @Value("${cn.huava.main_client_id}")
+  private String mainClientId;
+
+  @Value("${cn.huava.main_secret}")
+  private String mainSecret;
 
   @Bean
   @Order(1)
@@ -60,6 +65,7 @@ public class SecurityConfig {
     http.securityMatcher(endpointsMatcher)
         .authorizeHttpRequests(
             authorize -> {
+              authorize.requestMatchers("/sys/user/login").permitAll();
               authorize.requestMatchers("/temp/test/").permitAll();
               authorize.anyRequest().authenticated();
             })
@@ -67,9 +73,10 @@ public class SecurityConfig {
         .with(authorizationServerConfigurer, withDefaults());
     http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
         .tokenEndpoint(
-            oauth2 -> oauth2
-                .accessTokenRequestConverter(new SysPasswordAuthConverter())
-                .authenticationProvider(sysPasswordAuthProvider));
+            oauth2 ->
+                oauth2
+                    .accessTokenRequestConverter(new SysPasswordAuthConverter())
+                    .authenticationProvider(sysPasswordAuthProvider));
     return http.build();
   }
 
@@ -140,25 +147,18 @@ public class SecurityConfig {
   }
 
   @Bean
-  public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
-  }
-
-  @Bean
   public RegisteredClientRepository registeredClientRepository() {
     RegisteredClient registeredClient =
         RegisteredClient.withId("client")
-            .clientId("client")
-            // row value: secret
-            .clientSecret("$2a$10$Qgv.D7P6ICR.daTPXDO5seidAjZDkp9t2YnzoBa5aRKcQCCQZRwTO")
+            .clientId(mainClientId)
+            .clientSecret(passwordEncoder().encode(mainSecret))
             .scope("read")
             .scope(OidcScopes.OPENID)
             .scope(OidcScopes.PROFILE)
             .scope("message.read")
             .scope("message.write")
             .scope("read")
-            .redirectUri("http://127.0.0.1:8080/login/oauth2/code/myoauth2")
-            .redirectUri("http://insomnia")
+            .redirectUri("http://todo")
             // .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
             .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
             // .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
@@ -171,6 +171,11 @@ public class SecurityConfig {
             .build();
 
     return new InMemoryRegisteredClientRepository(registeredClient);
+  }
+
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
   }
 
   @Bean

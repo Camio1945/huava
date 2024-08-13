@@ -3,7 +3,9 @@
 
 # v.0.0.8 - Target
 
-Implement the OAuth2 authorization server. (Note: It is just a server, not a client; it cannot be put into practice yet.)
+Implement the OAuth2 authorization server. 
+
+Note: It is just a server, not a client. It cannot be put into practice yet. The main drawback is that it needs to expose the client's secret upon request. We will solve this issue in v0.0.9.
 
 ---
 

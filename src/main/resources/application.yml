@@ -17,3 +17,8 @@ spring:
     username: huava
     password: eFS0H6_0_pkVm__o
 
+cn:
+  huava:
+    main_client_id: "main_client"
+    # IMPORTANT NOTE: Every project should change this
+    main_secret: "3f_pRlCfysefpt1x"
