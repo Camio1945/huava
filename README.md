@@ -93,6 +93,12 @@ Solution: Register your class in [LambdaRegistrationFeature.java](src%2Fmain%2Fj
 
 ---
 
+### 4. Why use OAuth 2.0 in a monolithic application?
+
+It's unnecessary and inefficient to use OAuth 2.0 in a monolithic application, but I want to learn how to use it, so it's a selfish choice.
+
+---
+
 # Changelog
 
 ---

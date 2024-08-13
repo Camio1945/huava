@@ -15,7 +15,7 @@ actor User
 User --> "RememberMe\nAuthenticationFilter": doFilter(...)
 "RememberMe\nAuthenticationFilter" -> "Abstract\nRememberMeServices": autoLogin(...)
 "Abstract\nRememberMeServices" -> "TokenBased\nRememberMeServices": processAutoLoginCookie(...)
-"TokenBased\nRememberMeServices" -> "TokenBased\nRememberMeServices": load user by username, \ncheck token signature
+"TokenBased\nRememberMeServices" -> "TokenBased\nRememberMeServices": load user by username\ncheck user still exists \nuse user to check token signature
 "Abstract\nRememberMeServices" <- "TokenBased\nRememberMeServices":
 "Abstract\nRememberMeServices" -> "Abstract\nRememberMeServices": createSuccessfulAuthentication(...)
 "RememberMe\nAuthenticationFilter" <- "Abstract\nRememberMeServices": return rememberMeAuth

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public abstract class BaseController<S extends ServiceImpl<M, T>, M extends BaseMapper<T>, T> {
 
   /**
-   * About @SuppressWarnings("java:S6813"): Without @SuppressWarnings("java:S6813"), the SonarLint
+   * About @SuppressWarnings: Without @SuppressWarnings("java:S6813"), the SonarLint
    * will complain about the @Autowired annotation. But without @Autowired annotation, every
    * subclass of this class will need to write something like the following code:
    *

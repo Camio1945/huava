@@ -1,0 +1,31 @@
+@startuml
+' The following is the global default style (do not use Fira Code font, otherwise the Chinese will not be displayed)
+skinparam DefaultFontName Microsoft YaHei
+skinparam DefaultFontSize 16
+skinparam ArrowColor DeepSkyBlue
+' The following is the style of the actor (class)
+skinparam ParticipantFontColor White
+skinparam ParticipantBorderColor DeepSkyBlue
+skinparam ParticipantBackgroundColor DodgerBlue
+skinparam ParticipantFontSize 18
+' Here is the flowchart code
+title OAuth2 server login
+actor User
+User --> "OAuth2Client\nAuthenticationFilter": visit /oauth2/token
+"OAuth2Client\nAuthenticationFilter" --> "ClientSecret\nAuthenticationProvider": authenticate(...)\ncheck client id and secret
+"OAuth2Client\nAuthenticationFilter" <-- "ClientSecret\nAuthenticationProvider":
+"OAuth2Client\nAuthenticationFilter" --> "OAuth2Token\nEndpointFilter": doFilter(...)
+"OAuth2Token\nEndpointFilter" --> "SysPassword\nAuthConverter": convert(...) convert http \nrequest to authentication
+"SysPassword\nAuthConverter" --> "SysPassword\nAuthToken": new
+"SysPassword\nAuthConverter" <-- "SysPassword\nAuthToken"
+"OAuth2Token\nEndpointFilter" <-- "SysPassword\nAuthConverter": return authentication
+"OAuth2Token\nEndpointFilter" --> "SysPassword\nAuthProvider": authenticate(...) authenticate the authentication
+"SysPassword\nAuthProvider" -> "SysUserLoginUser\nDetailsServiceImpl": loadUserByUsername(...)
+"SysPassword\nAuthProvider" <- "SysUserLoginUser\nDetailsServiceImpl"
+"SysPassword\nAuthProvider" -> "SysPassword\nAuthProvider": validatePassword(...)
+"SysPassword\nAuthProvider" -> "SysPassword\nAuthProvider": buildAccessToken(...)
+"SysPassword\nAuthProvider" -> "SysPassword\nAuthProvider": buildRefreshToken(...)
+"OAuth2Token\nEndpointFilter" <-- "SysPassword\nAuthProvider"
+"OAuth2Client\nAuthenticationFilter" <-- "OAuth2Token\nEndpointFilter"
+User <-- "OAuth2Client\nAuthenticationFilter"
+@enduml

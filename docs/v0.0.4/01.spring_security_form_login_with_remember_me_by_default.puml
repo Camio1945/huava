@@ -15,7 +15,7 @@ User --> "AbstractAuthentication\nProcessingFilter": doFilter(...)\n/login with 
 "AbstractAuthentication\nProcessingFilter" -> "AbstractAuthentication\nProcessingFilter": successfulAuthentication(...)
 "AbstractAuthentication\nProcessingFilter" -> "Abstract\nRememberMeServices": loginSuccess(...)
 "Abstract\nRememberMeServices" -> "TokenBased\nRememberMeServices": onLoginSuccess(...)
-"Abstract\nRememberMeServices" <- "TokenBased\nRememberMeServices": **setCookie**(...) child call parent\n set username, password, expiryTime in cookie
+"Abstract\nRememberMeServices" <- "TokenBased\nRememberMeServices": **setCookie**(...) child call parent\n set encrypted username, password, expiryTime in cookie
 "Abstract\nRememberMeServices" <- "TokenBased\nRememberMeServices": onLoginSuccess(...) return
 "AbstractAuthentication\nProcessingFilter" <- "Abstract\nRememberMeServices":
 User <-- "AbstractAuthentication\nProcessingFilter"

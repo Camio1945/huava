@@ -19,8 +19,4 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class SysUserService extends ServiceImpl<SysUserMapper, SysUser> {
 
-  public SysUser test() {
-    SysUser sysUser = getBaseMapper().getById(1);
-    return sysUser;
-  }
 }

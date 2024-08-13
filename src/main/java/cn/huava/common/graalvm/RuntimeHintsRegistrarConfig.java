@@ -16,10 +16,6 @@ import com.baomidou.mybatisplus.extension.handlers.FastjsonTypeHandler;
 import com.baomidou.mybatisplus.extension.handlers.GsonTypeHandler;
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.impl.DefaultClaimsBuilder;
-import io.jsonwebtoken.impl.io.StandardCompressionAlgorithms;
-import io.jsonwebtoken.impl.security.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -91,8 +87,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 
 /**
- *  . Kudos to <a
- * href="https://github.com/nieqiurong/mybatis-native-demo">mybatis-native-demo</a>
+ * . Kudos to <a href="https://github.com/nieqiurong/mybatis-native-demo">mybatis-native-demo</a>
  *
  * @author Camio1945
  */
@@ -115,16 +110,6 @@ public class RuntimeHintsRegistrarConfig {
     @Override
     public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
       Stream.of(
-              Jwts.class,
-              StandardKeyAlgorithms.class,
-              KeysBridge.class,
-              StandardKeyOperations.class,
-              DefaultClaimsBuilder.class,
-              StandardCompressionAlgorithms.class,
-              DefaultDynamicJwkBuilder.class,
-              StandardEncryptionAlgorithms.class,
-              StandardHashAlgorithms.class,
-              StandardSecureDigestAlgorithms.class,
               RawLanguageDriver.class,
               XMLLanguageDriver.class,
               MybatisXMLLanguageDriver.class,
@@ -172,9 +157,6 @@ public class RuntimeHintsRegistrarConfig {
       hints.reflection().registerType(LambdaUpdateWrapper.class, MemberCategory.values());
       hints.reflection().registerType(UpdateWrapper.class, MemberCategory.values());
       hints.reflection().registerType(QueryWrapper.class, MemberCategory.values());
-
-      // hints.reflection().registerType(org.apache.ibatis.logging.LogFactory.class,
-      // MemberCategory.values());
 
       hints.reflection().registerType(BoundSql.class, MemberCategory.DECLARED_FIELDS);
       hints
@@ -226,7 +208,8 @@ public class RuntimeHintsRegistrarConfig {
       if (beanNames.length == 0) {
         return null;
       }
-      return (context, _) -> {
+      //noinspection unused
+      return (context, code) -> {
         RuntimeHints hints = context.getRuntimeHints();
         for (String beanName : beanNames) {
           BeanDefinition beanDefinition = beanFactory.getBeanDefinition(beanName.substring(1));

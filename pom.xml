@@ -10,7 +10,7 @@
   </parent>
   <groupId>cn.huava</groupId>
   <artifactId>huava</artifactId>
-  <version>0.0.7-SNAPSHOT</version>
+  <version>0.0.8-SNAPSHOT</version>
   <name>huava</name>
   <description>huava</description>
   <properties>
@@ -31,21 +31,15 @@
     </dependency>
 
     <dependency>
-      <groupId>io.jsonwebtoken</groupId>
-      <artifactId>jjwt</artifactId>
-      <version>${jjwt.version}</version>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-oauth2-authorization-server</artifactId>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-oauth2-client -->
     <dependency>
-      <groupId>io.jsonwebtoken</groupId>
-      <artifactId>jjwt-api</artifactId>
-      <version>${jjwt.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>io.jsonwebtoken</groupId>
-      <artifactId>jjwt-impl</artifactId>
-      <version>${jjwt.version}</version>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-oauth2-client</artifactId>
+      <version>6.3.1</version>
     </dependency>
 
     <!-- MyBatis Plus -->
@@ -74,7 +68,7 @@
     <dependency>
       <groupId>org.dromara.hutool</groupId>
       <artifactId>hutool-all</artifactId>
-      <version>6.0.0-M14</version>
+      <version>6.0.0-M15</version>
     </dependency>
 
     <!-- test -->

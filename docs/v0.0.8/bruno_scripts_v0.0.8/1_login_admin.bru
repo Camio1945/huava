@@ -1,0 +1,27 @@
+meta {
+  name: 1_login_admin
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/oauth2/token?grant_type=sys_password
+  body: json
+  auth: basic
+}
+
+params:query {
+  grant_type: sys_password
+}
+
+auth:basic {
+  username: client
+  password: secret
+}
+
+body:json {
+  {
+    "username": "admin",
+    "password": "123456"
+  }
+}

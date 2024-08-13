@@ -3,6 +3,7 @@ package cn.huava.sys.controller;
 import cn.huava.sys.service.SysUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -16,13 +17,12 @@ import org.springframework.web.bind.annotation.*;
 public class TempTestController {
   private SysUserService sysUserService;
 
-  // private PasswordEncoder passwordEncoder;
+  private PasswordEncoder passwordEncoder;
 
   @GetMapping("/")
   public String test() {
-    // String encode = passwordEncoder.encode("123456");
-    // return  "" + encode;
-    return "";
+    String encode = passwordEncoder.encode("password");
+    return  "" + encode;
   }
 
   @PreAuthorize("hasRole('ADMIN')")
