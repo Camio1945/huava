@@ -2,13 +2,13 @@ package cn.huava.common.auth;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+import cn.huava.common.KeyUtil;
 import cn.huava.sys.auth.SysUserUserDetails;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import java.security.KeyPair;
-import java.security.KeyPairGenerator;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.time.Duration;
@@ -21,6 +21,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,7 +37,6 @@ import org.springframework.security.oauth2.server.authorization.config.annotatio
 import org.springframework.security.oauth2.server.authorization.settings.*;
 import org.springframework.security.oauth2.server.authorization.token.*;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 
 /**
  * 安全配置
@@ -56,20 +56,19 @@ public class SecurityConfig {
   @Value("${cn.huava.main_secret}")
   private String mainSecret;
 
+  @Value("${cn.huava.rsa_public_key}")
+  private String rsaPublicKey;
+
+  @Value("${cn.huava.rsa_private_key}")
+  private String rsaPrivateKey;
+
   @Bean
   @Order(1)
-  public SecurityFilterChain asSecurityFilterChain(HttpSecurity http) throws Exception {
+  public SecurityFilterChain oauth2SecurityFilterChain(HttpSecurity http) throws Exception {
     OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
         new OAuth2AuthorizationServerConfigurer();
-    RequestMatcher endpointsMatcher = authorizationServerConfigurer.getEndpointsMatcher();
-    http.securityMatcher(endpointsMatcher)
-        .authorizeHttpRequests(
-            authorize -> {
-              authorize.requestMatchers("/sys/user/login").permitAll();
-              authorize.requestMatchers("/temp/test/").permitAll();
-              authorize.anyRequest().authenticated();
-            })
-        .csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher))
+    http.securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
+        .csrf(AbstractHttpConfigurer::disable)
         .with(authorizationServerConfigurer, withDefaults());
     http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
         .tokenEndpoint(
@@ -78,6 +77,20 @@ public class SecurityConfig {
                     .accessTokenRequestConverter(new SysPasswordAuthConverter())
                     .authenticationProvider(sysPasswordAuthProvider));
     return http.build();
+  }
+
+  @Bean
+  @Order(2)
+  public SecurityFilterChain appSecurityFilterChain(HttpSecurity http) throws Exception {
+    return http.csrf(AbstractHttpConfigurer::disable)
+        .authorizeHttpRequests(
+            authorize -> {
+              authorize.requestMatchers(AuthConstant.LOGIN_URI).permitAll();
+              authorize.requestMatchers("/temp/test/").permitAll();
+              authorize.anyRequest().authenticated();
+            })
+        .oauth2ResourceServer(oauth2 -> oauth2.jwt(withDefaults()))
+        .build();
   }
 
   @Bean
@@ -98,7 +111,7 @@ public class SecurityConfig {
 
   @Bean
   public JWKSource<SecurityContext> jwkSource() {
-    RSAKey rsaKey = generateRsa();
+    RSAKey rsaKey = buildRsaKey();
     JWKSet jwkSet = new JWKSet(rsaKey);
     //noinspection unused
     return (jwkSelector, context) -> jwkSelector.select(jwkSet);
@@ -119,26 +132,11 @@ public class SecurityConfig {
     };
   }
 
-  private static RSAKey generateRsa() {
-    KeyPair keyPair = generateRsaKey();
+  private RSAKey buildRsaKey() {
+    KeyPair keyPair = KeyUtil.getKeyPair(rsaPublicKey, rsaPrivateKey);
     RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
     RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
-    return new RSAKey.Builder(publicKey)
-        .privateKey(privateKey)
-        .keyID(UUID.randomUUID().toString())
-        .build();
-  }
-
-  private static KeyPair generateRsaKey() {
-    KeyPair keyPair;
-    try {
-      KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-      keyPairGenerator.initialize(2048);
-      keyPair = keyPairGenerator.generateKeyPair();
-    } catch (Exception ex) {
-      throw new IllegalStateException(ex);
-    }
-    return keyPair;
+    return new RSAKey.Builder(publicKey).privateKey(privateKey).build();
   }
 
   @Bean

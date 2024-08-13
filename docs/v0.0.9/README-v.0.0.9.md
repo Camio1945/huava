@@ -9,6 +9,8 @@ So, for the user, it's one request. But for the server, it's two requests.
 
 I know it's unnecessary and inefficient to use OAuth 2.0 in a monolithic application, but I want to learn how to use it, so it's a selfish choice.
 
+THIS VERSION IS NOT COMPLETE.
+
 ---
 
 # Worth mentioning
