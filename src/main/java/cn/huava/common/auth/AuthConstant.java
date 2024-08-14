@@ -12,9 +12,11 @@ package cn.huava.common.auth;
 public interface AuthConstant {
   String USERNAME = "username";
   String PASSWORD = "password";
+  String GRANT_TYPE = "grant_type";
   String SYS_PASSWORD_GRANT_TYPE = "sys_password";
+  String REFRESH_TOKEN = "refresh_token";
   String ACCESS_TOKEN = "access_token";
   String AUTHORIZATION = "Authorization";
-  String BEARER_PREFIX = "Bearer ";
   String LOGIN_URI = "/sys/user/login";
+  String REFRESH_TOKEN_URI = "/sys/user/refreshToken";
 }

@@ -4,6 +4,9 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 import cn.huava.common.KeyUtil;
 import cn.huava.sys.auth.SysUserUserDetails;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
@@ -18,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 import org.springframework.core.annotation.Order;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,6 +29,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.jackson2.SecurityJackson2Modules;
 import org.springframework.security.oauth2.core.*;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
@@ -34,6 +39,7 @@ import org.springframework.security.oauth2.server.authorization.authentication.O
 import org.springframework.security.oauth2.server.authorization.client.*;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
+import org.springframework.security.oauth2.server.authorization.jackson2.OAuth2AuthorizationServerJackson2Module;
 import org.springframework.security.oauth2.server.authorization.settings.*;
 import org.springframework.security.oauth2.server.authorization.token.*;
 import org.springframework.security.web.SecurityFilterChain;
@@ -49,6 +55,9 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 public class SecurityConfig {
   private final SysPasswordAuthProvider sysPasswordAuthProvider;
+
+  // private final DataSource dataSource;
+  // private final JdbcTemplate jdbcTemplate;
 
   @Value("${cn.huava.main_client_id}")
   private String mainClientId;
@@ -86,6 +95,7 @@ public class SecurityConfig {
         .authorizeHttpRequests(
             authorize -> {
               authorize.requestMatchers(AuthConstant.LOGIN_URI).permitAll();
+              authorize.requestMatchers(AuthConstant.REFRESH_TOKEN_URI).permitAll();
               authorize.requestMatchers("/temp/test/").permitAll();
               authorize.anyRequest().authenticated();
             })
@@ -93,9 +103,45 @@ public class SecurityConfig {
         .build();
   }
 
+  /**
+   * Kudos to
+   * https://stackoverflow.com/questions/70919216/jwtauthenticationtoken-is-not-in-the-allowlist-jackson-issue
+   *
+   * @param jdbcTemplate
+   * @param registeredClientRepository
+   * @return
+   */
   @Bean
-  public OAuth2AuthorizationService authorizationService() {
-    return new InMemoryOAuth2AuthorizationService();
+  public OAuth2AuthorizationService authorizationService(
+      JdbcTemplate jdbcTemplate, RegisteredClientRepository registeredClientRepository) {
+    // return new JdbcOAuth2AuthorizationService(jdbcTemplate, registeredClientRepository());
+    JdbcOAuth2AuthorizationService authorizationService =
+        new JdbcOAuth2AuthorizationService(jdbcTemplate, registeredClientRepository);
+    JdbcOAuth2AuthorizationService.OAuth2AuthorizationRowMapper rowMapper =
+        new JdbcOAuth2AuthorizationService.OAuth2AuthorizationRowMapper(registeredClientRepository);
+    JdbcOAuth2AuthorizationService.OAuth2AuthorizationParametersMapper
+        oAuth2AuthorizationParametersMapper =
+            new JdbcOAuth2AuthorizationService.OAuth2AuthorizationParametersMapper();
+
+    ObjectMapper objectMapper = new ObjectMapper();
+    ClassLoader classLoader = JdbcOAuth2AuthorizationService.class.getClassLoader();
+    List<com.fasterxml.jackson.databind.Module> securityModules =
+        SecurityJackson2Modules.getModules(classLoader);
+    objectMapper.registerModules(securityModules);
+    objectMapper.registerModule(new OAuth2AuthorizationServerJackson2Module());
+    // objectMapper.registerModules(new QuaferJackson2Module());
+    objectMapper.registerModules(new OAuth2TokenJackson2Module());
+
+    // objectMapper.addMixIn(
+    //     OAuth2ClientAuthenticationToken.class, OAuth2ClientAuthenticationTokenMixin.class);
+
+    rowMapper.setObjectMapper(objectMapper);
+    oAuth2AuthorizationParametersMapper.setObjectMapper(objectMapper);
+
+    authorizationService.setAuthorizationRowMapper(rowMapper);
+    authorizationService.setAuthorizationParametersMapper(oAuth2AuthorizationParametersMapper);
+
+    return authorizationService;
   }
 
   @Bean
@@ -198,4 +244,5 @@ public class SecurityConfig {
   public JwtDecoder jwtDecoder(JWKSource<SecurityContext> jwkSource) {
     return OAuth2AuthorizationServerConfiguration.jwtDecoder(jwkSource);
   }
+
 }

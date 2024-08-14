@@ -1,0 +1,18 @@
+meta {
+  name: 1_login_admin
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/sys/user/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "username": "admin",
+    "password": "123456"
+  }
+}

@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
  * @author Camio1945
  */
 public class SysUserUserDetails implements UserDetails {
+
   private final SysUser sysUser;
   private final Collection<? extends GrantedAuthority> authorities;
 

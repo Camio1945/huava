@@ -24,4 +24,10 @@ public class SysUserController extends BaseController<SysUserAceService, SysUser
       throws IOException, FailedLoginException {
     return ResponseEntity.ok(service.login(loginQo));
   }
+
+  @PostMapping("/refreshToken")
+  public ResponseEntity<String> refreshToken(@RequestBody String refreshToken)
+      throws IOException, FailedLoginException {
+    return ResponseEntity.ok(service.refreshToken(refreshToken));
+  }
 }

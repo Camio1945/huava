@@ -1,0 +1,25 @@
+meta {
+  name: 2_refresh_token
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/sys/user/refreshToken
+  body: text
+  auth: none
+}
+
+body:json {
+  {
+    "refreshToken": "123"
+  }
+}
+
+body:text {
+  EWBZGQM2y5UR-HalzUBsVjNMDrFgZbGxea8neX4ipO-FAP7QU2CIJflnIyAcE4ED4DvqOwlhHmG9MBNeQHMUE4b_hpzGZS1t7Vkk1g11rrKo_6-ixtWTHo2vD8GOvEmv
+}
+
+body:form-urlencoded {
+  refreshToken: 123
+}

@@ -1,0 +1,42 @@
+meta {
+  name: 6_deleteSysUserById
+  type: http
+  seq: 7
+}
+
+delete {
+  url: {{baseUrl}}/sys/user/delete/5
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJraWQiOiJiYTRhY2VlNy0zYmVmLTQwYTMtOWI5Zi1kNDg2N2ZkMGEyNTEiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJtYWluX2NsaWVudCIsImF1ZCI6Im1haW5fY2xpZW50IiwibmJmIjoxNzIzNTIwMzcwLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjIyMzQ1IiwiZXhwIjoxNzIzNjA2NzcwLCJpYXQiOjE3MjM1MjAzNzAsInVzZXIiOiJhZG1pbiIsImp0aSI6IjgxZWU5NmYyLWFhNmUtNDM2Zi1hMDgyLTY0NWRkMjg1Y2M4MCIsImF1dGhvcml0aWVzIjpbXX0.tQwP1M8CvSY9c6kPaQiYF56UCNmkjycJ0a2QuuXNIU1AvrsEqaFrbJXGFIG1MSg0ToDDe32T_LHkJe0SAu-7g7Gc2xb6Cihne3VdxE_3vtV8xrv6QOgomupj6hcKFhwusGm8MqqTHSAZiTu2yqBwYCuls0xcAJX0rEPJSVxuWAZYr-NsgOPo_Z9-FgVpr3HeeTNxRUjocjlEuA30nH1vN0J6Uk_-9ouUwhOHIn0DknqIQ15xiNya9nJB18VXrMNV3uiOIFiBkFLZijxgD8G6jT29wEyKB261TTbIWAjwaYzMSie9cZB1YoeqY6cOAIjSUwfBxoaibT1eU0x0hu9Gyg
+}
+
+body:json {
+  {
+    "createBy": "admin",
+    "createTime": "2024-08-05 13:38:19",
+    "updateBy": "",
+    "updateTime": null,
+    "remark": "测试员222",
+    "userId": 2,
+    "deptId": 105,
+    "loginName": "ry",
+    "userName": "若依222",
+    "userType": "00",
+    "email": "ry222@qq.com",
+    "phoneNumber": "15666666666",
+    "sex": "1",
+    "avatar": "",
+    "password": "8e6d98b90472783cc73c17047ddccf36",
+    "salt": "222222",
+    "status": "0",
+    "delFlag": "0",
+    "loginIp": "127.0.0.1",
+    "loginDate": null,
+    "pwdUpdateDate": null,
+    "params": {}
+  }
+}
