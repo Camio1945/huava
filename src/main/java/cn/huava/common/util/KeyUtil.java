@@ -1,4 +1,4 @@
-package cn.huava.common;
+package cn.huava.common.util;
 
 import java.security.*;
 import java.security.spec.*;

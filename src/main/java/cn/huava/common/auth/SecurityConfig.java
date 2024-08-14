@@ -2,10 +2,8 @@ package cn.huava.common.auth;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
-import cn.huava.common.KeyUtil;
+import cn.huava.common.util.KeyUtil;
 import cn.huava.sys.auth.SysUserUserDetails;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -244,5 +242,4 @@ public class SecurityConfig {
   public JwtDecoder jwtDecoder(JWKSource<SecurityContext> jwkSource) {
     return OAuth2AuthorizationServerConfiguration.jwtDecoder(jwkSource);
   }
-
 }

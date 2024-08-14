@@ -2,6 +2,8 @@ package cn.huava.sys.auth;
 
 import cn.huava.sys.pojo.po.SysUser;
 import java.util.Collection;
+import java.util.Collections;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -11,16 +13,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class SysUserUserDetails implements UserDetails {
 
   private final SysUser sysUser;
-  private final Collection<? extends GrantedAuthority> authorities;
 
-  public SysUserUserDetails(SysUser sysUser, Collection<? extends GrantedAuthority> authorities) {
+  public SysUserUserDetails(SysUser sysUser) {
     this.sysUser = sysUser;
-    this.authorities = authorities;
   }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return authorities;
+    return Collections.emptySet();
   }
 
   @Override

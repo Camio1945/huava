@@ -16,6 +16,7 @@
   <properties>
     <java.version>22</java.version>
     <jjwt.version>0.12.6</jjwt.version>
+    <spring.security.version>6.3.1</spring.security.version>
   </properties>
   <dependencies>
     <!-- Spring Boot Web -->
@@ -39,7 +40,14 @@
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-oauth2-client</artifactId>
-      <version>6.3.1</version>
+      <version>${spring.security.version}</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-cas -->
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-cas</artifactId>
+      <version>${spring.security.version}</version>
     </dependency>
 
     <!-- MyBatis Plus -->
@@ -69,13 +77,6 @@
       <groupId>org.dromara.hutool</groupId>
       <artifactId>hutool-all</artifactId>
       <version>6.0.0-M15</version>
-    </dependency>
-
-    <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-      <version>33.2.1-jre</version>
     </dependency>
 
     <!-- test -->

@@ -34,20 +34,7 @@ public class SysUserLoginUserDetailsServiceImpl implements UserDetailsService {
     if (sysUser == null) {
       throw new UsernameNotFoundException("username or password error");
     }
-    Set<SimpleGrantedAuthority> authorities = getAuthorities(sysUser);
-    return new SysUserUserDetails(sysUser, authorities);
+    return new SysUserUserDetails(sysUser);
   }
 
-  private Set<SimpleGrantedAuthority> getAuthorities(SysUser sysUser) {
-    Wrapper<SysUserRole> queryWrapper =
-        new LambdaQueryWrapper<SysUserRole>().eq(SysUserRole::getUserId, sysUser.getUserId());
-    List<SysUserRole> userRoles = sysUserRoleMapper.selectList(queryWrapper);
-    Set<SimpleGrantedAuthority> authorities = new HashSet<>();
-    if (userRoles.isEmpty()) {
-      return authorities;
-    }
-    Set<Long> roleIds = userRoles.stream().map(SysUserRole::getRoleId).collect(toSet());
-    List<SysRole> roles = sysRoleMapper.selectBatchIds(roleIds);
-    return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(toSet());
-  }
 }

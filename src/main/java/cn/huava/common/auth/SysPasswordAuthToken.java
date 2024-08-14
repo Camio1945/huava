@@ -1,10 +1,7 @@
 package cn.huava.common.auth;
 
 import java.io.Serial;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.springframework.lang.Nullable;
@@ -26,8 +23,7 @@ public class SysPasswordAuthToken extends OAuth2AuthorizationGrantAuthentication
   private String password = "";
 
   public SysPasswordAuthToken(
-      Authentication clientPrincipal,
-      @Nullable Map<String, Object> additionalParameters) {
+      Authentication clientPrincipal, @Nullable Map<String, Object> additionalParameters) {
     super(
         new AuthorizationGrantType(AuthConstant.SYS_PASSWORD_GRANT_TYPE),
         clientPrincipal,
