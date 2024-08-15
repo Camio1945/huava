@@ -32,13 +32,13 @@ public class SysPasswordAuthConverter implements AuthenticationConverter {
     }
     String body = ServletUtil.getBody(request);
     JSONObject bodyParams = JSONUtil.toBean(body, JSONObject.class);
-    validateUsernameAndPasswordIsNotBlank(bodyParams);
+    validateUsernameAndPasswordAreNotBlank(bodyParams);
     Map<String, Object> additionalParameters = buildAdditionalParameters(bodyParams);
     Authentication clientPrincipal = SecurityContextHolder.getContext().getAuthentication();
     return new SysPasswordAuthToken(clientPrincipal, additionalParameters);
   }
 
-  private static void validateUsernameAndPasswordIsNotBlank(JSONObject bodyParams) {
+  private static void validateUsernameAndPasswordAreNotBlank(JSONObject bodyParams) {
     if (StrValidator.isBlank(bodyParams.getStr(USERNAME))
         || StrValidator.isBlank(bodyParams.getStr(PASSWORD))) {
       throw new OAuth2AuthenticationException(OAuth2ErrorCodes.INVALID_REQUEST);

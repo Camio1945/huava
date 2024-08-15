@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 
 /**
  * @author Camio1945
@@ -15,6 +16,12 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     isGetterVisibility = JsonAutoDetect.Visibility.NONE)
 public class ClientAuthenticationMethodMixin {
 
+  /**
+   * corresponding to {@link ClientAuthenticationMethod#ClientAuthenticationMethod(String)}
+   *
+   * @param value the value of the client authentication method
+   */
   @JsonCreator
-  ClientAuthenticationMethodMixin(@JsonProperty("value") String value) {}
+  ClientAuthenticationMethodMixin(
+      @SuppressWarnings("unused") @JsonProperty("value") String value) {}
 }

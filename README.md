@@ -123,15 +123,21 @@ I want the main service class to be alphabetically first, so I named it `AceServ
 
 In this way, We can make the main service class a facade, the only entrance to the outside world, to achieve low coupling.
 
----
-
-# Changelog
 
 ---
 
-# Note
+# How to
 
-v.0.0.2 ~ v.0.0.4 does not support GraalVM native image.
+
+---
+
+### 1. How to generate `project.rsa_public_key` and `project.rsa_public_key` in application.yml ?
+
+```java
+KeyPair keyPair = org.dromara.hutool.crypto.KeyUtil.generateKeyPair("RSA", 2048);
+String publicKeyBase64 = org.dromara.hutool.core.codec.binary.Base64.encode(keyPair.getPublic().getEncoded());
+String privateKeyBase64 = org.dromara.hutool.core.codec.binary.Base64.encode(keyPair.getPrivate().getEncoded());
+```
 
 ---
 

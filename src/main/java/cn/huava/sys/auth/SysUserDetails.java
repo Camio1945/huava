@@ -10,11 +10,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 /**
  * @author Camio1945
  */
-public class SysUserUserDetails implements UserDetails {
+public class SysUserDetails implements UserDetails {
 
   private final SysUser sysUser;
 
-  public SysUserUserDetails(SysUser sysUser) {
+  public SysUserDetails(SysUser sysUser) {
     this.sysUser = sysUser;
   }
 

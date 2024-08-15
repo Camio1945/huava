@@ -29,6 +29,7 @@ import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.crypto.Cipher;
 import lombok.NonNull;
 import org.apache.commons.logging.LogFactory;
 import org.apache.ibatis.annotations.DeleteProvider;
@@ -60,6 +61,10 @@ import org.apache.ibatis.reflection.TypeParameterResolver;
 import org.apache.ibatis.scripting.defaults.RawLanguageDriver;
 import org.apache.ibatis.scripting.xmltags.XMLLanguageDriver;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.bouncycastle.jcajce.provider.drbg.DRBG;
+import org.bouncycastle.jce.PKCS10CertificationRequest;
+import org.bouncycastle.jce.provider.*;
+import org.dromara.hutool.crypto.provider.BouncyCastleProviderFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperFactoryBean;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
@@ -83,6 +88,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportRuntimeHints;
 import org.springframework.core.ResolvableType;
+import org.springframework.security.cas.jackson2.CasJackson2Module;
+import org.springframework.security.jackson2.CoreJackson2Module;
+import org.springframework.security.oauth2.client.jackson2.OAuth2ClientJackson2Module;
+import org.springframework.security.web.jackson2.WebJackson2Module;
+import org.springframework.security.web.jackson2.WebServletJackson2Module;
+import org.springframework.security.web.server.jackson2.WebServerJackson2Module;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 
@@ -110,6 +121,25 @@ public class RuntimeHintsRegistrarConfig {
     @Override
     public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
       Stream.of(
+              // BouncyCastleProvider.class,
+              // PKCS10CertificationRequest.class,
+              // BrokenJCEBlockCipher.class,
+              // PKIXAttrCertPathBuilderSpi.class,
+              // X509CertificateObject.class,
+              // X509CRLObject.class,
+              // X509LDAPCertStoreSpi.class,
+              // BouncyCastleProviderFactory.class,
+              // Cipher.class,
+              // DRBG.class,
+              // DRBG.Default.class,
+              // DRBG.NonceAndIV.class,
+              // UnmodifiableMapDeserializer.class,
+              CoreJackson2Module.class,
+              CasJackson2Module.class,
+              WebJackson2Module.class,
+              WebServerJackson2Module.class,
+              WebServletJackson2Module.class,
+              OAuth2ClientJackson2Module.class,
               RawLanguageDriver.class,
               XMLLanguageDriver.class,
               MybatisXMLLanguageDriver.class,

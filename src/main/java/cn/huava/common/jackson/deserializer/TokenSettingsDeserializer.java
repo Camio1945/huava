@@ -21,10 +21,8 @@ public class TokenSettingsDeserializer extends JsonDeserializer<TokenSettings> {
       throws IOException {
     ObjectMapper mapper = (ObjectMapper) jsonParser.getCodec();
     JsonNode jsonNode = mapper.readTree(jsonParser);
-
     Map<String, Object> settings =
         JsonNodeUtil.findValue(jsonNode, "settings", JsonNodeUtil.STRING_OBJECT_MAP, mapper);
-
     return TokenSettings.withSettings(settings).build();
   }
 }

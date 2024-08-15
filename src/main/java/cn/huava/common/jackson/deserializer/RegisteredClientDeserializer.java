@@ -28,8 +28,7 @@ public class RegisteredClientDeserializer extends JsonDeserializer<RegisteredCli
 
   @Override
   public RegisteredClient deserialize(
-      JsonParser jsonParser, DeserializationContext deserializationContext)
-      throws IOException {
+      JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
     ObjectMapper mapper = (ObjectMapper) jsonParser.getCodec();
     JsonNode root = mapper.readTree(jsonParser);
     return deserialize(mapper, root);
@@ -38,41 +37,56 @@ public class RegisteredClientDeserializer extends JsonDeserializer<RegisteredCli
   private RegisteredClient deserialize(ObjectMapper mapper, JsonNode root) {
     String id = JsonNodeUtil.findStringValue(root, "id");
     String clientId = JsonNodeUtil.findStringValue(root, "clientId");
-    Instant clientIdIssuedAt =
-        JsonNodeUtil.findValue(root, "clientIdIssuedAt", JsonNodeUtil.INSTANT, mapper);
     String clientSecret = JsonNodeUtil.findStringValue(root, "clientSecret");
-    Instant clientSecretExpiresAt =
-        JsonNodeUtil.findValue(root, "clientSecretExpiresAt", JsonNodeUtil.INSTANT, mapper);
     String clientName = JsonNodeUtil.findStringValue(root, "clientName");
-
-    Set<ClientAuthenticationMethod> clientAuthenticationMethods =
-        JsonNodeUtil.findValue(
-            root, "clientAuthenticationMethods", CLIENT_AUTHENTICATION_METHOD_SET, mapper);
-    Set<AuthorizationGrantType> authorizationGrantTypes =
-        JsonNodeUtil.findValue(
-            root, "authorizationGrantTypes", AUTHORIZATION_GRANT_TYPE_SET, mapper);
-    Set<String> redirectUris =
-        JsonNodeUtil.findValue(root, "redirectUris", JsonNodeUtil.STRING_SET, mapper);
     Set<String> scopes = JsonNodeUtil.findValue(root, "scopes", JsonNodeUtil.STRING_SET, mapper);
-    ClientSettings clientSettings =
-        JsonNodeUtil.findValue(
-            root, "clientSettings", new TypeReference<ClientSettings>() {}, mapper);
-    TokenSettings tokenSettings =
-        JsonNodeUtil.findValue(
-            root, "tokenSettings", new TypeReference<TokenSettings>() {}, mapper);
-
     return RegisteredClient.withId(id)
         .clientId(clientId)
-        .clientIdIssuedAt(clientIdIssuedAt)
+        .clientIdIssuedAt(getClientIdIssuedAt(mapper, root))
         .clientSecret(clientSecret)
-        .clientSecretExpiresAt(clientSecretExpiresAt)
+        .clientSecretExpiresAt(getClientSecretExpiresAt(mapper, root))
         .clientName(clientName)
-        .clientAuthenticationMethods(methods -> methods.addAll(clientAuthenticationMethods))
-        .authorizationGrantTypes(types -> types.addAll(authorizationGrantTypes))
-        .redirectUris(uris -> uris.addAll(redirectUris))
+        .clientAuthenticationMethods(
+            methods -> methods.addAll(getClientAuthenticationMethods(mapper, root)))
+        .authorizationGrantTypes(types -> types.addAll(getAuthorizationGrantTypes(mapper, root)))
+        .redirectUris(uris -> uris.addAll(getRedirectUris(mapper, root)))
         .scopes(s -> s.addAll(scopes))
-        .clientSettings(clientSettings)
-        .tokenSettings(tokenSettings)
+        .clientSettings(getClientSettings(mapper, root))
+        .tokenSettings(getTokenSettings(mapper, root))
         .build();
+  }
+
+  private static Instant getClientIdIssuedAt(ObjectMapper mapper, JsonNode root) {
+    return JsonNodeUtil.findValue(root, "clientIdIssuedAt", JsonNodeUtil.INSTANT, mapper);
+  }
+
+  private static Instant getClientSecretExpiresAt(ObjectMapper mapper, JsonNode root) {
+    return JsonNodeUtil.findValue(root, "clientSecretExpiresAt", JsonNodeUtil.INSTANT, mapper);
+  }
+
+  private static Set<ClientAuthenticationMethod> getClientAuthenticationMethods(
+      ObjectMapper mapper, JsonNode root) {
+    return JsonNodeUtil.findValue(
+        root, "clientAuthenticationMethods", CLIENT_AUTHENTICATION_METHOD_SET, mapper);
+  }
+
+  private static Set<AuthorizationGrantType> getAuthorizationGrantTypes(
+      ObjectMapper mapper, JsonNode root) {
+    return JsonNodeUtil.findValue(
+        root, "authorizationGrantTypes", AUTHORIZATION_GRANT_TYPE_SET, mapper);
+  }
+
+  private static Set<String> getRedirectUris(ObjectMapper mapper, JsonNode root) {
+    return JsonNodeUtil.findValue(root, "redirectUris", JsonNodeUtil.STRING_SET, mapper);
+  }
+
+  private static ClientSettings getClientSettings(ObjectMapper mapper, JsonNode root) {
+    return JsonNodeUtil.findValue(
+        root, "clientSettings", new TypeReference<ClientSettings>() {}, mapper);
+  }
+
+  private static TokenSettings getTokenSettings(ObjectMapper mapper, JsonNode root) {
+    return JsonNodeUtil.findValue(
+        root, "tokenSettings", new TypeReference<TokenSettings>() {}, mapper);
   }
 }

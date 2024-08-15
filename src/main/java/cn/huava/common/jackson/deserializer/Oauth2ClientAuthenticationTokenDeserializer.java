@@ -1,7 +1,7 @@
 package cn.huava.common.jackson.deserializer;
 
 import cn.huava.common.util.JsonNodeUtil;
-import cn.huava.sys.auth.SysUserUserDetails;
+import cn.huava.sys.auth.SysUserDetails;
 import cn.huava.sys.pojo.po.SysUser;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -28,12 +28,11 @@ public class Oauth2ClientAuthenticationTokenDeserializer
   private OAuth2ClientAuthenticationToken deserialize(ObjectMapper mapper, JsonNode root) {
     RegisteredClient registeredClient =
         JsonNodeUtil.findValue(root, "registeredClient", new TypeReference<>() {}, mapper);
-    JsonNode userJson = root.get("details").get("sysUser");
+    JsonNode userJson = root.get("details");
     SysUser sysUser = new SysUser();
-    sysUser.setLoginName(userJson.get("loginName").asText());
-    sysUser.setUserName(userJson.get("userName").asText());
+    sysUser.setLoginName(userJson.get("username").asText());
     sysUser.setPassword(userJson.get("password").asText());
-    SysUserUserDetails details = new SysUserUserDetails(sysUser);
+    SysUserDetails details = new SysUserDetails(sysUser);
 
     String credentials = JsonNodeUtil.findStringValue(root, "credentials");
     ClientAuthenticationMethod clientAuthenticationMethod =

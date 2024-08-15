@@ -32,11 +32,11 @@ class SysUserLoginService extends ServiceImpl<SysUserMapper, SysUser> {
   @Value("${server.port}")
   private int serverPort;
 
-  @Value("${cn.huava.main_client_id}")
-  private String mainClientId;
+  @Value("${project.main_oauth2_client_id}")
+  private String mainOauth2ClientId;
 
-  @Value("${cn.huava.main_secret}")
-  private String mainSecret;
+  @Value("${project.main_oauth2_secret}")
+  private String mainOauth2Secret;
 
   protected String login(LoginQo loginQo) throws IOException, FailedLoginException {
     Request request = buildRequest(loginQo);
@@ -54,7 +54,7 @@ class SysUserLoginService extends ServiceImpl<SysUserMapper, SysUser> {
     String grantType = AuthConstant.SYS_PASSWORD_GRANT_TYPE;
     String url = format("http://localhost:{}/oauth2/token?grant_type={}", serverPort, grantType);
     Request request = HttpUtil.createPost(url);
-    String authorization = format("{}:{}", mainClientId, mainSecret);
+    String authorization = format("{}:{}", mainOauth2ClientId, mainOauth2Secret);
     request.header(AuthConstant.AUTHORIZATION, "Basic " + Base64.encode(authorization));
     request.body(JSONUtil.toJsonStr(loginQo));
     return request;

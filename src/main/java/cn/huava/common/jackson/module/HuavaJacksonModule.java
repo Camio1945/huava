@@ -1,7 +1,6 @@
-package cn.huava.common.auth;
+package cn.huava.common.jackson.module;
 
 import cn.huava.common.jackson.mixin.*;
-import cn.huava.sys.auth.SysUserUserDetails;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.springframework.security.jackson2.SecurityJackson2Modules;
@@ -12,10 +11,17 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 
-public class OAuth2TokenJackson2Module extends SimpleModule {
+/**
+ * @author Camio1945
+ */
+public class HuavaJacksonModule extends SimpleModule {
 
-  public OAuth2TokenJackson2Module() {
-    super(OAuth2TokenJackson2Module.class.getName(), new Version(1, 0, 0, null, null, null));
+  public HuavaJacksonModule() {
+    super(HuavaJacksonModule.class.getName(), getVersion());
+  }
+
+  private static Version getVersion() {
+    return new Version(1, 0, 0, null, null, null);
   }
 
   @Override
@@ -29,6 +35,5 @@ public class OAuth2TokenJackson2Module extends SimpleModule {
     context.setMixInAnnotations(RegisteredClient.class, RegisteredClientMixin.class);
     context.setMixInAnnotations(
         OAuth2ClientAuthenticationToken.class, Oauth2ClientAuthenticationTokenMixin.class);
-    context.setMixInAnnotations(SysUserUserDetails.class, SysUserDetailsMixin.class);
   }
 }

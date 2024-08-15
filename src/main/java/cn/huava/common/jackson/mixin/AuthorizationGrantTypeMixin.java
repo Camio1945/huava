@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
 
 /**
  * @author Camio1945
@@ -15,6 +16,11 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     isGetterVisibility = JsonAutoDetect.Visibility.NONE)
 public class AuthorizationGrantTypeMixin {
 
+  /**
+   * corresponding to {@link AuthorizationGrantType#AuthorizationGrantType(java.lang.String) }
+   *
+   * @param value the value of the grant type
+   */
   @JsonCreator
-  AuthorizationGrantTypeMixin(@JsonProperty("value") String value) {}
+  AuthorizationGrantTypeMixin(@SuppressWarnings("unused") @JsonProperty("value") String value) {}
 }

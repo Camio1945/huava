@@ -2,8 +2,10 @@ package cn.huava.common.auth;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+import cn.huava.common.jackson.module.HuavaJacksonModule;
+import cn.huava.common.util.EncryptUtil;
 import cn.huava.common.util.KeyUtil;
-import cn.huava.sys.auth.SysUserUserDetails;
+import cn.huava.sys.auth.SysUserDetails;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -14,9 +16,9 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.time.Duration;
 import java.util.*;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.security.oauth2.server.servlet.OAuth2AuthorizationServerProperties;
 import org.springframework.context.annotation.*;
 import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -24,18 +26,17 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.jackson2.SecurityJackson2Modules;
 import org.springframework.security.oauth2.core.*;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.authorization.*;
+import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService.OAuth2AuthorizationParametersMapper;
+import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService.OAuth2AuthorizationRowMapper;
 import org.springframework.security.oauth2.server.authorization.authentication.OAuth2ClientAuthenticationToken;
 import org.springframework.security.oauth2.server.authorization.client.*;
-import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.jackson2.OAuth2AuthorizationServerJackson2Module;
 import org.springframework.security.oauth2.server.authorization.settings.*;
@@ -43,8 +44,6 @@ import org.springframework.security.oauth2.server.authorization.token.*;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
- * 安全配置
- *
  * @author Camio1945
  */
 @Configuration
@@ -54,29 +53,42 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
   private final SysPasswordAuthProvider sysPasswordAuthProvider;
 
-  // private final DataSource dataSource;
-  // private final JdbcTemplate jdbcTemplate;
+  @Value("${project.main_oauth2_client_id}")
+  private String mainOauth2ClientId;
 
-  @Value("${cn.huava.main_client_id}")
-  private String mainClientId;
+  @Value("${project.main_oauth2_secret}")
+  private String mainOauth2Secret;
 
-  @Value("${cn.huava.main_secret}")
-  private String mainSecret;
-
-  @Value("${cn.huava.rsa_public_key}")
+  @Value("${project.rsa_public_key}")
   private String rsaPublicKey;
 
-  @Value("${cn.huava.rsa_private_key}")
+  @Value("${project.rsa_private_key}")
   private String rsaPrivateKey;
 
+  /**
+   * Defines an oauth2 authorization server (see the `OAuth2AuthorizationServerConfigurer` part).
+   * <br>
+   * Because we are using our own grant type {@link AuthConstant#SYS_PASSWORD_GRANT_TYPE}, <br>
+   * we need a {@link SysPasswordAuthConverter} to convert the {@link
+   * AuthConstant#SYS_PASSWORD_GRANT_TYPE} request to an authentication token. <br>
+   * And we need to provide a {@link SysPasswordAuthProvider} to generate access token and refresh
+   * token. <br>
+   * Note 1: This filter chain only handles oauth2 requests (see the `http.securityMatcher` part),
+   * not all request, so we need {@link SecurityConfig#appSecurityFilterChain(HttpSecurity)} too.
+   * Note 2: You can see the oauth2 requests in here: {@link
+   * OAuth2AuthorizationServerProperties.Endpoint}
+   *
+   * @param http the {@link HttpSecurity} instance to be configured
+   * @return the {@link SecurityFilterChain} instance
+   * @throws Exception exceptions are nearly never thrown
+   */
   @Bean
   @Order(1)
   public SecurityFilterChain oauth2SecurityFilterChain(HttpSecurity http) throws Exception {
-    OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
-        new OAuth2AuthorizationServerConfigurer();
-    http.securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
+    OAuth2AuthorizationServerConfigurer configurer = new OAuth2AuthorizationServerConfigurer();
+    http.securityMatcher(configurer.getEndpointsMatcher())
         .csrf(AbstractHttpConfigurer::disable)
-        .with(authorizationServerConfigurer, withDefaults());
+        .with(configurer, withDefaults());
     http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
         .tokenEndpoint(
             oauth2 ->
@@ -86,6 +98,15 @@ public class SecurityConfig {
     return http.build();
   }
 
+  /**
+   * Defines an oauth2 resource server (see the `oauth2ResourceServer` part). <br>
+   * Handles all requests except oauth2 requests ({@link
+   * OAuth2AuthorizationServerProperties.Endpoint}). <br>
+   *
+   * @param http the {@link HttpSecurity} instance to be configured
+   * @return the {@link SecurityFilterChain} instance
+   * @throws Exception exceptions are nearly never thrown
+   */
   @Bean
   @Order(2)
   public SecurityFilterChain appSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -101,47 +122,35 @@ public class SecurityConfig {
         .build();
   }
 
-  /**
-   * Kudos to
-   * https://stackoverflow.com/questions/70919216/jwtauthenticationtoken-is-not-in-the-allowlist-jackson-issue
-   *
-   * @param jdbcTemplate
-   * @param registeredClientRepository
-   * @return
-   */
+  /** Needed in {@link SysPasswordAuthProvider} to save authentication token in database. */
   @Bean
   public OAuth2AuthorizationService authorizationService(
-      JdbcTemplate jdbcTemplate, RegisteredClientRepository registeredClientRepository) {
-    // return new JdbcOAuth2AuthorizationService(jdbcTemplate, registeredClientRepository());
+      JdbcTemplate jdbcTemplate, RegisteredClientRepository repository) {
     JdbcOAuth2AuthorizationService authorizationService =
-        new JdbcOAuth2AuthorizationService(jdbcTemplate, registeredClientRepository);
-    JdbcOAuth2AuthorizationService.OAuth2AuthorizationRowMapper rowMapper =
-        new JdbcOAuth2AuthorizationService.OAuth2AuthorizationRowMapper(registeredClientRepository);
-    JdbcOAuth2AuthorizationService.OAuth2AuthorizationParametersMapper
-        oAuth2AuthorizationParametersMapper =
-            new JdbcOAuth2AuthorizationService.OAuth2AuthorizationParametersMapper();
+        new JdbcOAuth2AuthorizationService(jdbcTemplate, repository);
+    OAuth2AuthorizationRowMapper rowMapper = new OAuth2AuthorizationRowMapper(repository);
+    authorizationService.setAuthorizationRowMapper(rowMapper);
+    authorizationService.setAuthorizationParametersMapper(authorizationParametersMapper(rowMapper));
+    return authorizationService;
+  }
 
+  private static OAuth2AuthorizationParametersMapper authorizationParametersMapper(
+      JdbcOAuth2AuthorizationService.OAuth2AuthorizationRowMapper rowMapper) {
     ObjectMapper objectMapper = new ObjectMapper();
     ClassLoader classLoader = JdbcOAuth2AuthorizationService.class.getClassLoader();
     List<com.fasterxml.jackson.databind.Module> securityModules =
         SecurityJackson2Modules.getModules(classLoader);
     objectMapper.registerModules(securityModules);
     objectMapper.registerModule(new OAuth2AuthorizationServerJackson2Module());
-    // objectMapper.registerModules(new QuaferJackson2Module());
-    objectMapper.registerModules(new OAuth2TokenJackson2Module());
-
-    // objectMapper.addMixIn(
-    //     OAuth2ClientAuthenticationToken.class, OAuth2ClientAuthenticationTokenMixin.class);
-
+    objectMapper.registerModules(new HuavaJacksonModule());
     rowMapper.setObjectMapper(objectMapper);
-    oAuth2AuthorizationParametersMapper.setObjectMapper(objectMapper);
-
-    authorizationService.setAuthorizationRowMapper(rowMapper);
-    authorizationService.setAuthorizationParametersMapper(oAuth2AuthorizationParametersMapper);
-
-    return authorizationService;
+    OAuth2AuthorizationParametersMapper oauth2AuthorizationParametersMapper =
+        new OAuth2AuthorizationParametersMapper();
+    oauth2AuthorizationParametersMapper.setObjectMapper(objectMapper);
+    return oauth2AuthorizationParametersMapper;
   }
 
+  /** Needed in {@link SysPasswordAuthProvider} to save generate token. */
   @Bean
   public OAuth2TokenGenerator<OAuth2Token> tokenGenerator() {
     NimbusJwtEncoder jwtEncoder = new NimbusJwtEncoder(jwkSource());
@@ -153,6 +162,7 @@ public class SecurityConfig {
         jwtGenerator, accessTokenGenerator, refreshTokenGenerator);
   }
 
+  /** Provide jwk source which contains RSA key. */
   @Bean
   public JWKSource<SecurityContext> jwkSource() {
     RSAKey rsaKey = buildRsaKey();
@@ -161,17 +171,14 @@ public class SecurityConfig {
     return (jwkSelector, context) -> jwkSelector.select(jwkSet);
   }
 
+  /** We need to store extra info in the access token, like username (encrypted) */
   @Bean
   public OAuth2TokenCustomizer<JwtEncodingContext> tokenCustomizer() {
     return context -> {
       OAuth2ClientAuthenticationToken principal = context.getPrincipal();
-      SysUserUserDetails user = (SysUserUserDetails) principal.getDetails();
-      Set<String> authorities =
-          user.getAuthorities().stream()
-              .map(GrantedAuthority::getAuthority)
-              .collect(Collectors.toSet());
+      SysUserDetails user = (SysUserDetails) principal.getDetails();
       if (context.getTokenType().getValue().equals(AuthConstant.ACCESS_TOKEN)) {
-        context.getClaims().claim("authorities", authorities).claim("user", user.getUsername());
+        context.getClaims().claim("username", EncryptUtil.encrypt(user.getUsername()));
       }
     };
   }
@@ -183,63 +190,45 @@ public class SecurityConfig {
     return new RSAKey.Builder(publicKey).privateKey(privateKey).build();
   }
 
-  @Bean
-  public OAuth2AuthorizationConsentService oAuth2AuthorizationConsentService() {
-    return new InMemoryOAuth2AuthorizationConsentService();
-  }
-
+  /**
+   * A repository for registered client.<br>
+   * Needed in {@link SecurityConfig#authorizationService(JdbcTemplate,
+   * RegisteredClientRepository)}, but not only there.
+   */
   @Bean
   public RegisteredClientRepository registeredClientRepository() {
     RegisteredClient registeredClient =
         RegisteredClient.withId("client")
-            .clientId(mainClientId)
-            .clientSecret(passwordEncoder().encode(mainSecret))
+            .clientId(mainOauth2ClientId)
+            .clientSecret(passwordEncoder().encode(mainOauth2Secret))
             .scope("read")
             .scope(OidcScopes.OPENID)
             .scope(OidcScopes.PROFILE)
             .scope("message.read")
             .scope("message.write")
             .scope("read")
-            .redirectUri("http://todo")
-            // .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
             .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-            // .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
             .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-            // .authorizationGrantType(AuthorizationGrantType.JWT_BEARER)
             .authorizationGrantType(
                 new AuthorizationGrantType(AuthConstant.SYS_PASSWORD_GRANT_TYPE))
             .tokenSettings(tokenSettings())
-            .clientSettings(clientSettings())
             .build();
-
     return new InMemoryRegisteredClientRepository(registeredClient);
   }
 
+  /** Needed for encrypt password. (asymmetric encryption) */
   @Bean
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
 
+  /** Token setting, like the expiry time */
   @Bean
   public TokenSettings tokenSettings() {
     return TokenSettings.builder()
         .accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
-        .accessTokenTimeToLive(Duration.ofDays(1))
+        .accessTokenTimeToLive(Duration.ofHours(1))
+        .refreshTokenTimeToLive(Duration.ofDays(30))
         .build();
-  }
-
-  @Bean
-  public ClientSettings clientSettings() {
-    return ClientSettings.builder().build();
-  }
-
-  @Bean
-  public AuthorizationServerSettings authorizationServerSettings() {
-    return AuthorizationServerSettings.builder().build();
-  }
-
-  @Bean
-  public JwtDecoder jwtDecoder(JWKSource<SecurityContext> jwkSource) {
-    return OAuth2AuthorizationServerConfiguration.jwtDecoder(jwkSource);
   }
 }
