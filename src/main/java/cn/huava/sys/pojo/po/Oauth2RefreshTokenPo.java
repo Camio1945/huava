@@ -10,7 +10,7 @@ import lombok.Data;
  */
 @Data
 @TableName("oauth2_refresh_tokens")
-public class Oauth2RefreshToken {
+public class Oauth2RefreshTokenPo {
 
   @TableId private Long id;
 

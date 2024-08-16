@@ -6,6 +6,7 @@ import cn.huava.common.jackson.module.HuavaJacksonModule;
 import cn.huava.common.util.EncryptUtil;
 import cn.huava.common.util.KeyUtil;
 import cn.huava.sys.auth.SysUserDetails;
+import cn.huava.sys.service.SysJdbcOauth2Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -126,8 +127,8 @@ public class SecurityConfig {
   @Bean
   public OAuth2AuthorizationService authorizationService(
       JdbcTemplate jdbcTemplate, RegisteredClientRepository repository) {
-    JdbcOAuth2AuthorizationService authorizationService =
-        new JdbcOAuth2AuthorizationService(jdbcTemplate, repository);
+    SysJdbcOauth2Service authorizationService =
+        new SysJdbcOauth2Service(jdbcTemplate, repository);
     OAuth2AuthorizationRowMapper rowMapper = new OAuth2AuthorizationRowMapper(repository);
     authorizationService.setAuthorizationRowMapper(rowMapper);
     authorizationService.setAuthorizationParametersMapper(authorizationParametersMapper(rowMapper));
@@ -137,7 +138,7 @@ public class SecurityConfig {
   private static OAuth2AuthorizationParametersMapper authorizationParametersMapper(
       JdbcOAuth2AuthorizationService.OAuth2AuthorizationRowMapper rowMapper) {
     ObjectMapper objectMapper = new ObjectMapper();
-    ClassLoader classLoader = JdbcOAuth2AuthorizationService.class.getClassLoader();
+    ClassLoader classLoader = SysJdbcOauth2Service.class.getClassLoader();
     List<com.fasterxml.jackson.databind.Module> securityModules =
         SecurityJackson2Modules.getModules(classLoader);
     objectMapper.registerModules(securityModules);
@@ -198,7 +199,7 @@ public class SecurityConfig {
   @Bean
   public RegisteredClientRepository registeredClientRepository() {
     RegisteredClient registeredClient =
-        RegisteredClient.withId("client")
+        RegisteredClient.withId(AuthConstant.REGISTERED_CLIENT_ID)
             .clientId(mainOauth2ClientId)
             .clientSecret(passwordEncoder().encode(mainOauth2Secret))
             .scope("read")

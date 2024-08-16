@@ -1,6 +1,6 @@
 package cn.huava.sys.auth;
 
-import cn.huava.sys.pojo.po.SysUser;
+import cn.huava.sys.pojo.po.SysUserPo;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -12,9 +12,9 @@ import org.springframework.security.core.userdetails.UserDetails;
  */
 public class SysUserDetails implements UserDetails {
 
-  private final SysUser sysUser;
+  private final SysUserPo sysUser;
 
-  public SysUserDetails(SysUser sysUser) {
+  public SysUserDetails(SysUserPo sysUser) {
     this.sysUser = sysUser;
   }
 

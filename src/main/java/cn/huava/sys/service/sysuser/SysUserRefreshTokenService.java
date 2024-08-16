@@ -4,7 +4,7 @@ import static org.dromara.hutool.core.text.CharSequenceUtil.format;
 
 import cn.huava.common.auth.AuthConstant;
 import cn.huava.sys.mapper.SysUserMapper;
-import cn.huava.sys.pojo.po.SysUser;
+import cn.huava.sys.pojo.po.SysUserPo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +27,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-class SysUserRefreshTokenService extends ServiceImpl<SysUserMapper, SysUser> {
+class SysUserRefreshTokenService extends ServiceImpl<SysUserMapper, SysUserPo> {
 
   @Value("${server.port}")
   private int serverPort;

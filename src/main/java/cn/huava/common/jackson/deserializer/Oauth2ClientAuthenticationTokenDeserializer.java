@@ -2,7 +2,7 @@ package cn.huava.common.jackson.deserializer;
 
 import cn.huava.common.util.JsonNodeUtil;
 import cn.huava.sys.auth.SysUserDetails;
-import cn.huava.sys.pojo.po.SysUser;
+import cn.huava.sys.pojo.po.SysUserPo;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
@@ -29,7 +29,7 @@ public class Oauth2ClientAuthenticationTokenDeserializer
     RegisteredClient registeredClient =
         JsonNodeUtil.findValue(root, "registeredClient", new TypeReference<>() {}, mapper);
     JsonNode userJson = root.get("details");
-    SysUser sysUser = new SysUser();
+    SysUserPo sysUser = new SysUserPo();
     sysUser.setLoginName(userJson.get("username").asText());
     sysUser.setPassword(userJson.get("password").asText());
     SysUserDetails details = new SysUserDetails(sysUser);

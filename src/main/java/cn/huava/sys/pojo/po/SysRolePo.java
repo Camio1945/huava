@@ -13,7 +13,7 @@ import lombok.Data;
  */
 @Data
 @TableName("sys_role")
-public class SysRole implements Serializable {
+public class SysRolePo implements Serializable {
   @Serial private static final long serialVersionUID = 1L;
 
   @TableId private Long id;

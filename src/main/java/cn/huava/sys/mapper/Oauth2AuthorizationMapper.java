@@ -1,13 +1,14 @@
 package cn.huava.sys.mapper;
 
-import cn.huava.sys.pojo.po.SysRolePo;
+import cn.huava.sys.pojo.po.Oauth2AuthorizationPo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * system role DB operations
+ * 后台用户数据操作
  *
  * @author Camio1945
  */
 @Mapper
-public interface SysRoleMapper extends BaseMapper<SysRolePo> {}
+public interface Oauth2AuthorizationMapper extends BaseMapper<Oauth2AuthorizationPo> {
+}

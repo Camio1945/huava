@@ -1,7 +1,7 @@
 package cn.huava.sys.service.sysuser;
 
 import cn.huava.sys.mapper.SysUserMapper;
-import cn.huava.sys.pojo.po.SysUser;
+import cn.huava.sys.pojo.po.SysUserPo;
 import cn.huava.sys.pojo.qo.LoginQo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import java.io.IOException;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class SysUserAceService extends ServiceImpl<SysUserMapper, SysUser> {
+public class SysUserAceService extends ServiceImpl<SysUserMapper, SysUserPo> {
   private final SysUserLoginService sysUserLoginService;
   private final SysUserRefreshTokenService sysUserRefreshTokenService;
 

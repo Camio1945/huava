@@ -16,7 +16,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("sys_user")
-public class SysUser extends BasePo {
+public class SysUserPo extends BasePo {
   @Serial private static final long serialVersionUID = 1L;
 
   /** 用户ID */

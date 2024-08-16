@@ -4,7 +4,7 @@ import static org.dromara.hutool.core.text.CharSequenceUtil.format;
 
 import cn.huava.common.auth.AuthConstant;
 import cn.huava.sys.mapper.SysUserMapper;
-import cn.huava.sys.pojo.po.SysUser;
+import cn.huava.sys.pojo.po.SysUserPo;
 import cn.huava.sys.pojo.qo.LoginQo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import java.io.IOException;
@@ -27,7 +27,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-class SysUserLoginService extends ServiceImpl<SysUserMapper, SysUser> {
+class SysUserLoginService extends ServiceImpl<SysUserMapper, SysUserPo> {
 
   @Value("${server.port}")
   private int serverPort;

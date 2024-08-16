@@ -3,6 +3,7 @@ package cn.huava.common.graalvm;
 import cn.huava.common.auth.SecurityConfig;
 import cn.huava.common.auth.SysPasswordAuthProvider;
 import cn.huava.common.listener.ApplicationEventListener;
+import cn.huava.sys.service.SysJdbcOauth2Service;
 import cn.huava.sys.service.SysUserLoginUserDetailsServiceImpl;
 import java.security.Security;
 import java.util.Set;
@@ -31,6 +32,7 @@ public class CustomGraalvmFeature implements Feature {
         Set.of(
             ApplicationEventListener.class,
             SecurityConfig.class,
+            SysJdbcOauth2Service.class,
             SysPasswordAuthProvider.class,
             SysUserLoginUserDetailsServiceImpl.class);
     for (Class<?> aClass : classes) {

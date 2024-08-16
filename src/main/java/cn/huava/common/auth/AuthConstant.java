@@ -10,6 +10,7 @@ package cn.huava.common.auth;
  */
 @SuppressWarnings("java:S1214")
 public interface AuthConstant {
+  String REGISTERED_CLIENT_ID = "client";
   String USERNAME = "username";
   String PASSWORD = "password";
   String GRANT_TYPE = "grant_type";

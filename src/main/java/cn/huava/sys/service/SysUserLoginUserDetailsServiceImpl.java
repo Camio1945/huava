@@ -23,9 +23,9 @@ public class SysUserLoginUserDetailsServiceImpl implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) {
-    Wrapper<SysUser> wrapper =
-        new LambdaQueryWrapper<SysUser>().eq(SysUser::getLoginName, username);
-    SysUser sysUser = sysUserMapper.selectOne(wrapper);
+    Wrapper<SysUserPo> wrapper =
+        new LambdaQueryWrapper<SysUserPo>().eq(SysUserPo::getLoginName, username);
+    SysUserPo sysUser = sysUserMapper.selectOne(wrapper);
     if (sysUser == null) {
       throw new UsernameNotFoundException("username or password error");
     }

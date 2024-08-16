@@ -109,7 +109,7 @@ In my own experience, one service usually corresponds to a table in the database
 
 I don't want large classes. A class that has more than 200 lines is a large class for me. I want to split large methods into small classes.
 
-If a method has more than 10 lines of valid code (comment not included), it is a large method for me. Then it will be extracted into multiple methods, but that will make the single service class less clear, so it is better to move them to a separate sub-service class.
+If a method has more than 15 lines of valid code in it (comment not included), it is a large method for me. Then it will be extracted into multiple methods, but that will make the single service class less clear, so it is better to move them to a separate sub-service class.
 
 ---
 

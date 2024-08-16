@@ -10,11 +10,11 @@
   </parent>
   <groupId>cn.huava</groupId>
   <artifactId>huava</artifactId>
-  <version>0.1.1-SNAPSHOT</version>
+  <version>0.1.2-SNAPSHOT</version>
   <name>huava</name>
   <description>huava</description>
   <properties>
-    <java.version>22</java.version>
+    <java.version>21</java.version>
     <jjwt.version>0.12.6</jjwt.version>
     <spring.security.version>6.3.1</spring.security.version>
     <bouncycastle.version>1.78.1</bouncycastle.version>
@@ -127,6 +127,12 @@
             <buildArg>--rerun-class-initialization-at-runtime=org.bouncycastle.jcajce.provider.drbg.DRBG$Default,org.bouncycastle.jcajce.provider.drbg.DRBG$NonceAndIV</buildArg>
             <!-- used to solve the problem of garbled Chinese characters in the database -->
             <buildArg>-H:+AddAllCharsets</buildArg>
+            <!-- for remote debug, should be deleted in production mode -->
+            <buildArg>--no-fallback</buildArg>
+            <!-- for remote debug, should be deleted in production mode -->
+            <buildArg>-H:Optimize=0</buildArg>
+            <!-- for remote debug, should be deleted in production mode -->
+            <buildArg>-g</buildArg>
             <!-- GraalVM native image does not support Lambda by default, so we need to register the classes here -->
             <buildArg>--features=cn.huava.common.graalvm.CustomGraalvmFeature</buildArg>
           </buildArgs>
