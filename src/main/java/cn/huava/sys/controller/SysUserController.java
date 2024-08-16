@@ -2,12 +2,13 @@ package cn.huava.sys.controller;
 
 import cn.huava.common.controller.BaseController;
 import cn.huava.sys.mapper.SysUserMapper;
+import cn.huava.sys.pojo.dto.SysUserJwtDto;
 import cn.huava.sys.pojo.po.SysUserPo;
 import cn.huava.sys.pojo.qo.LoginQo;
 import cn.huava.sys.service.sysuser.SysUserAceService;
-import java.io.IOException;
-import javax.security.auth.login.FailedLoginException;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,14 +21,14 @@ import org.springframework.web.bind.annotation.*;
 public class SysUserController extends BaseController<SysUserAceService, SysUserMapper, SysUserPo> {
 
   @PostMapping("/login")
-  public ResponseEntity<String> login(@RequestBody LoginQo loginQo)
-      throws IOException, FailedLoginException {
-    return ResponseEntity.ok(service.login(loginQo));
+  public ResponseEntity<SysUserJwtDto> login(@RequestBody @NonNull LoginQo loginQo) {
+    SysUserJwtDto sysUserJwtDto = service.login(loginQo);
+    return new ResponseEntity<>(sysUserJwtDto, HttpStatus.OK);
   }
 
   @PostMapping("/refreshToken")
-  public ResponseEntity<String> refreshToken(@RequestBody String refreshToken)
-      throws IOException, FailedLoginException {
-    return ResponseEntity.ok(service.refreshToken(refreshToken));
+  public ResponseEntity<String> refreshToken(@RequestBody @NonNull String refreshToken) {
+    String accessToken = service.refreshToken(refreshToken);
+    return new ResponseEntity<>(accessToken, HttpStatus.OK);
   }
 }

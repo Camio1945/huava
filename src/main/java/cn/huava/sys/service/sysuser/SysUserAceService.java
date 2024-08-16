@@ -1,13 +1,11 @@
 package cn.huava.sys.service.sysuser;
 
 import cn.huava.sys.mapper.SysUserMapper;
+import cn.huava.sys.pojo.dto.SysUserJwtDto;
 import cn.huava.sys.pojo.po.SysUserPo;
 import cn.huava.sys.pojo.qo.LoginQo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import java.io.IOException;
-import javax.security.auth.login.FailedLoginException;
-import lombok.AllArgsConstructor;
-import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -16,17 +14,16 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SysUserAceService extends ServiceImpl<SysUserMapper, SysUserPo> {
-  private final SysUserLoginService sysUserLoginService;
-  private final SysUserRefreshTokenService sysUserRefreshTokenService;
+  private final SysUserLoginService loginService;
+  private final SysUserRefreshTokenService refreshTokenService;
 
-  public String login(@NonNull LoginQo loginQo) throws IOException, FailedLoginException {
-    return sysUserLoginService.login(loginQo);
+  public SysUserJwtDto login(LoginQo loginQo) {
+    return loginService.login(loginQo);
   }
 
-  public String refreshToken(@NonNull String refreshToken)
-      throws IOException, FailedLoginException {
-    return sysUserRefreshTokenService.refreshToken(refreshToken);
+  public String refreshToken(String refreshToken) {
+    return refreshTokenService.refreshToken(refreshToken);
   }
 }

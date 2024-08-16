@@ -1,0 +1,15 @@
+meta {
+  name: 2_getSysUserById
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/sys/user/get/2
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MjM4MjgyMzYsInN1YiI6MTAwLCJpYXQiOjE3MjM4MjQ2MzZ9.f4EqqYIgYYIOvH87d2GHvFXAZf-TIdKxXeG4TX2r7Ew
+}

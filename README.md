@@ -89,23 +89,18 @@ PostgreSQL is faster , MySQL is more popular, both are great choice. But I may w
 
 Cause: The code uses lambda expression, which is not supported by GraalVM.
 
-Solution: Register your class in [LambdaRegistrationFeature.java](src%2Fmain%2Fjava%2Fcn%2Fhuava%2Fcommon%2Fconfig%2FLambdaRegistrationFeature.java) file, in the `duringSetup` method (examples are already there).
+Solution: Register your class in [LambdaRegistrationFeature.java](src%2Fmain%2Fjava%2Fcn%2Fhuava%2Fcommon%2Fconfig%2FLambdaRegistrationFeature.java) file, in the
+`duringSetup` method (examples are already there).
 
 ---
 
-### 4. Why use OAuth 2.0 in a monolithic application?
-
-It's unnecessary and inefficient to use OAuth 2.0 in a monolithic application, but I want to learn how to use it, so it's a selfish choice.
-
----
-
-### 5. Why the services has only one layer but not two (interface and implement)?
+### 4. Why the services has only one layer but not two (interface and implement)?
 
 In my own experience, one service usually corresponds to a table in the database, and one service interface usually has only one implementation during the whole lifetime of a project. So my opinion is that if an interface has only one implementation for good, it's better to use just one single layer.
 
 ---
 
-### 6. Why keep a table's services in a folder but not in a single service class?
+### 5. Why keep a table's services in a folder but not in a single service class?
 
 I don't want large classes. A class that has more than 200 lines is a large class for me. I want to split large methods into small classes.
 
@@ -119,15 +114,18 @@ I want the main service class to be alphabetically first, so I named it `AceServ
 
 ---
 
-### 7. Why are all the sub-service classes not public and their methods protected?
+### 7. Why are all the sub-service classes' methods protected?
 
-In this way, We can make the main service class a facade, the only entrance to the outside world, to achieve low coupling.
+In the previous version before 0.1.3, all the sub-service classes were not public, and their methods were protected. In this way, we can make the main service class a facade, the only entrance to the outside world, to achieve low coupling.
 
+But then it appears that many service classes will use lambda expressions like
+`new LambdaQueryWrapper<SysUserPo>().eq(SysUserPo::getLoginName, username)`, and if a class uses lambda expression, it has to be registered in
+`LambdaRegistrationFeature.java` file in order to make the GraalVM native image work. So the sub-service classes must be public so that they can be referenced by the
+`LambdaRegistrationFeature` class.
 
 ---
 
 # How to
-
 
 ---
 
@@ -135,7 +133,9 @@ In this way, We can make the main service class a facade, the only entrance to t
 
 ```java
 KeyPair keyPair = org.dromara.hutool.crypto.KeyUtil.generateKeyPair("RSA", 2048);
+
 String publicKeyBase64 = org.dromara.hutool.core.codec.binary.Base64.encode(keyPair.getPublic().getEncoded());
+
 String privateKeyBase64 = org.dromara.hutool.core.codec.binary.Base64.encode(keyPair.getPrivate().getEncoded());
 ```
 

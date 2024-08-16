@@ -14,10 +14,12 @@ actor User
 User --> "SysUserJwt\nAuthController": login(...)
 "SysUserJwt\nAuthController" -> "SysUserJwt\nAuthService": login(...)
 "SysUserJwt\nAuthService" -> "SysUserJwt\nAuthService": build UsernamePasswordAuthenticationToken
-"SysUserJwt\nAuthService" -> "Authentication\nManager": authenticate(...)
-"Authentication\nManager" --> "SysUserLoginUser\nDetailsServiceImpl": loadUserByUsername(...)
-"Authentication\nManager" <-- "SysUserLoginUser\nDetailsServiceImpl"
-"SysUserJwt\nAuthService" <- "Authentication\nManager"
+"SysUserJwt\nAuthService" -> "AbstractUserDetails\nAuthenticationProvider": authenticate(...)
+"AbstractUserDetails\nAuthenticationProvider" --> "SysUserLoginUser\nDetailsServiceImpl": loadUserByUsername(...)
+"AbstractUserDetails\nAuthenticationProvider" <-- "SysUserLoginUser\nDetailsServiceImpl"
+"AbstractUserDetails\nAuthenticationProvider" --> "DaoAuthentication\nProvider": additionalAuthenticationChecks(...) **validate password**
+"AbstractUserDetails\nAuthenticationProvider" <-- "DaoAuthentication\nProvider"
+"SysUserJwt\nAuthService" <- "AbstractUserDetails\nAuthenticationProvider"
 "SysUserJwt\nAuthService" -> "JwtToken\nProvider":generateToken(...)
 "SysUserJwt\nAuthService" <- "JwtToken\nProvider":return token (username, roles, expiration, signature, ...)
 "SysUserJwt\nAuthController" <- "SysUserJwt\nAuthService"

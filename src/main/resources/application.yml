@@ -9,22 +9,20 @@ logging:
   level:
     cn.huava: debug
     com.baomidou.mybatisplus.core.executor.BaseExecutor: trace
-    org.springframework.security: trace
-    org.springframework.jdbc: trace
 
 spring:
   datasource:
-    url: jdbc:mysql://192.168.0.102:3306/huava?useSSL=false&useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3306/huava?useSSL=false&useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true&allowPublicKeyRetrieval=true
     username: huava
     password: eFS0H6_0_pkVm__o
 
 project:
-  main_oauth2_client_id: "main_client"
-  # IMPORTANT NOTE: Every project should change this
-  main_oauth2_secret: "3f_pRlCfysefpt1x"
-  # used in the JWT token generation. To change this, search README.md for rsa_public_key
-  rsa_public_key: "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAg82zbBqJzU6e7uAoxA+89sG0pGeQt6nYVzM5V/auWr5bdh2sy3Hv1VuplT6N4FF+A1ElLGduNYG4QU2b3CkHKO6stmtjWmUjI347Io5L59vfSxCcMuig6aJUMlKZLep/giQVe6lXhqvvrLUD1X4KUO47cbQN5Eq6gUcn8/mfTUdcauRsyhjsOpzURs6Wh0wE0VLVP7iPf6I1+ZpNiQCPXsHBrgN9gTLMXVVTQgNt6l/C+ynxM7HGpYwWucqdmkFWv4j1CeuiiIS/6cZh0R5P1b9eJi9Ib3Sjwl6QfNWnGicdXErsVs33bbmcFUcHoaTLo9xx2LH2ATl2L8OaflejNwIDAQAB"
-  # used in the JWT token generation. To change this, search README.md for rsa_private_key
-  rsa_private_key: "MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCDzbNsGonNTp7u4CjED7z2wbSkZ5C3qdhXMzlX9q5avlt2HazLce/VW6mVPo3gUX4DUSUsZ241gbhBTZvcKQco7qy2a2NaZSMjfjsijkvn299LEJwy6KDpolQyUpkt6n+CJBV7qVeGq++stQPVfgpQ7jtxtA3kSrqBRyfz+Z9NR1xq5GzKGOw6nNRGzpaHTATRUtU/uI9/ojX5mk2JAI9ewcGuA32BMsxdVVNCA23qX8L7KfEzscaljBa5yp2aQVa/iPUJ66KIhL/pxmHRHk/Vv14mL0hvdKPCXpB81acaJx1cSuxWzfdtuZwVRwehpMuj3HHYsfYBOXYvw5p+V6M3AgMBAAECggEAcRX+ydQDQ/oe90mw8HeoY/dTLHQHgO3jRv4WR1jJw+Xrx24yoePCKUeaOwkO5dZFzkbDJFQiBRqlorIZ9k3lbMNLwMBm4FpCSeO2jTGWAvttnJRF0JAz8AFtSDgCYZj/igO3wwBKrqu62m39OiIIa+PbcPVRrfxIBT+uEfCtM7m5PgBXgHQSHwKuRtFn7ZJ5zs5vpcUwOejNtPfbAtwRflPUgPBgU2kY2+orHU6zORdX+TGILGKo4KRK1ptOrECd2J6Ij7ANHj0lS6ar2oVDHzIW9Bp1N4ejDdaEnsoIfupfDqPPF4m/6de478QmdZzvGNAv8kv/afmNB/xs/1UA8QKBgQC9iHzf6C8QH4E0kMMlJ10MLceYJmOdd1GXQ/8ydJ30U4q3ZiBpy88B3RGoHNr18VORam3ZdyxEZXn0y/XhcoaMhDD+T+E6Ptv2liIJciva82xisNY4wn2k98ybF2PAEUJ+YXPIg/7o/vua4BAYndob6L1IQ79QP7JLr/qHSm/GxQKBgQCyBntysQmP+GBDmkGbnEqvK49l1fmUzkf4tXP9Izs0Z79tU5ViKYOtVzr+1ff/dDSbn5HdTpsQlLW5PU2DWSXxTDbcLJf5s1qzO7aFnp3SrWXPyah0b8ywS6auNoMtxU7yEljEOBgYARiOElhG3YiKiUpyQmg372WbmaW9yRlBywKBgFwhaZopsh7jQZo8uC9qSAewhTJHjuqvYoDmM7niCBoJNgfaY+0pfhHI1Vlj1WfyDA5Grukjzefdb//32Sji09agN3SXfcMjZScjaZ4v2nOPGmOK1Ec4+3xiXBoTr5Bgk3L9ihuxVgsKT2HEgu6EZM5mPwROskOfAttZyq1TGKyFAoGAR/Gwr9/14lXY6VkMjItz7yimcdwwWb+nfE4wSquTQJFw3gi6RQpL6aBn+haUe4sFu6KX+xzKM8A1VF/+1EcRu1s2jHIFFOczj11hXMyGMV7b10ZCqpOH3/MisCLdjoC/b7qUXu/gZMsEll25iSH8DSiAin5lyb0YjfJg9bqwV1MCgYBAg8nRBxuZ/OkSpdXZJWj5bmAXhDn+ECIc4RNPd1pGC1VZQg4fI1NxE2lK5g+2zzebdsHH8UGaHGuHcDcTiCwPMwb5MzuEt5MnoZVg//cbzOeteTRmpT+Q1SLloGGgWxG1ISp0DkzIpdbGfLLN7z2Lr3S2MDYqSD2r9HYbh+YKKg=="
-  aes_cbc_key: "N3AVl_bnZotpGk0B"
-  aes_cbc_iv: "BMeOwgJ_3AreJ8ds"
+  jwt_key_base64: JsbZtEZD+oB3sMEnfbmFuqiBFGpNofZkNHTOeuXqPi8=
+
+example:
+  app:
+    jwtSecret: examplesecretKey@
+    jwtExpirationMs: 86400000
+    jwtRefreshSecret: examplerefreshsecretKey@abcdefgh1234567890
+    jwtRefreshExpirationMs: 8640000
+

@@ -15,4 +15,5 @@ public class HuavaApplication implements Serializable {
   public static void main(String[] args) {
     SpringApplication.run(HuavaApplication.class, args);
   }
+
 }

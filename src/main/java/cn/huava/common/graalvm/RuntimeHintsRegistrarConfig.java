@@ -60,7 +60,6 @@ import org.apache.ibatis.reflection.TypeParameterResolver;
 import org.apache.ibatis.scripting.defaults.RawLanguageDriver;
 import org.apache.ibatis.scripting.xmltags.XMLLanguageDriver;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.bouncycastle.jce.provider.*;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperFactoryBean;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
@@ -84,19 +83,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportRuntimeHints;
 import org.springframework.core.ResolvableType;
-import org.springframework.security.cas.jackson2.CasJackson2Module;
-import org.springframework.security.jackson2.CoreJackson2Module;
-import org.springframework.security.oauth2.client.jackson2.OAuth2ClientJackson2Module;
-import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
-import org.springframework.security.oauth2.server.authorization.authentication.OAuth2ClientAuthenticationToken;
-import org.springframework.security.web.jackson2.WebJackson2Module;
-import org.springframework.security.web.jackson2.WebServletJackson2Module;
-import org.springframework.security.web.server.jackson2.WebServerJackson2Module;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 
 /**
- * . Kudos to <a href="https://github.com/nieqiurong/mybatis-native-demo">mybatis-native-demo</a>
+ *  . Kudos to <a
+ * href="https://github.com/nieqiurong/mybatis-native-demo">mybatis-native-demo</a>
  *
  * @author Camio1945
  */
@@ -119,14 +111,6 @@ public class RuntimeHintsRegistrarConfig {
     @Override
     public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
       Stream.of(
-              OAuth2ClientAuthenticationToken.class,
-              OAuth2Authorization.class,
-              CoreJackson2Module.class,
-              CasJackson2Module.class,
-              WebJackson2Module.class,
-              WebServerJackson2Module.class,
-              WebServletJackson2Module.class,
-              OAuth2ClientJackson2Module.class,
               RawLanguageDriver.class,
               XMLLanguageDriver.class,
               MybatisXMLLanguageDriver.class,
@@ -225,7 +209,7 @@ public class RuntimeHintsRegistrarConfig {
       if (beanNames.length == 0) {
         return null;
       }
-      //noinspection unused
+
       return (context, code) -> {
         RuntimeHints hints = context.getRuntimeHints();
         for (String beanName : beanNames) {

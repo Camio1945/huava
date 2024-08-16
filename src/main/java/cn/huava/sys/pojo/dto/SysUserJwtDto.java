@@ -8,8 +8,5 @@ import lombok.Data;
 @Data
 public class SysUserJwtDto {
   private String accessToken;
-
-  public SysUserJwtDto(String accessToken) {
-    this.accessToken = accessToken;
-  }
+  private String refreshToken;
 }

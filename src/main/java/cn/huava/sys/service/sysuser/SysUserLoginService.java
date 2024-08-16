@@ -1,62 +1,65 @@
 package cn.huava.sys.service.sysuser;
 
-import static org.dromara.hutool.core.text.CharSequenceUtil.format;
-
-import cn.huava.common.auth.AuthConstant;
 import cn.huava.sys.mapper.SysUserMapper;
+import cn.huava.sys.pojo.dto.SysUserJwtDto;
 import cn.huava.sys.pojo.po.SysUserPo;
 import cn.huava.sys.pojo.qo.LoginQo;
+import cn.huava.sys.service.jwt.JwtAceService;
+import cn.huava.sys.service.sysrefreshtoken.SysRefreshTokenAceService;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import java.io.IOException;
-import javax.security.auth.login.FailedLoginException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.codec.binary.Base64;
-import org.dromara.hutool.http.HttpUtil;
-import org.dromara.hutool.http.client.Request;
-import org.dromara.hutool.http.client.Response;
-import org.dromara.hutool.json.JSONUtil;
-import org.springframework.beans.factory.annotation.Value;
+import org.dromara.hutool.extra.spring.SpringUtil;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 /**
- * login
- *
  * @author Camio1945
  */
 @Slf4j
 @Service
 @RequiredArgsConstructor
-class SysUserLoginService extends ServiceImpl<SysUserMapper, SysUserPo> {
+public class SysUserLoginService extends ServiceImpl<SysUserMapper, SysUserPo> {
 
-  @Value("${server.port}")
-  private int serverPort;
+  private final SysRefreshTokenAceService sysRefreshTokenAceService;
+  private final JwtAceService jwtAceService;
 
-  @Value("${project.main_oauth2_client_id}")
-  private String mainOauth2ClientId;
-
-  @Value("${project.main_oauth2_secret}")
-  private String mainOauth2Secret;
-
-  protected String login(LoginQo loginQo) throws IOException, FailedLoginException {
-    Request request = buildRequest(loginQo);
-    try (Response response = request.send()) {
-      String body = response.bodyStr();
-      if (response.isOk()) {
-        return body;
-      } else {
-        throw new FailedLoginException("login failed: " + body);
-      }
-    }
+  protected SysUserJwtDto login(LoginQo loginQo) {
+    String username = loginQo.getUsername();
+    String password = loginQo.getPassword();
+    Authentication authentication = new UsernamePasswordAuthenticationToken(username, password);
+    authentication = authenticationManager().authenticate(authentication);
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+    SysUserPo sysUserPo =
+        baseMapper.selectOne(
+            new LambdaQueryWrapper<SysUserPo>().eq(SysUserPo::getLoginName, username));
+    SysUserJwtDto sysUserJwtDto = jwtAceService.createToken(sysUserPo.getUserId());
+    saveRefreshToken(username, sysUserJwtDto);
+    return sysUserJwtDto;
   }
 
-  private Request buildRequest(LoginQo loginQo) {
-    String grantType = AuthConstant.SYS_PASSWORD_GRANT_TYPE;
-    String url = format("http://localhost:{}/oauth2/token?grant_type={}", serverPort, grantType);
-    Request request = HttpUtil.createPost(url);
-    String authorization = format("{}:{}", mainOauth2ClientId, mainOauth2Secret);
-    request.header(AuthConstant.AUTHORIZATION, "Basic " + Base64.encode(authorization));
-    request.body(JSONUtil.toJsonStr(loginQo));
-    return request;
+  /**
+   * Note 1: Don't inject this like the ${@link #sysRefreshTokenAceService} or {@link
+   * #jwtAceService}, because there will be a circular reference.<br>
+   * Note 2: Don't use @Lazy annotation, it works fine in JVM mode, but will fail in GraalVM native
+   * image mode, cause some error like "Caused by: java.lang.ClassCastException:
+   * org.springframework.aop.framework.CglibAopProxy$SerializableNoOp cannot be cast to
+   * org.springframework.cglib.proxy.Dispatcher"
+   */
+  private AuthenticationManager authenticationManager() {
+    return SpringUtil.getBean(AuthenticationManager.class);
+  }
+
+  private void saveRefreshToken(String username, SysUserJwtDto sysUserJwtDto) {
+    Wrapper<SysUserPo> wrapper =
+        new LambdaQueryWrapper<SysUserPo>().eq(SysUserPo::getLoginName, username);
+    SysUserPo sysUser = baseMapper.selectOne(wrapper);
+    sysRefreshTokenAceService.saveRefreshToken(
+        sysUser.getUserId(), sysUserJwtDto.getRefreshToken());
   }
 }

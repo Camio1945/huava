@@ -1,14 +1,8 @@
 package cn.huava.sys.controller;
 
-import cn.huava.sys.pojo.po.Oauth2AuthorizationPo;
-import cn.huava.sys.service.oauth2authorization.Oauth2AuthorizationAceService;
 import cn.huava.sys.service.sysuser.SysUserAceService;
 import lombok.AllArgsConstructor;
-import org.dromara.hutool.json.JSONUtil;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
-import org.springframework.security.oauth2.server.authorization.Oauth2AuthorizationConverter;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -21,14 +15,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/temp/test")
 public class TempTestController {
   private SysUserAceService sysUserService;
-  private Oauth2AuthorizationAceService oauth2AuthorizationAceService;
 
-  private PasswordEncoder passwordEncoder;
+  // private PasswordEncoder passwordEncoder;
 
   @GetMapping("/")
   public String test() {
-    Oauth2AuthorizationPo po = oauth2AuthorizationAceService.getById("35e2a8ce-e2c2-4a04-87dc-1b393c0346f4");
-    return JSONUtil.toJsonPrettyStr(new String(po.getAttributes()));
+    // String encode = passwordEncoder.encode("123456");
+    // return  "" + encode;
+    return "";
   }
 
   @PreAuthorize("hasRole('ADMIN')")

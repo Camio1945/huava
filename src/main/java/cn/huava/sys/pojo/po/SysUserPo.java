@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serial;
 import java.util.Date;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * 后台用户
@@ -14,7 +13,6 @@ import lombok.EqualsAndHashCode;
  * @author ruoyi
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @TableName("sys_user")
 public class SysUserPo extends BasePo {
   @Serial private static final long serialVersionUID = 1L;
