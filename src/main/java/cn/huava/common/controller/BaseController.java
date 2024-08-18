@@ -1,7 +1,9 @@
 package cn.huava.common.controller;
 
+import cn.huava.common.pojo.po.BasePo;
+import cn.huava.common.service.BaseService;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  * @author Camio1945
  */
 @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-public abstract class BaseController<S extends ServiceImpl<M, T>, M extends BaseMapper<T>, T> {
+public abstract class BaseController<S extends BaseService<M, T>, M extends BaseMapper<T>, T> {
 
   /**
    * About @SuppressWarnings("java:S6813"): Without @SuppressWarnings("java:S6813"), the SonarLint
@@ -33,20 +35,22 @@ public abstract class BaseController<S extends ServiceImpl<M, T>, M extends Base
   protected S service;
 
   @GetMapping("/get/{id}")
-  public ResponseEntity<T> getById(@PathVariable Long id) {
+  public ResponseEntity<T> getById(@PathVariable @NonNull Long id) {
     T entity = service.getById(id);
     return ResponseEntity.ok(entity);
   }
 
   @PostMapping("/create")
-  public ResponseEntity<T> create(@RequestBody T entity) {
+  public ResponseEntity<T> create(@RequestBody @NonNull T entity) {
+    BasePo.beforeCreate(entity);
     boolean success = service.save(entity);
     Assert.isTrue(success, "Failed to create entity");
     return ResponseEntity.status(HttpStatus.CREATED).body(entity);
   }
 
   @PutMapping("/update")
-  public ResponseEntity<T> update(@RequestBody T entity) {
+  public ResponseEntity<T> update(@RequestBody @NonNull T entity) {
+    BasePo.beforeUpdate(entity);
     boolean success = service.updateById(entity);
     Assert.isTrue(success, "Failed to update entity");
     return ResponseEntity.ok(entity);
@@ -61,8 +65,8 @@ public abstract class BaseController<S extends ServiceImpl<M, T>, M extends Base
   }
 
   @DeleteMapping("/delete/{id}")
-  public ResponseEntity<Void> delete(@PathVariable Long id) {
-    boolean success = service.removeById(id);
+  public ResponseEntity<Void> delete(@PathVariable @NonNull Long id) {
+    boolean success = service.softDelete(id);
     Assert.isTrue(success, "Failed to delete entity");
     return ResponseEntity.noContent().build();
   }

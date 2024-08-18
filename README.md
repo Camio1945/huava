@@ -119,9 +119,49 @@ I want the main service class to be alphabetically first, so I named it `AceServ
 In the previous version before 0.1.3, all the sub-service classes were not public, and their methods were protected. In this way, we can make the main service class a facade, the only entrance to the outside world, to achieve low coupling.
 
 But then it appears that many service classes will use lambda expressions like
-`new LambdaQueryWrapper<SysUserPo>().eq(SysUserPo::getLoginName, username)`, and if a class uses lambda expression, it has to be registered in
+`new LambdaQueryWrapper<SysUserPo>().eq(SysUserPo::getUsername, username)`, and if a class uses lambda expression, it has to be registered in
 `LambdaRegistrationFeature.java` file in order to make the GraalVM native image work. So the sub-service classes must be public so that they can be referenced by the
 `LambdaRegistrationFeature` class.
+
+---
+
+### 8. Why use foreign keys in tables when Alibaba is strongly against it?
+
+The [Alibaba Java Development Guidelines](https://github.com/alibaba/p3c/blob/master/Java%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C(%E9%BB%84%E5%B1%B1%E7%89%88).pdf) strongly against foreign keys, because they can cause performance issues when inserting data.
+
+But I've seen a lot of programmers edit the database by hand and destroy the integrity of the data, and it's very hard to recover from such mistakes. So I still use foreign keys in my project.
+
+If the performance issue occurs, you can delete the foreign keys, and by that time, the project will have probably been deployed in production mode, we will have much less opportunity to edit data by hand.
+
+So the process is:
+
+1. Use foreign keys in the beginning.
+2. Develop the project, the foreign keys will protect the data integrity.
+3. If and only if the performance issue occurs in production, delete the foreign keys.
+
+---
+
+### 9. What's the rules of abbreviation?
+
+Rules: TODO
+
+Example:
+
+1. `Permission` has 10 characters; it's not too long, but the table has the prefix `sys`, so the persistent class becomes `SysPermission`, and there is another class based on it called `SysRolePermission`, and then `AceSysRolePermissionService` and `SysRolePermissionMapper`; it's kind of too long for me now. So I abbreviate it to `perm`.
+
+
+---
+
+# Abbreviations Table
+
+| Original word | Abbreviation |
+|:-------------:|:------------:|
+|  permission   |     perm     |
+|               |              |
+|               |              |
+|               |              |
+|               |              |
+
 
 ---
 

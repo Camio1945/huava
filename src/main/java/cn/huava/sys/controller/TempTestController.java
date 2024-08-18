@@ -1,6 +1,6 @@
 package cn.huava.sys.controller;
 
-import cn.huava.sys.service.sysuser.SysUserAceService;
+import cn.huava.sys.service.sysuser.AceSysUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 @RequestMapping("/temp/test")
 public class TempTestController {
-  private SysUserAceService sysUserService;
+  private AceSysUserService sysUserService;
 
   // private PasswordEncoder passwordEncoder;
 

@@ -1,22 +1,20 @@
 package cn.huava.sys.pojo.po;
 
-import com.baomidou.mybatisplus.annotation.TableId;
+import cn.huava.common.pojo.po.BasePo;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serial;
-import java.io.Serializable;
 import lombok.Data;
 
 /**
- * system role
+ * 角色
  *
  * @author Camio1945
  */
 @Data
 @TableName("sys_role")
-public class SysRolePo implements Serializable {
-  @Serial private static final long serialVersionUID = 1L;
-
-  @TableId private Long id;
-
+public class SysRolePo extends BasePo {
+  /** 名称 */
   private String name;
+
+  /** 描述 */
+  private String description;
 }

@@ -1,17 +1,18 @@
 package cn.huava.sys.service.sysuser;
 
+import cn.huava.common.service.BaseService;
 import cn.huava.sys.mapper.SysUserMapper;
 import cn.huava.sys.pojo.dto.SysUserJwtDto;
 import cn.huava.sys.pojo.po.SysUserPo;
 import cn.huava.sys.pojo.qo.LoginQo;
-import cn.huava.sys.service.jwt.JwtAceService;
-import cn.huava.sys.service.sysrefreshtoken.SysRefreshTokenAceService;
+import cn.huava.sys.service.jwt.AceJwtService;
+import cn.huava.sys.service.sysrefreshtoken.AceSysRefreshTokenService;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.extra.spring.SpringUtil;
+import org.dromara.hutool.json.JSONUtil;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,10 +25,10 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class SysUserLoginService extends ServiceImpl<SysUserMapper, SysUserPo> {
+public class LoginService extends BaseService<SysUserMapper, SysUserPo> {
 
-  private final SysRefreshTokenAceService sysRefreshTokenAceService;
-  private final JwtAceService jwtAceService;
+  private final AceSysRefreshTokenService sysRefreshTokenAceService;
+  private final AceJwtService jwtAceService;
 
   protected SysUserJwtDto login(LoginQo loginQo) {
     String username = loginQo.getUsername();
@@ -37,8 +38,10 @@ public class SysUserLoginService extends ServiceImpl<SysUserMapper, SysUserPo> {
     SecurityContextHolder.getContext().setAuthentication(authentication);
     SysUserPo sysUserPo =
         baseMapper.selectOne(
-            new LambdaQueryWrapper<SysUserPo>().eq(SysUserPo::getLoginName, username));
-    SysUserJwtDto sysUserJwtDto = jwtAceService.createToken(sysUserPo.getUserId());
+            new LambdaQueryWrapper<SysUserPo>().eq(SysUserPo::getUsername, username));
+    System.out.println("\n sysUserPo json: \n");
+    System.out.println(JSONUtil.toJsonPrettyStr(sysUserPo));
+    SysUserJwtDto sysUserJwtDto = jwtAceService.createToken(sysUserPo.getId());
     saveRefreshToken(username, sysUserJwtDto);
     return sysUserJwtDto;
   }
@@ -57,9 +60,8 @@ public class SysUserLoginService extends ServiceImpl<SysUserMapper, SysUserPo> {
 
   private void saveRefreshToken(String username, SysUserJwtDto sysUserJwtDto) {
     Wrapper<SysUserPo> wrapper =
-        new LambdaQueryWrapper<SysUserPo>().eq(SysUserPo::getLoginName, username);
+        new LambdaQueryWrapper<SysUserPo>().eq(SysUserPo::getUsername, username);
     SysUserPo sysUser = baseMapper.selectOne(wrapper);
-    sysRefreshTokenAceService.saveRefreshToken(
-        sysUser.getUserId(), sysUserJwtDto.getRefreshToken());
+    sysRefreshTokenAceService.saveRefreshToken(sysUser.getId(), sysUserJwtDto.getRefreshToken());
   }
 }

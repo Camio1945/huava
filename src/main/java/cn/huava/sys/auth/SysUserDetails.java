@@ -6,13 +6,14 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
+ * used by spring
  * @author Camio1945
  */
-public class SysUserUserDetails implements UserDetails {
+public class SysUserDetails implements UserDetails {
   private final SysUserPo sysUser;
   private final Collection<? extends GrantedAuthority> authorities;
 
-  public SysUserUserDetails(SysUserPo sysUser, Collection<? extends GrantedAuthority> authorities) {
+  public SysUserDetails(SysUserPo sysUser, Collection<? extends GrantedAuthority> authorities) {
     this.sysUser = sysUser;
     this.authorities = authorities;
   }
@@ -29,7 +30,7 @@ public class SysUserUserDetails implements UserDetails {
 
   @Override
   public String getUsername() {
-    return sysUser.getLoginName();
+    return sysUser.getUsername();
   }
 
   @Override

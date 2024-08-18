@@ -1,12 +1,12 @@
 package cn.huava.common.config;
 
-
 import cn.huava.common.filter.JwtAuthenticationFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.*;
 
 /**
  * 安全配置
@@ -37,13 +38,15 @@ public class SecurityConfig {
             registry -> {
               // registry is the type of
               // AuthorizeHttpRequestsConfigurer$AuthorizationManagerRequestMatcherRegistry
+              registry.requestMatchers("/captcha").permitAll();
               registry.requestMatchers("/sys/user/login").permitAll();
+              registry.requestMatchers("/sys/user/code").permitAll();
               registry.requestMatchers("/sys/user/refreshToken").permitAll();
               registry.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
               registry.anyRequest().authenticated();
             })
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
- .build();
+        .build();
   }
 
   @Bean
@@ -56,5 +59,4 @@ public class SecurityConfig {
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
-
 }

@@ -1,13 +1,13 @@
 package cn.huava.sys.service.sysuser;
 
 import cn.huava.common.constant.CommonConstant;
+import cn.huava.common.service.BaseService;
 import cn.huava.sys.mapper.SysUserMapper;
 import cn.huava.sys.pojo.dto.SysUserJwtDto;
 import cn.huava.sys.pojo.po.SysRefreshTokenPo;
 import cn.huava.sys.pojo.po.SysUserPo;
-import cn.huava.sys.service.jwt.JwtAceService;
-import cn.huava.sys.service.sysrefreshtoken.SysRefreshTokenAceService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import cn.huava.sys.service.jwt.AceJwtService;
+import cn.huava.sys.service.sysrefreshtoken.AceSysRefreshTokenService;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.json.jwt.*;
@@ -19,10 +19,10 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class SysUserRefreshTokenService extends ServiceImpl<SysUserMapper, SysUserPo> {
+public class RefreshTokenService extends BaseService<SysUserMapper, SysUserPo> {
 
-  private final SysRefreshTokenAceService sysRefreshTokenAceService;
-  private final JwtAceService jwtAceService;
+  private final AceSysRefreshTokenService sysRefreshTokenAceService;
+  private final AceJwtService jwtAceService;
 
   protected String refreshToken(@NonNull String refreshToken) {
     SysRefreshTokenPo po = sysRefreshTokenAceService.getByRefreshToken(refreshToken);

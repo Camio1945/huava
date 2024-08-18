@@ -1,10 +1,7 @@
 package cn.huava.sys.pojo.po;
 
-import com.baomidou.mybatisplus.annotation.TableId;
+import cn.huava.common.pojo.po.BasePo;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serial;
-import java.io.Serializable;
-import java.util.Date;
 import lombok.Data;
 
 /**
@@ -12,13 +9,7 @@ import lombok.Data;
  */
 @Data
 @TableName("sys_refresh_token")
-public class SysRefreshTokenPo implements Serializable {
-  @Serial private static final long serialVersionUID = 1L;
-
-  @TableId private Long id;
+public class SysRefreshTokenPo extends BasePo {
   private String refreshToken;
   private Long sysUserId;
-  private Date createTime;
-  private Date updateTime;
-  private Long deleteInfo;
 }

@@ -1,68 +1,51 @@
 package cn.huava.sys.pojo.po;
 
 import cn.huava.common.pojo.po.BasePo;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serial;
 import java.util.Date;
 import lombok.Data;
 
 /**
- * 后台用户
+ * 用户
  *
- * @author ruoyi
+ * @author Camio1945
  */
 @Data
 @TableName("sys_user")
 public class SysUserPo extends BasePo {
   @Serial private static final long serialVersionUID = 1L;
 
-  /** 用户ID */
-  @TableId
-  private Long userId;
-
-  /** 部门ID */
-  private Long deptId;
-
-  /** 登录名称 */
-  private String loginName;
-
-  /** 用户名称 */
-  private String userName;
-
-  /** 用户类型 */
-  private String userType;
-
-  /** 用户邮箱 */
-  private String email;
-
-  /** 手机号码 */
-  private String phoneNumber;
-
-  /** 用户性别 */
-  private String sex;
-
-  /** 用户头像 */
-  private String avatar;
+  /** 用户名 */
+  private String username;
 
   /** 密码 */
   private String password;
 
-  /** 盐加密 */
-  private String salt;
+  /** 真实姓名 */
+  private String realName;
 
-  /** 帐号状态（0正常 1停用） */
-  private String status;
+  /** 手机号 */
+  private String phoneNumber;
 
-  /** 删除标志（0代表存在 2代表删除） */
-  private String delFlag;
+  /** 用户性别：M-男，F-女，U-未知 */
+  private String gender;
+
+  /** 头像路径 */
+  private String avatar;
+
+  /** 是否启用 */
+  private Boolean isEnabled;
+
+  /** 禁用原因 */
+  private String disabledReason;
 
   /** 最后登录IP */
-  private String loginIp;
+  private String lastLoginIp;
 
   /** 最后登录时间 */
-  private Date loginDate;
+  private Date lastLoginDate;
 
-  /** 密码最后更新时间 */
-  private Date pwdUpdateDate;
+  /** 备注 */
+  private String remark;
 }

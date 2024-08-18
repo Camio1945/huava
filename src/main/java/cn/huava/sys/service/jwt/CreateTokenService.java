@@ -1,9 +1,9 @@
 package cn.huava.sys.service.jwt;
 
+import cn.huava.common.service.BaseService;
 import cn.huava.sys.mapper.SysUserMapper;
 import cn.huava.sys.pojo.dto.SysUserJwtDto;
 import cn.huava.sys.pojo.po.SysUserPo;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.NonNull;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class JwtCreateTokenService extends ServiceImpl<SysUserMapper, SysUserPo> {
+public class CreateTokenService extends BaseService<SysUserMapper, SysUserPo> {
 
   protected SysUserJwtDto createToken(@NonNull Long userId, byte[] jwtKey) {
     return new SysUserJwtDto()

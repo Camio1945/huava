@@ -6,8 +6,6 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 /**
- * 后台用户数据操作
- *
  * @author Camio1945
  */
 @Mapper

@@ -1,5 +1,6 @@
 package cn.huava.common.graalvm;
 
+import cn.huava.common.pojo.po.BasePo;
 import com.baomidou.mybatisplus.annotation.IEnum;
 import com.baomidou.mybatisplus.core.MybatisParameterHandler;
 import com.baomidou.mybatisplus.core.MybatisXMLLanguageDriver;
@@ -16,6 +17,8 @@ import com.baomidou.mybatisplus.extension.handlers.FastjsonTypeHandler;
 import com.baomidou.mybatisplus.extension.handlers.GsonTypeHandler;
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -87,8 +90,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 
 /**
- *  . Kudos to <a
- * href="https://github.com/nieqiurong/mybatis-native-demo">mybatis-native-demo</a>
+ * . Kudos to <a href="https://github.com/nieqiurong/mybatis-native-demo">mybatis-native-demo</a>
  *
  * @author Camio1945
  */
@@ -111,6 +113,14 @@ public class RuntimeHintsRegistrarConfig {
     @Override
     public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
       Stream.of(
+              AlphaComposite.class,
+              Color.class,
+              Font.class,
+              Image.class,
+              BufferedImage.class,
+              Graphics.class,
+              Graphics2D.class,
+              BasePo.class,
               RawLanguageDriver.class,
               XMLLanguageDriver.class,
               MybatisXMLLanguageDriver.class,

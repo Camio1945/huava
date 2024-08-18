@@ -1,9 +1,9 @@
 package cn.huava.common.filter;
 
-import cn.huava.sys.auth.SysUserUserDetails;
+import cn.huava.sys.auth.SysUserDetails;
 import cn.huava.sys.pojo.po.SysUserPo;
-import cn.huava.sys.service.jwt.JwtAceService;
-import cn.huava.sys.service.sysuser.SysUserAceService;
+import cn.huava.sys.service.jwt.AceJwtService;
+import cn.huava.sys.service.sysuser.AceSysUserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,9 +28,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
   private static final String BEARER_PREFIX = "Bearer ";
 
-  private final JwtAceService jwtAceService;
+  private final AceJwtService jwtAceService;
 
-  private final SysUserAceService sysUserAceService;
+  private final AceSysUserService sysUserAceService;
 
   @Override
   protected void doFilterInternal(
@@ -41,7 +41,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     String token = getTokenFromRequest(request);
     if (StringUtils.hasText(token) && jwtAceService.verifyToken(token)) {
       Long userId = jwtAceService.getUserIdFromAccessToken(token);
-      String username = sysUserAceService.getById(userId).getLoginName();
+      String username = sysUserAceService.getById(userId).getUsername();
       UserDetails userDetails = buildUserDetails(username);
       UsernamePasswordAuthenticationToken authenticationToken =
           new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
@@ -61,7 +61,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
   private UserDetails buildUserDetails(String username) {
     SysUserPo sysUser = new SysUserPo();
-    sysUser.setLoginName(username);
-    return new SysUserUserDetails(sysUser, new HashSet<>());
+    sysUser.setUsername(username);
+    return new SysUserDetails(sysUser, new HashSet<>());
   }
 }
