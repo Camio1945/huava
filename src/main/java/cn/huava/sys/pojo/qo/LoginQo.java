@@ -11,4 +11,5 @@ import lombok.Data;
 public class LoginQo {
   private String username;
   private String password;
+  private String captchaCode;
 }

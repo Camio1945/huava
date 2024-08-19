@@ -6,17 +6,17 @@ A scaffold for building Java Web applications which can be compiled to native im
 
 # Principles
 
-1. Use the latest Java, even if it is not LTS.
+1. Use Java 21 or the latest Java even if it is not LTS.
 
 2. Support GraalVM native image.
 
 3. Use the restful API, using methods not just GET and POST but also PUT, DELETE, and PATCH.
 
-4. Follow all [Alibaba Java Coding Guidelines](https://plugins.jetbrains.com/plugin/22381-alibaba-java-coding-guidelines-fix-some-bug-/versions), with no exception.
+4. Follow almost all [Alibaba Java Coding Guidelines](https://plugins.jetbrains.com/plugin/22381-alibaba-java-coding-guidelines-fix-some-bug-/versions).
 
-5. Follow all [SonarLint](https://plugins.jetbrains.com/plugin/7973-sonarlint) rules, with no exception.
+5. Follow almost all [SonarLint](https://plugins.jetbrains.com/plugin/7973-sonarlint) rules.
 
-6. In service layer, if a method has more than 10 lines valid code, it should be extracted to a separate sub-service class.
+6. In service layer, if a service has more than 1 public method and one method has more than 10 lines valid code, it should be extracted to a separate sub-service class.
 
 7. Use [google-java-format](https://plugins.jetbrains.com/plugin/8527-google-java-format) to format the code, in order to keep the code style consistent.
 

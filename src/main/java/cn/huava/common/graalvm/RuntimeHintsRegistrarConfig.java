@@ -1,9 +1,7 @@
 package cn.huava.common.graalvm;
 
-import cn.huava.common.pojo.po.BasePo;
 import com.baomidou.mybatisplus.annotation.IEnum;
 import com.baomidou.mybatisplus.core.MybatisParameterHandler;
-import com.baomidou.mybatisplus.core.MybatisXMLLanguageDriver;
 import com.baomidou.mybatisplus.core.conditions.AbstractWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -16,54 +14,34 @@ import com.baomidou.mybatisplus.core.toolkit.support.SerializedLambda;
 import com.baomidou.mybatisplus.extension.handlers.FastjsonTypeHandler;
 import com.baomidou.mybatisplus.extension.handlers.GsonTypeHandler;
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
-import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
-import java.awt.*;
-import java.awt.image.BufferedImage;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.zip.GZIPInputStream;
+
 import lombok.NonNull;
 import org.apache.commons.logging.LogFactory;
 import org.apache.ibatis.annotations.DeleteProvider;
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.UpdateProvider;
-import org.apache.ibatis.cache.decorators.FifoCache;
-import org.apache.ibatis.cache.decorators.LruCache;
-import org.apache.ibatis.cache.decorators.SoftCache;
-import org.apache.ibatis.cache.decorators.WeakCache;
-import org.apache.ibatis.cache.impl.PerpetualCache;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.executor.parameter.ParameterHandler;
 import org.apache.ibatis.executor.resultset.ResultSetHandler;
 import org.apache.ibatis.executor.statement.BaseStatementHandler;
 import org.apache.ibatis.executor.statement.RoutingStatementHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
-import org.apache.ibatis.javassist.util.proxy.ProxyFactory;
-import org.apache.ibatis.javassist.util.proxy.RuntimeSupport;
-import org.apache.ibatis.logging.Log;
-import org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl;
-import org.apache.ibatis.logging.jdk14.Jdk14LoggingImpl;
-import org.apache.ibatis.logging.log4j2.Log4j2Impl;
-import org.apache.ibatis.logging.nologging.NoLoggingImpl;
 import org.apache.ibatis.logging.slf4j.Slf4jImpl;
-import org.apache.ibatis.logging.stdout.StdOutImpl;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.reflection.TypeParameterResolver;
-import org.apache.ibatis.scripting.defaults.RawLanguageDriver;
-import org.apache.ibatis.scripting.xmltags.XMLLanguageDriver;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperFactoryBean;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.aot.hint.MemberCategory;
@@ -112,41 +90,12 @@ public class RuntimeHintsRegistrarConfig {
 
     @Override
     public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
-      Stream.of(
-              AlphaComposite.class,
-              Color.class,
-              Font.class,
-              Image.class,
-              BufferedImage.class,
-              Graphics.class,
-              Graphics2D.class,
-              BasePo.class,
-              RawLanguageDriver.class,
-              XMLLanguageDriver.class,
-              MybatisXMLLanguageDriver.class,
-              RuntimeSupport.class,
-              ProxyFactory.class,
-              Slf4jImpl.class,
-              Log.class,
-              JakartaCommonsLoggingImpl.class,
-              Log4j2Impl.class,
-              Jdk14LoggingImpl.class,
-              StdOutImpl.class,
-              NoLoggingImpl.class,
-              SqlSessionFactory.class,
-              PerpetualCache.class,
-              FifoCache.class,
-              LruCache.class,
-              SoftCache.class,
-              WeakCache.class,
-              SqlSessionFactoryBean.class,
-              MybatisSqlSessionFactoryBean.class,
-              ArrayList.class,
-              HashMap.class,
-              TreeSet.class,
-              HashSet.class)
+      Stream.of(ToStringSerializer.class, GZIPInputStream.class)
           .forEach(x -> hints.reflection().registerType(x, MemberCategory.values()));
-      Stream.of("org/apache/ibatis/builder/xml/*.dtd", "org/apache/ibatis/builder/xml/*.xsd")
+      Stream.of(
+              "org/apache/ibatis/builder/xml/*.dtd",
+              "org/apache/ibatis/builder/xml/*.xsd",
+              "static_captcha/*")
           .forEach(hints.resources()::registerPattern);
 
       hints.serialization().registerType(SerializedLambda.class);

@@ -1,0 +1,19 @@
+meta {
+  name: 2_login
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/sys/user/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "username": "john",
+    "password": "john",
+    "captchaCode": "yr2w"
+  }
+}

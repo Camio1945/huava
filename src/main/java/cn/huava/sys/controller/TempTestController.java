@@ -1,39 +1,28 @@
 package cn.huava.sys.controller;
 
+import cn.huava.common.service.captcha.AceCaptchaService;
 import cn.huava.sys.service.sysuser.AceSysUserService;
-import lombok.AllArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * 临时测试控制器
+ * Temporary test controller, all code inside will be deleted at any time.
  *
  * @author Camio1945
  */
+@Slf4j
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/temp/test")
 public class TempTestController {
-  private AceSysUserService sysUserService;
-
-  // private PasswordEncoder passwordEncoder;
+  private final AceCaptchaService aceCaptchaService;
+  private final AceSysUserService aceSysUserService;
 
   @GetMapping("/")
-  public String test() {
-    // String encode = passwordEncoder.encode("123456");
-    // return  "" + encode;
-    return "";
-  }
-
-  @PreAuthorize("hasRole('ADMIN')")
-  @GetMapping("/securedAdmin")
-  public String securedAdmin() {
-    return "Hello, Secured Admin!";
-  }
-
-  @PreAuthorize("hasRole('USER')")
-  @GetMapping("/securedUser")
-  public String securedUser() {
-    return "Hello, Secured User!";
+  public Object test(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+    return null;
   }
 }

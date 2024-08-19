@@ -42,6 +42,7 @@ public class SecurityConfig {
               registry.requestMatchers("/sys/user/login").permitAll();
               registry.requestMatchers("/sys/user/code").permitAll();
               registry.requestMatchers("/sys/user/refreshToken").permitAll();
+              registry.requestMatchers("/temp/test/**").permitAll();
               registry.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
               registry.anyRequest().authenticated();
             })

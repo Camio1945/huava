@@ -1,0 +1,19 @@
+meta {
+  name: 3_refresh_token
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/sys/user/refreshToken
+  body: text
+  auth: none
+}
+
+body:json {
+  eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MjY0MTM2MTEsImlhdCI6MTcyMzgyMTYxMX0.sx9Ros4OcweNrmvQBn0pjXbIDZThoMANT1BFGTXP0mI
+}
+
+body:text {
+  eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MjY2MjAyNzQsImlhdCI6MTcyNDAyODI3NH0.hYezgYuuVIMriJgGvx22vpnVws9PJEkSfOQv8qtYAbI
+}

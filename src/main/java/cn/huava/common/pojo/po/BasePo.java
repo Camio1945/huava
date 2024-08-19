@@ -4,6 +4,8 @@ import static org.dromara.hutool.core.date.DatePattern.PURE_DATETIME_MS_FORMAT;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
@@ -19,8 +21,10 @@ import lombok.NonNull;
 public class BasePo implements Serializable {
   @Serial private static final long serialVersionUID = 1L;
 
-  /** 主键 */
-  @TableId private Long id;
+  /** 主键 （@JsonSerialize 是为了防止前后端精度不一致时导致四舍五入的问题） */
+  @JsonSerialize(using = ToStringSerializer.class)
+  @TableId
+  private Long id;
 
   /** 创建时间 */
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

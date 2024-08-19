@@ -33,8 +33,8 @@ public class SysUserController extends BaseController<AceSysUserService, SysUser
   }
 
   @PostMapping("/login")
-  public ResponseEntity<SysUserJwtDto> login(@RequestBody @NonNull LoginQo loginQo) {
-    SysUserJwtDto sysUserJwtDto = service.login(loginQo);
+  public ResponseEntity<SysUserJwtDto> login(HttpServletRequest req, @RequestBody @NonNull LoginQo loginQo) {
+    SysUserJwtDto sysUserJwtDto = service.login(req, loginQo);
     return new ResponseEntity<>(sysUserJwtDto, HttpStatus.OK);
   }
 

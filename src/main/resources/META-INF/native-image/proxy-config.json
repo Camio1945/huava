@@ -30,6 +30,15 @@
     "interfaces":["java.lang.reflect.WildcardType","org.springframework.core.SerializableTypeWrapper$SerializableTypeProxy","java.io.Serializable"]
   },
   {
+    "interfaces":["java.sql.Connection"]
+  },
+  {
+    "interfaces":["java.sql.PreparedStatement","java.sql.CallableStatement"]
+  },
+  {
+    "interfaces":["java.sql.ResultSet"]
+  },
+  {
     "interfaces":["org.apache.ibatis.session.SqlSession"]
   },
   {

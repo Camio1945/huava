@@ -23,6 +23,9 @@ public abstract class BaseService<M extends BaseMapper<T>, T> extends ServiceImp
    */
   public boolean softDelete(@NonNull Long id) {
     T entity = baseMapper.selectById(id);
+    if (entity == null) {
+      return false;
+    }
     Assert.isTrue(entity instanceof BasePo, "Entity must be instance of BasePo");
     BasePo basePo = (BasePo) entity;
     if (basePo.getDeleteInfo() == 0) {

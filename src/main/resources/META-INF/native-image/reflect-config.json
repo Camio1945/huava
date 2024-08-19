@@ -33,6 +33,18 @@
   "name":"[Ljava.lang.annotation.Annotation;"
 },
 {
+  "name":"[Ljava.lang.reflect.Field;"
+},
+{
+  "name":"[Ljava.lang.reflect.Method;"
+},
+{
+  "name":"[Ljava.sql.Statement;"
+},
+{
+  "name":"[Ljava.util.Map$Entry;"
+},
+{
   "name":"[Lorg.springframework.core.annotation.AnnotationAttributes;"
 },
 {
@@ -89,6 +101,9 @@
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
+  "name":"ch.qos.logback.classic.spi.LogbackServiceProvider"
+},
+{
   "name":"ch.qos.logback.classic.util.DefaultJoranConfigurator",
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
@@ -126,6 +141,7 @@
   "name":"cn.huava.common.controller.BaseController",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
   "methods":[{"name":"create","parameterTypes":["java.lang.Object"] }, {"name":"delete","parameterTypes":["java.lang.Long"] }, {"name":"getById","parameterTypes":["java.lang.Long"] }, {"name":"patch","parameterTypes":["java.lang.Object","java.lang.String[]"] }, {"name":"update","parameterTypes":["java.lang.Object"] }]
 },
 {
@@ -133,7 +149,7 @@
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
-  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"generate","parameterTypes":["jakarta.servlet.http.HttpServletRequest","jakarta.servlet.http.HttpServletResponse"] }]
+  "methods":[{"name":"<init>","parameterTypes":["cn.huava.common.service.captcha.AceCaptchaService"] }]
 },
 {
   "name":"cn.huava.common.filter.JwtAuthenticationFilter",
@@ -167,13 +183,21 @@
 {
   "name":"cn.huava.common.pojo.po.BasePo",
   "allDeclaredFields":true,
-  "queryAllDeclaredMethods":true
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"getCreateTime","parameterTypes":[] }, {"name":"getDeleteInfo","parameterTypes":[] }, {"name":"getId","parameterTypes":[] }, {"name":"getUpdateTime","parameterTypes":[] }, {"name":"setCreateTime","parameterTypes":["java.util.Date"] }, {"name":"setDeleteInfo","parameterTypes":["java.lang.Long"] }, {"name":"setId","parameterTypes":["java.lang.Long"] }, {"name":"setUpdateTime","parameterTypes":["java.util.Date"] }]
 },
 {
   "name":"cn.huava.common.service.BaseService",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"softDelete","parameterTypes":["java.lang.Long"] }]
+},
+{
+  "name":"cn.huava.common.service.captcha.AceCaptchaService",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
   "name":"cn.huava.sys.controller.SysPermController",
@@ -194,19 +218,14 @@
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
-  "methods":[{"name":"<init>","parameterTypes":[] }]
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"login","parameterTypes":["cn.huava.sys.pojo.qo.LoginQo"] }, {"name":"refreshToken","parameterTypes":["java.lang.String"] }]
 },
 {
   "name":"cn.huava.sys.controller.TempTestController",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
-  "methods":[{"name":"<init>","parameterTypes":["cn.huava.sys.service.sysuser.AceSysUserService"] }]
-},
-{
-  "name":"cn.huava.sys.controller.TempTestController$$SpringCGLIB$$0",
-  "fields":[{"name":"CGLIB$CALLBACK_FILTER"}, {"name":"CGLIB$FACTORY_DATA"}],
-  "methods":[{"name":"CGLIB$SET_THREAD_CALLBACKS","parameterTypes":["org.springframework.cglib.proxy.Callback[]"] }]
+  "methods":[{"name":"<init>","parameterTypes":["cn.huava.common.service.captcha.AceCaptchaService"] }]
 },
 {
   "name":"cn.huava.sys.mapper.SysPermMapper",
@@ -245,6 +264,13 @@
   "methods":[{"name":"delete","parameterTypes":["com.baomidou.mybatisplus.core.conditions.Wrapper"] }, {"name":"deleteBatchIds","parameterTypes":["java.util.Collection"] }, {"name":"deleteById","parameterTypes":["java.io.Serializable"] }, {"name":"deleteById","parameterTypes":["java.lang.Object"] }, {"name":"deleteById","parameterTypes":["java.lang.Object","boolean"] }, {"name":"deleteByIds","parameterTypes":["java.util.Collection"] }, {"name":"deleteByIds","parameterTypes":["java.util.Collection","boolean"] }, {"name":"deleteByMap","parameterTypes":["java.util.Map"] }, {"name":"exists","parameterTypes":["com.baomidou.mybatisplus.core.conditions.Wrapper"] }, {"name":"insert","parameterTypes":["java.lang.Object"] }, {"name":"insert","parameterTypes":["java.util.Collection"] }, {"name":"insert","parameterTypes":["java.util.Collection","int"] }, {"name":"insertOrUpdate","parameterTypes":["java.lang.Object"] }, {"name":"insertOrUpdate","parameterTypes":["java.util.Collection"] }, {"name":"insertOrUpdate","parameterTypes":["java.util.Collection","int"] }, {"name":"insertOrUpdate","parameterTypes":["java.util.Collection","java.util.function.BiPredicate"] }, {"name":"insertOrUpdate","parameterTypes":["java.util.Collection","java.util.function.BiPredicate","int"] }, {"name":"selectBatchIds","parameterTypes":["java.util.Collection"] }, {"name":"selectBatchIds","parameterTypes":["java.util.Collection","org.apache.ibatis.session.ResultHandler"] }, {"name":"selectById","parameterTypes":["java.io.Serializable"] }, {"name":"selectByMap","parameterTypes":["java.util.Map"] }, {"name":"selectByMap","parameterTypes":["java.util.Map","org.apache.ibatis.session.ResultHandler"] }, {"name":"selectCount","parameterTypes":["com.baomidou.mybatisplus.core.conditions.Wrapper"] }, {"name":"selectList","parameterTypes":["com.baomidou.mybatisplus.core.conditions.Wrapper"] }, {"name":"selectList","parameterTypes":["com.baomidou.mybatisplus.core.conditions.Wrapper","org.apache.ibatis.session.ResultHandler"] }, {"name":"selectList","parameterTypes":["com.baomidou.mybatisplus.core.metadata.IPage","com.baomidou.mybatisplus.core.conditions.Wrapper"] }, {"name":"selectList","parameterTypes":["com.baomidou.mybatisplus.core.metadata.IPage","com.baomidou.mybatisplus.core.conditions.Wrapper","org.apache.ibatis.session.ResultHandler"] }, {"name":"selectMaps","parameterTypes":["com.baomidou.mybatisplus.core.conditions.Wrapper"] }, {"name":"selectMaps","parameterTypes":["com.baomidou.mybatisplus.core.conditions.Wrapper","org.apache.ibatis.session.ResultHandler"] }, {"name":"selectMaps","parameterTypes":["com.baomidou.mybatisplus.core.metadata.IPage","com.baomidou.mybatisplus.core.conditions.Wrapper"] }, {"name":"selectMaps","parameterTypes":["com.baomidou.mybatisplus.core.metadata.IPage","com.baomidou.mybatisplus.core.conditions.Wrapper","org.apache.ibatis.session.ResultHandler"] }, {"name":"selectMapsPage","parameterTypes":["com.baomidou.mybatisplus.core.metadata.IPage","com.baomidou.mybatisplus.core.conditions.Wrapper"] }, {"name":"selectObjs","parameterTypes":["com.baomidou.mybatisplus.core.conditions.Wrapper"] }, {"name":"selectObjs","parameterTypes":["com.baomidou.mybatisplus.core.conditions.Wrapper","org.apache.ibatis.session.ResultHandler"] }, {"name":"selectOne","parameterTypes":["com.baomidou.mybatisplus.core.conditions.Wrapper"] }, {"name":"selectOne","parameterTypes":["com.baomidou.mybatisplus.core.conditions.Wrapper","boolean"] }, {"name":"selectPage","parameterTypes":["com.baomidou.mybatisplus.core.metadata.IPage","com.baomidou.mybatisplus.core.conditions.Wrapper"] }, {"name":"update","parameterTypes":["com.baomidou.mybatisplus.core.conditions.Wrapper"] }, {"name":"update","parameterTypes":["java.lang.Object","com.baomidou.mybatisplus.core.conditions.Wrapper"] }, {"name":"updateById","parameterTypes":["java.lang.Object"] }, {"name":"updateById","parameterTypes":["java.util.Collection"] }, {"name":"updateById","parameterTypes":["java.util.Collection","int"] }]
 },
 {
+  "name":"cn.huava.sys.pojo.dto.SysUserJwtDto",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getAccessToken","parameterTypes":[] }, {"name":"getRefreshToken","parameterTypes":[] }]
+},
+{
   "name":"cn.huava.sys.pojo.po.SysPermPo",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
@@ -254,7 +280,8 @@
   "name":"cn.huava.sys.pojo.po.SysRefreshTokenPo",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
-  "queryAllDeclaredConstructors":true
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"getRefreshToken","parameterTypes":[] }, {"name":"getSysUserId","parameterTypes":[] }, {"name":"setRefreshToken","parameterTypes":["java.lang.String"] }, {"name":"setSysUserId","parameterTypes":["java.lang.Long"] }]
 },
 {
   "name":"cn.huava.sys.pojo.po.SysRolePermPo",
@@ -266,19 +293,30 @@
   "name":"cn.huava.sys.pojo.po.SysRolePo",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
-  "queryAllDeclaredConstructors":true
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"setName","parameterTypes":["java.lang.String"] }]
 },
 {
   "name":"cn.huava.sys.pojo.po.SysUserPo",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
-  "queryAllDeclaredConstructors":true
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"getAvatar","parameterTypes":[] }, {"name":"getDisabledReason","parameterTypes":[] }, {"name":"getGender","parameterTypes":[] }, {"name":"getIsEnabled","parameterTypes":[] }, {"name":"getLastLoginDate","parameterTypes":[] }, {"name":"getLastLoginIp","parameterTypes":[] }, {"name":"getPassword","parameterTypes":[] }, {"name":"getPhoneNumber","parameterTypes":[] }, {"name":"getRealName","parameterTypes":[] }, {"name":"getRemark","parameterTypes":[] }, {"name":"getUsername","parameterTypes":[] }, {"name":"setAvatar","parameterTypes":["java.lang.String"] }, {"name":"setGender","parameterTypes":["java.lang.String"] }, {"name":"setIsEnabled","parameterTypes":["java.lang.Boolean"] }, {"name":"setLastLoginIp","parameterTypes":["java.lang.String"] }, {"name":"setPassword","parameterTypes":["java.lang.String"] }, {"name":"setPhoneNumber","parameterTypes":["java.lang.String"] }, {"name":"setUsername","parameterTypes":["java.lang.String"] }]
 },
 {
   "name":"cn.huava.sys.pojo.po.SysUserRolePo",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
-  "queryAllDeclaredConstructors":true
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"setId","parameterTypes":["java.lang.Long"] }, {"name":"setRoleId","parameterTypes":["java.lang.Long"] }, {"name":"setUserId","parameterTypes":["java.lang.Long"] }]
+},
+{
+  "name":"cn.huava.sys.pojo.qo.LoginQo",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"setPassword","parameterTypes":["java.lang.String"] }, {"name":"setUsername","parameterTypes":["java.lang.String"] }]
 },
 {
   "name":"cn.huava.sys.service.SysUserLoginUserDetailsServiceImpl",
@@ -299,7 +337,7 @@
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
-  "methods":[{"name":"<init>","parameterTypes":[] }]
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"createToken","parameterTypes":["java.lang.Long","byte[]"] }]
 },
 {
   "name":"cn.huava.sys.service.jwt.CreateTokenService$$SpringCGLIB$$0",
@@ -323,7 +361,7 @@
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
-  "methods":[{"name":"<init>","parameterTypes":[] }]
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"getByRefreshToken","parameterTypes":["java.lang.String"] }, {"name":"saveRefreshToken","parameterTypes":["java.lang.Long","java.lang.String"] }]
 },
 {
   "name":"cn.huava.sys.service.sysrefreshtoken.AceSysRefreshTokenService$$SpringCGLIB$$0",
@@ -359,7 +397,7 @@
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
-  "methods":[{"name":"<init>","parameterTypes":["cn.huava.sys.service.sysuser.LoginService","cn.huava.sys.service.sysuser.RefreshTokenService"] }]
+  "methods":[{"name":"<init>","parameterTypes":["cn.huava.sys.service.sysuser.LoginService","cn.huava.sys.service.sysuser.RefreshTokenService"] }, {"name":"login","parameterTypes":["cn.huava.sys.pojo.qo.LoginQo"] }, {"name":"refreshToken","parameterTypes":["java.lang.String"] }]
 },
 {
   "name":"cn.huava.sys.service.sysuser.AceSysUserService$$SpringCGLIB$$0",
@@ -371,7 +409,7 @@
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
-  "methods":[{"name":"<init>","parameterTypes":["cn.huava.sys.service.sysrefreshtoken.AceSysRefreshTokenService","cn.huava.sys.service.jwt.AceJwtService"] }]
+  "methods":[{"name":"<init>","parameterTypes":["cn.huava.sys.service.sysrefreshtoken.AceSysRefreshTokenService","cn.huava.sys.service.jwt.AceJwtService"] }, {"name":"login","parameterTypes":["cn.huava.sys.pojo.qo.LoginQo"] }]
 },
 {
   "name":"cn.huava.sys.service.sysuser.LoginService$$SpringCGLIB$$0",
@@ -383,7 +421,7 @@
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
-  "methods":[{"name":"<init>","parameterTypes":["cn.huava.sys.service.sysrefreshtoken.AceSysRefreshTokenService","cn.huava.sys.service.jwt.AceJwtService"] }]
+  "methods":[{"name":"<init>","parameterTypes":["cn.huava.sys.service.sysrefreshtoken.AceSysRefreshTokenService","cn.huava.sys.service.jwt.AceJwtService"] }, {"name":"refreshToken","parameterTypes":["java.lang.String"] }]
 },
 {
   "name":"cn.huava.sys.service.sysuser.RefreshTokenService$$SpringCGLIB$$0",
@@ -470,6 +508,60 @@
 {
   "name":"com.baomidou.mybatisplus.core.MybatisXMLLanguageDriver",
   "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.baomidou.mybatisplus.core.conditions.AbstractLambdaWrapper",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"com.baomidou.mybatisplus.core.conditions.AbstractWrapper",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"getEntity","parameterTypes":[] }, {"name":"getParamNameValuePairs","parameterTypes":[] }, {"name":"getSqlComment","parameterTypes":[] }, {"name":"getSqlFirst","parameterTypes":[] }, {"name":"getSqlSegment","parameterTypes":[] }]
+},
+{
+  "name":"com.baomidou.mybatisplus.core.conditions.ISqlSegment",
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true
+},
+{
+  "name":"com.baomidou.mybatisplus.core.conditions.Wrapper",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"isEmptyOfNormal","parameterTypes":[] }, {"name":"isNonEmptyOfNormal","parameterTypes":[] }]
+},
+{
+  "name":"com.baomidou.mybatisplus.core.conditions.interfaces.Compare",
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true
+},
+{
+  "name":"com.baomidou.mybatisplus.core.conditions.interfaces.Func",
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true
+},
+{
+  "name":"com.baomidou.mybatisplus.core.conditions.interfaces.Join",
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true
+},
+{
+  "name":"com.baomidou.mybatisplus.core.conditions.interfaces.Nested",
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true
+},
+{
+  "name":"com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"getSqlSelect","parameterTypes":[] }]
+},
+{
+  "name":"com.baomidou.mybatisplus.core.conditions.query.Query",
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true
 },
 {
   "name":"com.baomidou.mybatisplus.core.mapper.BaseMapper",
@@ -597,10 +689,22 @@
   "name":"com.mongodb.reactivestreams.client.MongoClient"
 },
 {
+  "name":"com.mysql.cj.conf.url.SingleConnectionUrl",
+  "methods":[{"name":"<init>","parameterTypes":["com.mysql.cj.conf.ConnectionUrlParser","java.util.Properties"] }]
+},
+{
   "name":"com.mysql.cj.jdbc.AbandonedConnectionCleanupThread"
 },
 {
   "name":"com.mysql.cj.jdbc.Driver",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.mysql.cj.log.StandardLogger",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"com.mysql.cj.protocol.StandardSocketFactory",
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
@@ -622,7 +726,15 @@
   "name":"com.sendgrid.SendGrid"
 },
 {
+  "name":"com.sun.crypto.provider.HmacCore$HmacSHA256",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
   "name":"com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.org.apache.xerces.internal.jaxp.datatype.DatatypeFactoryImpl",
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
@@ -644,6 +756,14 @@
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"close","parameterTypes":[] }, {"name":"getConnection","parameterTypes":[] }, {"name":"getConnection","parameterTypes":["java.lang.String","java.lang.String"] }, {"name":"getLogWriter","parameterTypes":[] }, {"name":"getLoginTimeout","parameterTypes":[] }, {"name":"getParentLogger","parameterTypes":[] }, {"name":"isWrapperFor","parameterTypes":["java.lang.Class"] }, {"name":"setHealthCheckRegistry","parameterTypes":["java.lang.Object"] }, {"name":"setLogWriter","parameterTypes":["java.io.PrintWriter"] }, {"name":"setLoginTimeout","parameterTypes":["int"] }, {"name":"setMetricRegistry","parameterTypes":["java.lang.Object"] }, {"name":"setMetricsTrackerFactory","parameterTypes":["com.zaxxer.hikari.metrics.MetricsTrackerFactory"] }, {"name":"toString","parameterTypes":[] }, {"name":"unwrap","parameterTypes":["java.lang.Class"] }]
+},
+{
+  "name":"com.zaxxer.hikari.pool.PoolBase",
+  "fields":[{"name":"catalog"}]
+},
+{
+  "name":"com.zaxxer.hikari.pool.PoolEntry",
+  "fields":[{"name":"state"}]
 },
 {
   "name":"freemarker.template.Configuration"
@@ -668,6 +788,9 @@
 },
 {
   "name":"io.netty.util.NettyRuntime"
+},
+{
+  "name":"io.opentelemetry.api.GlobalOpenTelemetry"
 },
 {
   "name":"io.r2dbc.spi.ConnectionFactory"
@@ -751,7 +874,7 @@
   "name":"jakarta.servlet.Filter",
   "queryAllDeclaredMethods":true,
   "queryAllPublicMethods":true,
-  "methods":[{"name":"<init>","parameterTypes":["org.springframework.security.web.FilterChainProxy"] }, {"name":"<init>","parameterTypes":["org.springframework.web.servlet.handler.HandlerMappingIntrospector$$Lambda/0x00007f85c04c5468"] }, {"name":"from","parameterTypes":["org.springframework.security.web.FilterChainProxy"] }, {"name":"from","parameterTypes":["org.springframework.web.servlet.handler.HandlerMappingIntrospector$$Lambda/0x00007f85c04c5468"] }, {"name":"of","parameterTypes":["org.springframework.security.web.FilterChainProxy"] }, {"name":"of","parameterTypes":["org.springframework.web.servlet.handler.HandlerMappingIntrospector$$Lambda/0x00007f85c04c5468"] }, {"name":"valueOf","parameterTypes":["org.springframework.security.web.FilterChainProxy"] }, {"name":"valueOf","parameterTypes":["org.springframework.web.servlet.handler.HandlerMappingIntrospector$$Lambda/0x00007f85c04c5468"] }]
+  "methods":[{"name":"<init>","parameterTypes":["org.springframework.security.web.FilterChainProxy"] }, {"name":"<init>","parameterTypes":["org.springframework.web.servlet.handler.HandlerMappingIntrospector$$Lambda/0x00007f937b501d00"] }, {"name":"from","parameterTypes":["org.springframework.security.web.FilterChainProxy"] }, {"name":"from","parameterTypes":["org.springframework.web.servlet.handler.HandlerMappingIntrospector$$Lambda/0x00007f937b501d00"] }, {"name":"of","parameterTypes":["org.springframework.security.web.FilterChainProxy"] }, {"name":"of","parameterTypes":["org.springframework.web.servlet.handler.HandlerMappingIntrospector$$Lambda/0x00007f937b501d00"] }, {"name":"valueOf","parameterTypes":["org.springframework.security.web.FilterChainProxy"] }, {"name":"valueOf","parameterTypes":["org.springframework.web.servlet.handler.HandlerMappingIntrospector$$Lambda/0x00007f937b501d00"] }]
 },
 {
   "name":"jakarta.servlet.GenericFilter",
@@ -824,9 +947,16 @@
   "name":"jakarta.xml.ws.WebServiceRef"
 },
 {
+  "name":"java.beans.PropertyVetoException"
+},
+{
   "name":"java.io.Closeable",
   "queryAllDeclaredMethods":true,
   "queryAllPublicMethods":true
+},
+{
+  "name":"java.io.Console",
+  "methods":[{"name":"isTerminal","parameterTypes":[] }]
 },
 {
   "name":"java.io.FilePermission"
@@ -852,6 +982,7 @@
 },
 {
   "name":"java.lang.ClassLoader",
+  "fields":[{"name":"classLoaderValueMap"}],
   "methods":[{"name":"defineClass","parameterTypes":["java.lang.String","byte[]","int","int","java.security.ProtectionDomain"] }]
 },
 {
@@ -877,6 +1008,10 @@
 {
   "name":"java.lang.String",
   "queryAllDeclaredMethods":true
+},
+{
+  "name":"java.lang.System",
+  "methods":[{"name":"console","parameterTypes":[] }, {"name":"exit","parameterTypes":["int"] }, {"name":"nanoTime","parameterTypes":[] }]
 },
 {
   "name":"java.lang.Thread",
@@ -921,6 +1056,11 @@
 {
   "name":"java.lang.invoke.TypeDescriptor$OfField",
   "queryAllPublicMethods":true
+},
+{
+  "name":"java.lang.reflect.AccessibleObject",
+  "fields":[{"name":"override"}],
+  "methods":[{"name":"setAccessible","parameterTypes":["boolean"] }, {"name":"setAccessible","parameterTypes":["java.lang.reflect.AccessibleObject[]","boolean"] }]
 },
 {
   "name":"java.lang.reflect.AnnotatedElement",
@@ -986,7 +1126,24 @@
   "name":"java.security.SecurityPermission"
 },
 {
+  "name":"java.sql.Connection",
+  "methods":[{"name":"prepareStatement","parameterTypes":["java.lang.String"] }]
+},
+{
   "name":"java.sql.Date"
+},
+{
+  "name":"java.sql.PreparedStatement",
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"execute","parameterTypes":[] }, {"name":"setLong","parameterTypes":["int","long"] }, {"name":"setString","parameterTypes":["int","java.lang.String"] }, {"name":"setTimestamp","parameterTypes":["int","java.sql.Timestamp"] }]
+},
+{
+  "name":"java.sql.ResultSet",
+  "methods":[{"name":"close","parameterTypes":[] }, {"name":"getBoolean","parameterTypes":["java.lang.String"] }, {"name":"getLong","parameterTypes":["java.lang.String"] }, {"name":"getMetaData","parameterTypes":[] }, {"name":"getString","parameterTypes":["java.lang.String"] }, {"name":"getTimestamp","parameterTypes":["java.lang.String"] }, {"name":"getType","parameterTypes":[] }, {"name":"isClosed","parameterTypes":[] }, {"name":"next","parameterTypes":[] }, {"name":"wasNull","parameterTypes":[] }]
+},
+{
+  "name":"java.sql.Statement",
+  "methods":[{"name":"close","parameterTypes":[] }, {"name":"getConnection","parameterTypes":[] }, {"name":"getMoreResults","parameterTypes":[] }, {"name":"getResultSet","parameterTypes":[] }, {"name":"getUpdateCount","parameterTypes":[] }]
 },
 {
   "name":"java.sql.Timestamp"
@@ -1000,9 +1157,29 @@
   "name":"java.text.ListFormat"
 },
 {
+  "name":"java.util.ArrayList",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
   "name":"java.util.EventListener",
   "queryAllDeclaredMethods":true,
   "queryAllPublicMethods":true
+},
+{
+  "name":"java.util.HashMap",
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"java.util.Map",
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true
+},
+{
+  "name":"java.util.MapBeanInfo"
+},
+{
+  "name":"java.util.MapCustomizer"
 },
 {
   "name":"java.util.PropertyPermission"
@@ -1015,6 +1192,10 @@
   "name":"java.util.concurrent.Executor",
   "queryAllDeclaredMethods":true,
   "queryAllPublicMethods":true
+},
+{
+  "name":"java.util.concurrent.ForkJoinTask",
+  "fields":[{"name":"aux"}, {"name":"status"}]
 },
 {
   "name":"java.util.concurrent.ThreadFactory",
@@ -1032,6 +1213,10 @@
 {
   "name":"java.util.concurrent.atomic.Striped64",
   "fields":[{"name":"base"}, {"name":"cellsBusy"}]
+},
+{
+  "name":"java.util.function.Function",
+  "queryAllPublicMethods":true
 },
 {
   "name":"java.util.logging.LogManager"
@@ -1054,16 +1239,6 @@
 },
 {
   "name":"javax.cache.Caching"
-},
-{
-  "name":"javax.imageio.spi.ImageReaderSpi"
-},
-{
-  "name":"javax.imageio.spi.ImageReaderWriterSpi",
-  "methods":[{"name":"getFileSuffixes","parameterTypes":[] }, {"name":"getFormatNames","parameterTypes":[] }, {"name":"getMIMETypes","parameterTypes":[] }]
-},
-{
-  "name":"javax.imageio.spi.ImageWriterSpi"
 },
 {
   "name":"javax.inject.Inject"
@@ -1108,6 +1283,9 @@
 {
   "name":"jdk.internal.loader.ClassLoaders$PlatformClassLoader",
   "methods":[{"name":"clearCache","parameterTypes":[] }]
+},
+{
+  "name":"jdk.internal.misc.Unsafe"
 },
 {
   "name":"kotlin.Metadata"
@@ -1178,6 +1356,9 @@
   "queryAllDeclaredMethods":true
 },
 {
+  "name":"org.apache.ibatis.javassist.ClassPool"
+},
+{
   "name":"org.apache.ibatis.javassist.util.proxy.ProxyFactory"
 },
 {
@@ -1187,6 +1368,16 @@
 {
   "name":"org.apache.ibatis.logging.stdout.StdOutImpl",
   "methods":[{"name":"<init>","parameterTypes":["java.lang.String"] }]
+},
+{
+  "name":"org.apache.ibatis.ognl.OgnlRuntime$ClassPropertyMethodCache",
+  "methods":[{"name":"get","parameterTypes":["java.lang.Class","java.lang.String"] }]
+},
+{
+  "name":"org.apache.ibatis.reflection.SystemMetaObject$NullObject",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
 },
 {
   "name":"org.apache.ibatis.scripting.LanguageDriver"
@@ -1202,7 +1393,8 @@
 {
   "name":"org.apache.ibatis.session.SqlSession",
   "queryAllDeclaredMethods":true,
-  "queryAllPublicMethods":true
+  "queryAllPublicMethods":true,
+  "methods":[{"name":"insert","parameterTypes":["java.lang.String","java.lang.Object"] }, {"name":"selectList","parameterTypes":["java.lang.String","java.lang.Object"] }]
 },
 {
   "name":"org.apache.ibatis.session.SqlSessionFactory",
@@ -1265,6 +1457,9 @@
 },
 {
   "name":"org.crac.Resource"
+},
+{
+  "name":"org.dromara.hutool.crypto.provider.BouncyCastleProviderFactory"
 },
 {
   "name":"org.dromara.hutool.extra.spring.SpringUtil",
@@ -1434,6 +1629,9 @@
   "queryAllPublicMethods":true,
   "queryAllDeclaredConstructors":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.springframework.aop.scope.ScopedObject"
 },
 {
   "name":"org.springframework.aop.support.AbstractBeanFactoryPointcutAdvisor",
@@ -3028,6 +3226,9 @@
   "name":"org.springframework.boot.logging.logback.LogbackLoggingSystem.Factory"
 },
 {
+  "name":"org.springframework.boot.logging.logback.RootLogLevelConfigurator"
+},
+{
   "name":"org.springframework.boot.orm.jpa.JpaDatabaseInitializerDetector",
   "queryAllDeclaredConstructors":true,
   "queryAllPublicConstructors":true,
@@ -3841,10 +4042,6 @@
   "queryAllPublicMethods":true
 },
 {
-  "name":"org.springframework.security.access.prepost.PreAuthorize",
-  "queryAllDeclaredMethods":true
-},
-{
   "name":"org.springframework.security.authentication.AnonymousAuthenticationProvider",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
@@ -4569,6 +4766,10 @@
   "queryAllDeclaredMethods":true
 },
 {
+  "name":"org.springframework.web.bind.annotation.RequestBody",
+  "queryAllDeclaredMethods":true
+},
+{
   "name":"org.springframework.web.bind.annotation.RequestMapping",
   "queryAllDeclaredMethods":true
 },
@@ -5021,8 +5222,9 @@
   "name":"reactor.tools.agent.ReactorDebugAgent"
 },
 {
-  "name":"sun.java2d.marlin.DMarlinRenderingEngine",
-  "methods":[{"name":"<init>","parameterTypes":[] }]
+  "name":"sun.misc.Unsafe",
+  "fields":[{"name":"theUnsafe"}],
+  "methods":[{"name":"objectFieldOffset","parameterTypes":["java.lang.reflect.Field"] }, {"name":"putBoolean","parameterTypes":["java.lang.Object","long","boolean"] }]
 },
 {
   "name":"sun.reflect.ReflectionFactory",
@@ -5037,8 +5239,8 @@
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"sun.security.provider.SecureRandom",
-  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"<init>","parameterTypes":["java.security.SecureRandomParameters"] }]
+  "name":"sun.security.provider.SHA2$SHA256",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
   "name":"sun.security.provider.X509Factory",
