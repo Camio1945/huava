@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "bruno_scripts_v0.1.6",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

@@ -114,14 +114,25 @@ I want the main service class to be alphabetically first, so I named it `AceServ
 
 ---
 
-### 7. Why are all the sub-service classes' methods protected?
+### 7. Why are all the sub-service classes not public and their methods protected?
 
-In the previous version before 0.1.3, all the sub-service classes were not public, and their methods were protected. In this way, we can make the main service class a facade, the only entrance to the outside world, to achieve low coupling.
+In this way, we can make the main service class a facade, the only entrance to the outside world, to achieve low coupling.
 
-But then it appears that many service classes will use lambda expressions like
-`new LambdaQueryWrapper<SysUserPo>().eq(SysUserPo::getUsername, username)`, and if a class uses lambda expression, it has to be registered in
-`LambdaRegistrationFeature.java` file in order to make the GraalVM native image work. So the sub-service classes must be public so that they can be referenced by the
-`LambdaRegistrationFeature` class.
+Note: The sub-service classes may contain lambda expressions in them, and since the class is not public, it cannot be registered in the `LambdaRegistrationFeature.java` file; it needs to be registered in the `src/main/resources/META-INF/native-image/serialization-config.json` file, e.g.:
+
+```json
+{
+  "types":[
+  ],
+  "lambdaCapturingTypes":[
+    {"name": "cn.huava.sys.service.sysuser.LoginService"},
+    {"name": "cn.huava.common.config.SecurityConfig"}
+  ],
+  "proxies":[
+  ]
+}
+```
+
 
 ---
 
@@ -149,6 +160,35 @@ Example:
 
 1. `Permission` has 10 characters; it's not too long, but the table has the prefix `sys`, so the persistent class becomes `SysPermission`, and there is another class based on it called `SysRolePermission`, and then `AceSysRolePermissionService` and `SysRolePermissionMapper`; it's kind of too long for me now. So I abbreviate it to `perm`.
 
+---
+
+### 10. Why combine java classes (like `RuntimeHintsRegistrarConfig.java`) and `src/main/resources/META-INF/native-image` folder as two means to register GraalVM native image?
+
+Though [Collecting Metadata with the Tracing Agent](https://www.graalvm.org/latest/reference-manual/native-image/metadata/AutomaticMetadataCollection/) is convenient, it generates a large amount of metadata, for example, the `SysRoleMapper.java`'s metadata is like this (41 other methods are ignored): 
+
+```json
+{
+    "name": "cn.huava.sys.mapper.SysRoleMapper",
+    "queryAllDeclaredMethods": true,
+    "queryAllPublicMethods": true,
+    "methods": [
+        {
+            "name": "delete",
+            "parameterTypes": [
+                "com.baomidou.mybatisplus.core.conditions.Wrapper"
+            ]
+        },
+        // Here ignored 41 other methods
+    ]
+}
+```
+But the `RuntimeHintsRegistrarConfig.java` can handle all `*Mapper.java` generically, saves a lot of code.
+
+But the `src/main/resources/META-INF/native-image` folder is still necessary. For example, the sub-service classes are all not public; they cannot be referenced in the `NativeHintsRegistrar.java` file; they need to be registered in the `src/main/resources/META-INF/native-image/serialization-config.json` file.
+
+To sum up, the Java classes are necessary for less code, and the `src/main/resources/META-INF/native-image` folder is necessary for more control.
+
+For my experience, only `serialization-config.json` is needed; these are not needed: `jni-config.json`, `predefined-classes-config.json`, `proxy-config.json`, `reflect-config.json`, `resource-config.json`.
 
 ---
 

@@ -2,6 +2,10 @@
   "types":[
   ],
   "lambdaCapturingTypes":[
+    {"name": "cn.huava.sys.service.SysUserLoginUserDetailsServiceImpl"},
+    {"name": "cn.huava.sys.service.sysrefreshtoken.AceSysRefreshTokenService"},
+    {"name": "cn.huava.sys.service.sysuser.LoginService"},
+    {"name": "cn.huava.common.config.SecurityConfig"}
   ],
   "proxies":[
   ]

@@ -1,7 +1,7 @@
 meta {
-  name: 2_login
+  name: 1_login
   type: http
-  seq: 2
+  seq: 1
 }
 
 post {
@@ -14,6 +14,7 @@ body:json {
   {
     "username": "admin",
     "password": "123456",
-    "captchaCode": "3shz"
+    "captchaCode": "",
+    "isCaptchaDisabledForTesting": true
   }
 }

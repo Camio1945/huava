@@ -1,4 +1,4 @@
-package cn.huava.sys.pojo.dto;
+package cn.huava.common.pojo.dto;
 
 import lombok.Data;
 

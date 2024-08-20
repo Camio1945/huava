@@ -1,11 +1,11 @@
 package cn.huava.common.controller;
 
+import cn.huava.common.pojo.dto.ApiResponseDataDto;
 import cn.huava.common.pojo.po.BasePo;
 import cn.huava.common.service.BaseService;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
@@ -35,39 +35,44 @@ public abstract class BaseController<S extends BaseService<M, T>, M extends Base
   protected S service;
 
   @GetMapping("/get/{id}")
-  public ResponseEntity<T> getById(@PathVariable @NonNull Long id) {
+  public ResponseEntity<ApiResponseDataDto<T>> getById(@PathVariable @NonNull Long id) {
     T entity = service.getById(id);
-    return ResponseEntity.ok(entity);
+    if (entity instanceof BasePo basePo && basePo.getDeleteInfo() > 0) {
+      return ResponseEntity.notFound().build();
+    }
+    return ResponseEntity.ok(new ApiResponseDataDto<>(entity));
   }
 
   @PostMapping("/create")
-  public ResponseEntity<T> create(@RequestBody @NonNull T entity) {
+  public ResponseEntity<ApiResponseDataDto<Long>> create(@RequestBody @NonNull T entity) {
+    Assert.isInstanceOf(BasePo.class, entity, "The entity must be an instance of BasePo");
     BasePo.beforeCreate(entity);
     boolean success = service.save(entity);
     Assert.isTrue(success, "Failed to create entity");
-    return ResponseEntity.status(HttpStatus.CREATED).body(entity);
+    Long id = ((BasePo) entity).getId();
+    return ResponseEntity.ok(new ApiResponseDataDto<>(id));
   }
 
   @PutMapping("/update")
-  public ResponseEntity<T> update(@RequestBody @NonNull T entity) {
+  public ResponseEntity<ApiResponseDataDto<Void>> update(@RequestBody @NonNull T entity) {
     BasePo.beforeUpdate(entity);
     boolean success = service.updateById(entity);
     Assert.isTrue(success, "Failed to update entity");
-    return ResponseEntity.ok(entity);
+    return ResponseEntity.ok(new ApiResponseDataDto<>());
   }
 
   @PatchMapping("/patch")
-  public ResponseEntity<T> patch(
+  public ResponseEntity<ApiResponseDataDto<Void>> patch(
       @RequestBody T entity, @RequestParam(required = false) String... fields) {
     // TODO The patch method is not implemented yet
     Assert.isTrue(false, "The patch method is not implemented yet");
-    return ResponseEntity.ok(entity);
+    return ResponseEntity.ok(new ApiResponseDataDto<>());
   }
 
   @DeleteMapping("/delete/{id}")
-  public ResponseEntity<Void> delete(@PathVariable @NonNull Long id) {
+  public ResponseEntity<ApiResponseDataDto<Void>> delete(@PathVariable @NonNull Long id) {
     boolean success = service.softDelete(id);
     Assert.isTrue(success, "Failed to delete entity");
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.ok(new ApiResponseDataDto<>());
   }
 }

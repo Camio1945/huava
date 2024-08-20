@@ -1,20 +1,5 @@
 package cn.huava.common.graalvm;
 
-import com.baomidou.mybatisplus.annotation.IEnum;
-import com.baomidou.mybatisplus.core.MybatisParameterHandler;
-import com.baomidou.mybatisplus.core.conditions.AbstractWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.baomidou.mybatisplus.core.handlers.CompositeEnumTypeHandler;
-import com.baomidou.mybatisplus.core.handlers.MybatisEnumTypeHandler;
-import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
-import com.baomidou.mybatisplus.core.toolkit.support.SerializedLambda;
-import com.baomidou.mybatisplus.extension.handlers.FastjsonTypeHandler;
-import com.baomidou.mybatisplus.extension.handlers.GsonTypeHandler;
-import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -25,28 +10,17 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.zip.GZIPInputStream;
-
 import lombok.NonNull;
 import org.apache.commons.logging.LogFactory;
 import org.apache.ibatis.annotations.DeleteProvider;
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.UpdateProvider;
-import org.apache.ibatis.executor.Executor;
-import org.apache.ibatis.executor.parameter.ParameterHandler;
-import org.apache.ibatis.executor.resultset.ResultSetHandler;
-import org.apache.ibatis.executor.statement.BaseStatementHandler;
-import org.apache.ibatis.executor.statement.RoutingStatementHandler;
-import org.apache.ibatis.executor.statement.StatementHandler;
-import org.apache.ibatis.logging.slf4j.Slf4jImpl;
-import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.reflection.TypeParameterResolver;
 import org.mybatis.spring.mapper.MapperFactoryBean;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.RuntimeHints;
-import org.springframework.aot.hint.RuntimeHintsRegistrar;
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -68,83 +42,52 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 
 /**
- * . Kudos to <a href="https://github.com/nieqiurong/mybatis-native-demo">mybatis-native-demo</a>
+ * This class and the containing class {@link NativeRuntimeHintsRegistrar} is used for building
+ * GraalVM native image.<br>
+ * This class's main code is to add native image support for MyBatis-Plus. <br>
+ * Kudos to <a href="https://github.com/nieqiurong/mybatis-native-demo">mybatis-native-demo</a>
  *
  * @author Camio1945
  */
 @Configuration(proxyBeanMethods = false)
-@ImportRuntimeHints(RuntimeHintsRegistrarConfig.NativeRuntimeHintsRegistrar.class)
+@ImportRuntimeHints(NativeRuntimeHintsRegistrar.class)
 public class RuntimeHintsRegistrarConfig {
 
+  /**
+   * This bean is necessary, otherwise this kind of error will occur:
+   *
+   * <pre>
+   * Error creating bean with name 'sysUserRoleMapper': Unsatisfied dependency expressed through constructor parameter 0:
+   * No qualifying bean of type 'java.lang.Class<?>' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+   * </pre>
+   *
+   * @return MyBatisMapperFactoryBeanPostProcessor
+   */
   @Bean
   static MyBatisMapperFactoryBeanPostProcessor myBatisMapperFactoryBeanPostProcessor() {
     return new MyBatisMapperFactoryBeanPostProcessor();
   }
 
+  /**
+   * This bean is necessary, otherwise this kind of error will occor:
+   *
+   * <pre>
+   * Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Unable to start web server
+   * Application run failed
+   * org.springframework.context.ApplicationContextException: Unable to start web server
+   * ...
+   * Caused by: org.springframework.boot.web.server.WebServerException: Unable to start embedded Tomcat
+   * ...
+   * Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'jwtAuthenticationFilter': Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'aceJwtService': Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'createTokenService': Unsatisfied dependency expressed through field 'baseMapper': Error creating bean with name 'sysUserMapper': FactoryBean threw exception on object creation
+   * ...
+   * Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'sysUserMapper': FactoryBean threw exception on object creation
+   * </pre>
+   *
+   * @return MyBatisBeanFactoryInitializationAotProcessor
+   */
   @Bean
   MyBatisBeanFactoryInitializationAotProcessor myBatisBeanFactoryInitializationAotProcessor() {
     return new MyBatisBeanFactoryInitializationAotProcessor();
-  }
-
-  static class NativeRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
-
-    @Override
-    public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
-      Stream.of(ToStringSerializer.class, GZIPInputStream.class)
-          .forEach(x -> hints.reflection().registerType(x, MemberCategory.values()));
-      Stream.of(
-              "org/apache/ibatis/builder/xml/*.dtd",
-              "org/apache/ibatis/builder/xml/*.xsd",
-              "static_captcha/*")
-          .forEach(hints.resources()::registerPattern);
-
-      hints.serialization().registerType(SerializedLambda.class);
-      hints.serialization().registerType(SFunction.class);
-      hints.serialization().registerType(java.lang.invoke.SerializedLambda.class);
-      hints.reflection().registerType(SFunction.class);
-      hints.reflection().registerType(SerializedLambda.class);
-      hints.reflection().registerType(java.lang.invoke.SerializedLambda.class);
-      hints.reflection().registerType(org.apache.ibatis.logging.LogFactory.class);
-      hints.reflection().registerType(Slf4jImpl.class);
-
-      hints.proxies().registerJdkProxy(StatementHandler.class);
-      hints.proxies().registerJdkProxy(Executor.class);
-      hints.proxies().registerJdkProxy(ResultSetHandler.class);
-      hints.proxies().registerJdkProxy(ParameterHandler.class);
-
-      hints.reflection().registerType(AbstractWrapper.class, MemberCategory.values());
-      hints.reflection().registerType(LambdaQueryWrapper.class, MemberCategory.values());
-      hints.reflection().registerType(LambdaUpdateWrapper.class, MemberCategory.values());
-      hints.reflection().registerType(UpdateWrapper.class, MemberCategory.values());
-      hints.reflection().registerType(QueryWrapper.class, MemberCategory.values());
-
-      hints.reflection().registerType(BoundSql.class, MemberCategory.DECLARED_FIELDS);
-      hints
-          .reflection()
-          .registerType(RoutingStatementHandler.class, MemberCategory.DECLARED_FIELDS);
-      hints.reflection().registerType(BaseStatementHandler.class, MemberCategory.DECLARED_FIELDS);
-      hints
-          .reflection()
-          .registerType(MybatisParameterHandler.class, MemberCategory.DECLARED_FIELDS);
-
-      hints.reflection().registerType(IEnum.class, MemberCategory.INVOKE_PUBLIC_METHODS);
-      // register typeHandler
-      hints
-          .reflection()
-          .registerType(CompositeEnumTypeHandler.class, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS);
-      hints
-          .reflection()
-          .registerType(FastjsonTypeHandler.class, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS);
-      hints
-          .reflection()
-          .registerType(GsonTypeHandler.class, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS);
-      hints
-          .reflection()
-          .registerType(JacksonTypeHandler.class, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS);
-      hints
-          .reflection()
-          .registerType(MybatisEnumTypeHandler.class, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS);
-    }
   }
 
   static class MyBatisBeanFactoryInitializationAotProcessor

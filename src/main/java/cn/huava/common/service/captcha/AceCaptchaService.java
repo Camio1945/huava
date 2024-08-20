@@ -1,12 +1,10 @@
 package cn.huava.common.service.captcha;
 
-import cn.huava.common.constant.CommonConstant;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.lang.Assert;
 import org.springframework.stereotype.Service;
 
 /**
@@ -23,15 +21,14 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AceCaptchaService {
   private final RefreshCaptchaService refreshCaptchaService;
+  private final ValidateCaptchaService validateCaptchaService;
 
   public void refresh(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     refreshCaptchaService.refresh(req, resp);
   }
 
-  public void validate(HttpServletRequest req, String captchaCode) {
-    Assert.notBlank(captchaCode, "请输入验证码");
-    String sessionCode =
-        (String) req.getSession().getAttribute(CommonConstant.CAPTCHA_CODE_SESSION_KEY);
-    Assert.equals(captchaCode, sessionCode, "验证码不正确，请重试");
+  public void validate(
+      HttpServletRequest req, String captchaCode, Boolean isCaptchaDisabledForTesting) {
+    validateCaptchaService.validate(req, captchaCode, isCaptchaDisabledForTesting);
   }
 }

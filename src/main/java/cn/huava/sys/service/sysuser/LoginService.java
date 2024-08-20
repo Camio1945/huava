@@ -13,9 +13,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.lang.Assert;
 import org.dromara.hutool.extra.spring.SpringUtil;
-import org.dromara.hutool.json.JSONUtil;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -28,16 +26,16 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class LoginService extends BaseService<SysUserMapper, SysUserPo> {
+class LoginService extends BaseService<SysUserMapper, SysUserPo> {
 
   private final AceSysRefreshTokenService sysRefreshTokenAceService;
   private final AceJwtService jwtAceService;
   private final AceCaptchaService aceCaptchaService;
 
   protected SysUserJwtDto login(HttpServletRequest req, LoginQo loginQo) {
-    aceCaptchaService.validate(req, loginQo.getCaptchaCode());
-    String username = loginQo.getUsername();
-    String password = loginQo.getPassword();
+    aceCaptchaService.validate(req, loginQo.captchaCode(), loginQo.isCaptchaDisabledForTesting());
+    String username = loginQo.username();
+    String password = loginQo.password();
     Authentication authentication = new UsernamePasswordAuthenticationToken(username, password);
     authentication = authenticationManager().authenticate(authentication);
     SecurityContextHolder.getContext().setAuthentication(authentication);

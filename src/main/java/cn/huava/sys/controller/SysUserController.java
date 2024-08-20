@@ -1,8 +1,8 @@
 package cn.huava.sys.controller;
 
 import cn.huava.common.controller.BaseController;
+import cn.huava.common.pojo.dto.ApiResponseDataDto;
 import cn.huava.sys.mapper.SysUserMapper;
-import cn.huava.sys.pojo.dto.ApiResponseDataDto;
 import cn.huava.sys.pojo.dto.SysUserJwtDto;
 import cn.huava.sys.pojo.po.SysUserPo;
 import cn.huava.sys.pojo.qo.LoginQo;
@@ -28,19 +28,20 @@ public class SysUserController extends BaseController<AceSysUserService, SysUser
     String url =
         CharSequenceUtil.format(
             "{}://{}:{}/captcha", req.getScheme(), req.getServerName(), req.getServerPort());
-    ApiResponseDataDto<String> res = new ApiResponseDataDto<>(url);
-    return new ResponseEntity<>(res, HttpStatus.OK);
+    return new ResponseEntity<>(new ApiResponseDataDto<>(url), HttpStatus.OK);
   }
 
   @PostMapping("/login")
-  public ResponseEntity<SysUserJwtDto> login(HttpServletRequest req, @RequestBody @NonNull LoginQo loginQo) {
+  public ResponseEntity<ApiResponseDataDto<SysUserJwtDto>> login(
+      HttpServletRequest req, @RequestBody @NonNull LoginQo loginQo) {
     SysUserJwtDto sysUserJwtDto = service.login(req, loginQo);
-    return new ResponseEntity<>(sysUserJwtDto, HttpStatus.OK);
+    return new ResponseEntity<>(new ApiResponseDataDto<>(sysUserJwtDto), HttpStatus.OK);
   }
 
   @PostMapping("/refreshToken")
-  public ResponseEntity<String> refreshToken(@RequestBody @NonNull String refreshToken) {
+  public ResponseEntity<ApiResponseDataDto<String>> refreshToken(
+      @RequestBody @NonNull String refreshToken) {
     String accessToken = service.refreshToken(refreshToken);
-    return new ResponseEntity<>(accessToken, HttpStatus.OK);
+    return new ResponseEntity<>(new ApiResponseDataDto<>(accessToken), HttpStatus.OK);
   }
 }

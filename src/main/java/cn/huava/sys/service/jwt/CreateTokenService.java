@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class CreateTokenService extends BaseService<SysUserMapper, SysUserPo> {
+class CreateTokenService extends BaseService<SysUserMapper, SysUserPo> {
 
   protected SysUserJwtDto createToken(@NonNull Long userId, byte[] jwtKey) {
     return new SysUserJwtDto()

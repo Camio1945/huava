@@ -36,7 +36,7 @@ import org.springframework.util.*;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class RefreshCaptchaService {
+class RefreshCaptchaService {
   private static Resource[] localStaticImages = null;
 
   private static String appId;

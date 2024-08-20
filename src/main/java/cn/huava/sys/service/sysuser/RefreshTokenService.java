@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class RefreshTokenService extends BaseService<SysUserMapper, SysUserPo> {
+class RefreshTokenService extends BaseService<SysUserMapper, SysUserPo> {
 
   private final AceSysRefreshTokenService sysRefreshTokenAceService;
   private final AceJwtService jwtAceService;

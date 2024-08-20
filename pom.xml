@@ -10,7 +10,7 @@
   </parent>
   <groupId>cn.huava</groupId>
   <artifactId>huava</artifactId>
-  <version>0.1.5-SNAPSHOT</version>
+  <version>0.1.6-SNAPSHOT</version>
   <name>huava</name>
   <description>huava</description>
   <properties>
@@ -56,7 +56,7 @@
     <dependency>
       <groupId>org.dromara.hutool</groupId>
       <artifactId>hutool-all</artifactId>
-      <version>6.0.0-M14</version>
+      <version>6.0.0-M15</version>
     </dependency>
 
     <!-- test -->
@@ -92,10 +92,8 @@
             <!-- used to solve the problem of garbled Chinese characters in the database -->
             <buildArg>-H:+AddAllCharsets</buildArg>
             <buildArg>-H:+ReportExceptionStackTraces</buildArg>
-            <!-- <buildArg>-H:ConfigurationFileDirectories=/home/camio/huava-config</buildArg>-->
+<!--             <buildArg>-H:ConfigurationFileDirectories=/home/camio/.huava/native-image-config</buildArg>-->
             <buildArg>--report-unsupported-elements-at-runtime</buildArg>
-            <!-- GraalVM native image does not support Lambda by default, so we need to register the classes here -->
-            <buildArg>--features=cn.huava.common.graalvm.LambdaRegistrarFeature</buildArg>
           </buildArgs>
         </configuration>
       </plugin>
