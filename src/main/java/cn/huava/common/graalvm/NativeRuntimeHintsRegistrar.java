@@ -1,6 +1,7 @@
 package cn.huava.common.graalvm;
 
 import cn.huava.common.pojo.po.BasePo;
+import cn.huava.common.pojo.qo.PageQo;
 import com.baomidou.mybatisplus.core.MybatisXMLLanguageDriver;
 import com.baomidou.mybatisplus.core.conditions.AbstractLambdaWrapper;
 import com.baomidou.mybatisplus.core.conditions.AbstractWrapper;
@@ -46,6 +47,7 @@ public class NativeRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
         Set.of(
             // huava
             BasePo.class,
+            PageQo.class,
             // http response for gzip
             GZIPInputStream.class,
             // java

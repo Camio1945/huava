@@ -1,0 +1,22 @@
+meta {
+  name: 2_create_role
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/sys/role/create
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MjQyODk5MjMsInN1YiI6MSwiaWF0IjoxNzI0Mjg2MzIzfQ.5NXLgxA5Khpt4_UuvJtUXErzTPl1OxUO3_i-6t9e1n0
+}
+
+body:json {
+  {
+    "name": "普通用户",
+    "description": "普通用户描述"
+  }
+}

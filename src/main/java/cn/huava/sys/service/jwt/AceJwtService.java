@@ -1,7 +1,7 @@
 package cn.huava.sys.service.jwt;
 
 import cn.huava.common.constant.CommonConstant;
-import cn.huava.sys.pojo.dto.SysUserJwtDto;
+import cn.huava.sys.pojo.dto.UserJwtDto;
 import java.util.*;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class AceJwtService {
   @Value("${project.jwt_key_base64}")
   private String jwtKeyBase64;
 
-  public SysUserJwtDto createToken(@NonNull Long userId) {
+  public UserJwtDto createToken(@NonNull Long userId) {
     return createTokenService.createToken(userId, getJwtKeyBytes());
   }
 

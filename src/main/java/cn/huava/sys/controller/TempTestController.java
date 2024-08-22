@@ -1,7 +1,7 @@
 package cn.huava.sys.controller;
 
 import cn.huava.common.service.captcha.AceCaptchaService;
-import cn.huava.sys.service.sysuser.AceSysUserService;
+import cn.huava.sys.service.user.AceUserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/temp/test")
 public class TempTestController {
-  private final AceCaptchaService aceCaptchaService;
-  private final AceSysUserService aceSysUserService;
+  private final AceCaptchaService captchaService;
+  private final AceUserService userService;
 
   @GetMapping("/")
   public Object test(HttpServletRequest req, HttpServletResponse resp) throws Exception {

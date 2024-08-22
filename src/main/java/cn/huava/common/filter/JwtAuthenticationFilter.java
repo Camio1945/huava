@@ -1,9 +1,11 @@
 package cn.huava.common.filter;
 
+import static cn.huava.common.constant.CommonConstant.AUTHORIZATION_HEADER;
+
 import cn.huava.sys.auth.SysUserDetails;
-import cn.huava.sys.pojo.po.SysUserPo;
+import cn.huava.sys.pojo.po.UserPo;
 import cn.huava.sys.service.jwt.AceJwtService;
-import cn.huava.sys.service.sysuser.AceSysUserService;
+import cn.huava.sys.service.user.AceUserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,7 +32,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
   private final AceJwtService jwtAceService;
 
-  private final AceSysUserService sysUserAceService;
+  private final AceUserService userAceService;
 
   @Override
   protected void doFilterInternal(
@@ -41,7 +43,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     String token = getTokenFromRequest(request);
     if (StringUtils.hasText(token) && jwtAceService.verifyToken(token)) {
       Long userId = jwtAceService.getUserIdFromAccessToken(token);
-      String username = sysUserAceService.getById(userId).getUsername();
+      String username = userAceService.getById(userId).getUsername();
       UserDetails userDetails = buildUserDetails(username);
       UsernamePasswordAuthenticationToken authenticationToken =
           new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
@@ -52,7 +54,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   }
 
   private String getTokenFromRequest(HttpServletRequest request) {
-    String bearerToken = request.getHeader("Authorization");
+    String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
     if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
       return bearerToken.substring(BEARER_PREFIX.length());
     }
@@ -60,8 +62,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   }
 
   private UserDetails buildUserDetails(String username) {
-    SysUserPo sysUser = new SysUserPo();
-    sysUser.setUsername(username);
-    return new SysUserDetails(sysUser, new HashSet<>());
+    UserPo userPo = new UserPo();
+    userPo.setUsername(username);
+    return new SysUserDetails(userPo, new HashSet<>());
   }
 }

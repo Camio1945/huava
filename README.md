@@ -118,21 +118,26 @@ I want the main service class to be alphabetically first, so I named it `AceServ
 
 In this way, we can make the main service class a facade, the only entrance to the outside world, to achieve low coupling.
 
-Note: The sub-service classes may contain lambda expressions in them, and since the class is not public, it cannot be registered in the `LambdaRegistrationFeature.java` file; it needs to be registered in the `src/main/resources/META-INF/native-image/serialization-config.json` file, e.g.:
+Note: The sub-service classes may contain lambda expressions in them, and since the class is not public, it cannot be registered in the
+`LambdaRegistrationFeature.java` file; it needs to be registered in the
+`src/main/resources/META-INF/native-image/serialization-config.json` file, e.g.:
 
 ```json
 {
-  "types":[
+  "types": [
   ],
-  "lambdaCapturingTypes":[
-    {"name": "cn.huava.sys.service.sysuser.LoginService"},
-    {"name": "cn.huava.common.config.SecurityConfig"}
+  "lambdaCapturingTypes": [
+    {
+      "name": "cn.huava.sys.service.sysuser.LoginService"
+    },
+    {
+      "name": "cn.huava.common.config.SecurityConfig"
+    }
   ],
-  "proxies":[
+  "proxies": [
   ]
 }
 ```
-
 
 ---
 
@@ -158,50 +163,125 @@ Rules: TODO
 
 Example:
 
-1. `Permission` has 10 characters; it's not too long, but the table has the prefix `sys`, so the persistent class becomes `SysPermission`, and there is another class based on it called `SysRolePermission`, and then `AceSysRolePermissionService` and `SysRolePermissionMapper`; it's kind of too long for me now. So I abbreviate it to `perm`.
+1. `Permission` has 10 characters; it's not too long, but the table has the prefix`sys`, so the persistent class becomes
+   `SysPermission`, and there is another class based on it called`SysRolePermission`, and then
+   `AceSysRolePermissionService` and`SysRolePermissionMapper`; it's kind of too long for me now. So I abbreviate it to
+   `perm`.
 
 ---
 
-### 10. Why combine java classes (like `RuntimeHintsRegistrarConfig.java`) and `src/main/resources/META-INF/native-image` folder as two means to register GraalVM native image?
+### 10. Why combine java classes (like `RuntimeHintsRegistrarConfig.java`) and
 
-Though [Collecting Metadata with the Tracing Agent](https://www.graalvm.org/latest/reference-manual/native-image/metadata/AutomaticMetadataCollection/) is convenient, it generates a large amount of metadata, for example, the `SysRoleMapper.java`'s metadata is like this (41 other methods are ignored): 
+`src/main/resources/META-INF/native-image` folder as two means to register GraalVM native image?
+
+Though [Collecting Metadata with the Tracing Agent](https://www.graalvm.org/latest/reference-manual/native-image/metadata/AutomaticMetadataCollection/) is convenient, it generates a large amount of metadata, for example, the
+`SysRoleMapper.java`'s metadata is like this (41 other methods are ignored):
 
 ```json
 {
-    "name": "cn.huava.sys.mapper.SysRoleMapper",
-    "queryAllDeclaredMethods": true,
-    "queryAllPublicMethods": true,
-    "methods": [
-        {
-            "name": "delete",
-            "parameterTypes": [
-                "com.baomidou.mybatisplus.core.conditions.Wrapper"
-            ]
-        },
-        // Here ignored 41 other methods
-    ]
+  "name": "cn.huava.sys.mapper.RoleMapper",
+  "queryAllDeclaredMethods": true,
+  "queryAllPublicMethods": true,
+  "methods": [
+    {
+      "name": "delete",
+      "parameterTypes": [
+        "com.baomidou.mybatisplus.core.conditions.Wrapper"
+      ]
+    }
+    // Here ignored 41 other methods
+  ]
 }
 ```
+
 But the `RuntimeHintsRegistrarConfig.java` can handle all `*Mapper.java` generically, saves a lot of code.
 
-But the `src/main/resources/META-INF/native-image` folder is still necessary. For example, the sub-service classes are all not public; they cannot be referenced in the `NativeHintsRegistrar.java` file; they need to be registered in the `src/main/resources/META-INF/native-image/serialization-config.json` file.
+But the
+`src/main/resources/META-INF/native-image` folder is still necessary. For example, the sub-service classes are all not public; they cannot be referenced in the
+`NativeHintsRegistrar.java` file; they need to be registered in the
+`src/main/resources/META-INF/native-image/serialization-config.json` file.
 
-To sum up, the Java classes are necessary for less code, and the `src/main/resources/META-INF/native-image` folder is necessary for more control.
+To sum up, the Java classes are necessary for less code, and the
+`src/main/resources/META-INF/native-image` folder is necessary for more control.
 
-For my experience, only `serialization-config.json` is needed; these are not needed: `jni-config.json`, `predefined-classes-config.json`, `proxy-config.json`, `reflect-config.json`, `resource-config.json`.
+For my experience, only `serialization-config.json` is needed; these are not needed: `jni-config.json`,
+`predefined-classes-config.json`, `proxy-config.json`, `reflect-config.json`, `resource-config.json`.
+
+
+---
+
+### 11. In the `pojo` folder, what the difference between `dto`, `po`, `qo`?
+
+`pojo`: plain old java object.
+
+`dto`: data transfer object.
+
+`po`: persistent object, represents a row in the database table.
+
+`qo`: quest object / request object. (not just query object)
+
+`dto`, `po`, `qo` are all `pojo`.
+
+There are two kinds of `pojo` objects: those for request, and those for response.
+
+Both `qo` and `po` can be used for request.
+
+Both `dto` and `po` can be used for response.
+
+If po is enough, don't use `dto` or `qo`.
+
+Notes: They are all lowercase intentionally.
+
+---
+
+### 12. Why don't encapsulate the `page` method in the `BaseController`?
+
+The pros of encapsulating the `page` method in the
+`BaseController` is to save a lot of code; the cons are that it is not easy to extend.
+
+For example, let's say this is the code in the `BaseController`:
+
+```java
+
+@GetMapping("/page")
+public ResponseEntity<ResDto<PageDto<T>>> page(
+    @NonNull final PageQo pageQo, @NonNull final T params) {
+  // code
+}
+```
+
+Normally, there are two situations when we need to override the page method:
+
+1. Change the `PageDto<T>` to a different type, say `PageDto<RoleDto>`.
+
+2. Change the `T params` to a different type, say `RoleQo`.
+
+In either case, we'll need to write a new method with a new `@GetMapping` path in the SubController, like this:
+
+```java
+
+@GetMapping("/customPage")
+public ResponseEntity<ResDto<PageDto<RolePo>>> page(
+    @NonNull final PageQo pageQo, @NonNull final RoleQo params) {
+  // code
+}
+```
+
+Which is not very convenient for communicating with the frontend  because sometimes they should use
+`page` and sometimes they should use `customPage`.
+
 
 ---
 
 # Abbreviations Table
 
-| Original word | Abbreviation |
-|:-------------:|:------------:|
-|  permission   |     perm     |
-|               |              |
-|               |              |
-|               |              |
-|               |              |
-
+|  Original word  | Abbreviation |
+|:---------------:|:------------:|
+|   permission    |     perm     |
+| response/result |     res      |
+|                 |              |
+|                 |              |
+|                 |              |
 
 ---
 

@@ -1,9 +1,16 @@
 package cn.huava.sys.pojo.qo;
 
+import lombok.Data;
+
 /**
  * login parameters
  *
  * @author Camio1945
  */
-public record LoginQo(
-    String username, String password, String captchaCode, Boolean isCaptchaDisabledForTesting) {}
+@Data
+public class LoginQo {
+  private String username;
+  private String password;
+  private String captchaCode;
+  private Boolean isCaptchaDisabledForTesting;
+}

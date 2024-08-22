@@ -1,20 +1,21 @@
 package cn.huava.sys.auth;
 
-import cn.huava.sys.pojo.po.SysUserPo;
+import cn.huava.sys.pojo.po.UserPo;
 import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * used by spring
+ *
  * @author Camio1945
  */
 public class SysUserDetails implements UserDetails {
-  private final SysUserPo sysUser;
+  private final UserPo userPo;
   private final Collection<? extends GrantedAuthority> authorities;
 
-  public SysUserDetails(SysUserPo sysUser, Collection<? extends GrantedAuthority> authorities) {
-    this.sysUser = sysUser;
+  public SysUserDetails(UserPo userPo, Collection<? extends GrantedAuthority> authorities) {
+    this.userPo = userPo;
     this.authorities = authorities;
   }
 
@@ -25,12 +26,12 @@ public class SysUserDetails implements UserDetails {
 
   @Override
   public String getPassword() {
-    return sysUser.getPassword();
+    return userPo.getPassword();
   }
 
   @Override
   public String getUsername() {
-    return sysUser.getUsername();
+    return userPo.getUsername();
   }
 
   @Override

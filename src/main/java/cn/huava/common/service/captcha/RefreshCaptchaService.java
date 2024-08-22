@@ -1,6 +1,7 @@
 package cn.huava.common.service.captcha;
 
 import cn.huava.common.constant.CommonConstant;
+import cn.huava.common.util.Fn;
 import cn.huava.common.util.SingleFlightUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -74,7 +75,7 @@ class RefreshCaptchaService {
   private boolean refreshByOnlineApi(HttpServletRequest req, HttpServletResponse resp) {
     initAppIdIfNeeded(appIdPath);
     initAppSecretIfNeeded(appSecretPath);
-    if (StrValidator.isBlank(appId) || StrValidator.isBlank(appSecret)) {
+    if (Fn.isBlank(appId) || Fn.isBlank(appSecret)) {
       return false;
     }
     try {
@@ -108,7 +109,7 @@ class RefreshCaptchaService {
       return;
     }
     appId = SingleFlightUtil.execute("mxnzpRollApiAppId", () -> readContent(appIdPath));
-    if (StrValidator.isBlank(appId)) {
+    if (Fn.isBlank(appId)) {
       log.warn(
           "project.mxnzp_roll_api.app_id_path is blank, will use local static image instead of online captcha");
     }
@@ -119,7 +120,7 @@ class RefreshCaptchaService {
       return;
     }
     appSecret = SingleFlightUtil.execute("mxnzpRollApiAppSecret", () -> readContent(appSecretPath));
-    if (StrValidator.isBlank(appId)) {
+    if (Fn.isBlank(appId)) {
       log.warn(
           "project.mxnzp_roll_api.app_secret_path is blank, will use local static image instead of online captcha");
     }
@@ -129,7 +130,7 @@ class RefreshCaptchaService {
     // type: 0-image link, 1-base64 image
     String urlTemplate =
         "https://www.mxnzp.com/api/verifycode/code?len=4&type=1&app_id={}&app_secret={}";
-    String url = CharSequenceUtil.format(urlTemplate, appId, appSecret);
+    String url = Fn.format(urlTemplate, appId, appSecret);
     String jsonStr = HttpUtil.get(url);
     return JSONUtil.parseObj(jsonStr);
   }
@@ -175,7 +176,7 @@ class RefreshCaptchaService {
       path = System.getProperty("user.home") + File.separator + path;
     }
     path = StringUtils.cleanPath(path);
-    if (FileUtil.exists(path)) {
+    if (Fn.exists(path)) {
       return FileUtil.readUtf8String(path).trim();
     }
     return null;
