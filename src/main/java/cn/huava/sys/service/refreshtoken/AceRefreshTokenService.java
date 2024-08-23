@@ -2,10 +2,10 @@ package cn.huava.sys.service.refreshtoken;
 
 import cn.huava.common.pojo.po.BasePo;
 import cn.huava.common.service.BaseService;
+import cn.huava.common.util.Fn;
 import cn.huava.sys.mapper.RefreshTokenMapper;
 import cn.huava.sys.pojo.po.RefreshTokenPo;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,8 @@ public class AceRefreshTokenService extends BaseService<RefreshTokenMapper, Refr
 
   public RefreshTokenPo getByRefreshToken(@NonNull String refreshToken) {
     Wrapper<RefreshTokenPo> wrapper =
-        new LambdaQueryWrapper<RefreshTokenPo>().eq(RefreshTokenPo::getRefreshToken, refreshToken);
+        Fn.buildUndeletedWrapper(RefreshTokenPo::getDeleteInfo)
+            .eq(RefreshTokenPo::getRefreshToken, refreshToken);
     return getOne(wrapper);
   }
 }

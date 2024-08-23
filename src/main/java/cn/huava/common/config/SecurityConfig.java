@@ -1,5 +1,7 @@
 package cn.huava.common.config;
 
+import static cn.huava.common.constant.CommonConstant.REFRESH_TOKEN_URI;
+
 import cn.huava.common.filter.JwtAuthenticationFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -40,7 +42,7 @@ public class SecurityConfig {
               registry.requestMatchers("/captcha").permitAll();
               registry.requestMatchers("/sys/user/login").permitAll();
               registry.requestMatchers("/sys/user/code").permitAll();
-              registry.requestMatchers("/sys/user/refreshToken").permitAll();
+              registry.requestMatchers(REFRESH_TOKEN_URI).permitAll();
               registry.requestMatchers("/temp/test/**").permitAll();
               registry.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
               registry.anyRequest().authenticated();

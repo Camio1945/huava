@@ -1,13 +1,13 @@
 package cn.huava.common.graalvm;
 
 import java.io.File;
-import java.lang.reflect.Modifier;
 import java.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.io.file.FileUtil;
 import org.dromara.hutool.json.*;
 
 /**
+ * It just a backup file, don't use it.<br>
  * Used to generate code from config files. <br>
  * 1. The config files comes from <a
  * href="https://www.graalvm.org/latest/reference-manual/native-image/metadata/AutomaticMetadataCollection/">agentlib</a>.
@@ -132,45 +132,5 @@ public class NativeHintsRegistrarGenerator {
     // String remainPath = BASE_PATH + File.separator + "reflect-config-remain.json";
     String remainPath = "F:/temp/reflect-config.json";
     FileUtil.writeUtf8String(remainJsonStr, remainPath);
-    // backup();
-  }
-
-  private static void backup() {
-    List<String> classNames = new ArrayList<>();
-    String content = FileUtil.readUtf8String(REFLECT_CONFIG_FILE_PATH);
-    JSONArray jsonArray = JSONUtil.parseArray(content);
-    JSONArray remainArray = new JSONArray();
-    for (Object o : jsonArray) {
-      JSONObject json = (JSONObject) o;
-      String className = json.getStr("name");
-      if (shouldRemainInJsonFile(className)) {
-        remainArray.add(json);
-        continue;
-      }
-      classNames.add(className);
-    }
-    FileUtil.writeUtf8Lines(classNames, "E:/test.txt");
-
-    String remainJsonStr = remainArray.toStringPretty();
-    String remainPath = BASE_PATH + File.separator + "reflect-config-remain.json";
-    FileUtil.writeUtf8String(remainJsonStr, remainPath);
-    log.info("reflect-config-remain.json generated in {}", remainPath);
-  }
-
-  private static boolean shouldRemainInJsonFile(String className) {
-    return className.startsWith("[")
-        || !className.contains(".")
-        || className.contains("$")
-        || !isClassPublic(className)
-        || NOT_COMPILABLE_CLASS_NAMES.contains(className);
-  }
-
-  private static boolean isClassPublic(String className) {
-    try {
-      Class<?> clazz = Class.forName(className);
-      return Modifier.isPublic(clazz.getModifiers());
-    } catch (Throwable ignore) {
-      return false;
-    }
   }
 }

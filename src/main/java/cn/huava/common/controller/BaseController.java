@@ -1,6 +1,5 @@
 package cn.huava.common.controller;
 
-import cn.huava.common.pojo.dto.ResDto;
 import cn.huava.common.pojo.po.BasePo;
 import cn.huava.common.service.BaseService;
 import cn.huava.common.validation.*;
@@ -38,47 +37,48 @@ public abstract class BaseController<S extends BaseService<M, T>, M extends Base
   protected S service;
 
   @GetMapping("/get/{id}")
-  public ResponseEntity<ResDto<T>> getById(@PathVariable @NonNull final Long id) {
+  public ResponseEntity<T> getById(@PathVariable @NonNull final Long id) {
     T entity = service.getById(id);
     if (entity instanceof BasePo basePo && basePo.getDeleteInfo() > 0) {
       return ResponseEntity.notFound().build();
     }
-    return ResponseEntity.ok(new ResDto<>(entity));
+    return ResponseEntity.ok(entity);
   }
 
   @PostMapping("/create")
-  public ResponseEntity<ResDto<Long>> create(
-      @RequestBody @NonNull @Validated({Create.class, Update.class}) final T entity) {
+  public ResponseEntity<Long> create(
+      @RequestBody @NonNull @Validated({Create.class}) final T entity) {
     Assert.isInstanceOf(BasePo.class, entity, "The entity must be an instance of BasePo");
     BasePo.beforeCreate(entity);
     boolean success = service.save(entity);
     Assert.isTrue(success, "Failed to create entity");
     Long id = ((BasePo) entity).getId();
-    return ResponseEntity.ok(new ResDto<>(id));
+    return ResponseEntity.ok(id);
   }
 
   @PutMapping("/update")
-  public ResponseEntity<ResDto<Void>> update(@RequestBody @NonNull final T entity) {
+  public ResponseEntity<Void> update(
+      @RequestBody @NonNull @Validated({Update.class}) final T entity) {
     BasePo.beforeUpdate(entity);
     boolean success = service.updateById(entity);
     Assert.isTrue(success, "Failed to update entity");
-    return ResponseEntity.ok(new ResDto<>());
+    return ResponseEntity.ok(null);
   }
 
   @PatchMapping("/patch")
-  public ResponseEntity<ResDto<Void>> patch(
+  public ResponseEntity<Void> patch(
       @RequestBody final T entity, @RequestParam(required = false) final String... fields) {
     // TODO The patch method is not implemented yet
     Assert.isTrue(false, "The patch method is not implemented yet");
-    return ResponseEntity.ok(new ResDto<>());
+    return ResponseEntity.ok(null);
   }
 
   @DeleteMapping("/delete")
-  public ResponseEntity<ResDto<Void>> delete(
+  public ResponseEntity<Void> delete(
       @RequestBody @NonNull @Validated({Delete.class}) final T entity) {
     Long id = (Long) FieldUtil.getFieldValue(entity, "id");
     boolean success = service.softDelete(id);
     Assert.isTrue(success, "Failed to delete entity");
-    return ResponseEntity.ok(new ResDto<>());
+    return ResponseEntity.ok(null);
   }
 }

@@ -1,7 +1,6 @@
 package cn.huava.sys.controller;
 
 import cn.huava.common.controller.BaseController;
-import cn.huava.common.pojo.dto.ResDto;
 import cn.huava.common.util.Fn;
 import cn.huava.sys.mapper.UserMapper;
 import cn.huava.sys.pojo.dto.UserInfoDto;
@@ -29,30 +28,35 @@ public class UserController extends BaseController<AceUserService, UserMapper, U
   private final AceRoleService roleService;
 
   @GetMapping("/code")
-  public ResponseEntity<ResDto<String>> code(@NonNull final HttpServletRequest req) {
+  public ResponseEntity<String> code(@NonNull final HttpServletRequest req) {
     String url =
         Fn.format("{}://{}:{}/captcha", req.getScheme(), req.getServerName(), req.getServerPort());
-    return ResponseEntity.ok(new ResDto<>(url));
+    return ResponseEntity.ok(url);
   }
 
   @PostMapping("/login")
-  public ResponseEntity<ResDto<UserJwtDto>> login(
+  public ResponseEntity<UserJwtDto> login(
       @NonNull final HttpServletRequest req, @RequestBody @NonNull final LoginQo loginQo) {
-    return ResponseEntity.ok(new ResDto<>(service.login(req, loginQo)));
+    return ResponseEntity.ok(service.login(req, loginQo));
   }
 
   @GetMapping("/info")
-  public ResponseEntity<ResDto<UserInfoDto>> info() {
+  public ResponseEntity<UserInfoDto> info() {
     UserPo loginUser = Fn.getLoginUser();
     List<String> roleNames = roleService.getRoleNamesByUserId(loginUser.getId());
     UserInfoDto userInfoDto = new UserInfoDto(loginUser.getUsername(), roleNames);
-    return ResponseEntity.ok(new ResDto<>(userInfoDto));
+    return ResponseEntity.ok(userInfoDto);
   }
 
   @PostMapping("/refreshToken")
-  public ResponseEntity<ResDto<String>> refreshToken(
-      @RequestBody @NonNull String refreshToken) {
+  public ResponseEntity<String> refreshToken(@RequestBody @NonNull String refreshToken) {
     String accessToken = service.refreshToken(refreshToken);
-    return ResponseEntity.ok(new ResDto<>(accessToken));
+    return ResponseEntity.ok(accessToken);
+  }
+
+  @PostMapping("/logout")
+  public ResponseEntity<Void> logout(@RequestBody @NonNull String refreshToken) {
+    service.logout(refreshToken);
+    return ResponseEntity.ok(null);
   }
 }

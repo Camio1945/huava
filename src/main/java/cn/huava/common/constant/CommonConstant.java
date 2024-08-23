@@ -1,7 +1,5 @@
 package cn.huava.common.constant;
 
-import cn.huava.common.validation.Create;
-import cn.huava.common.validation.Update;
 
 /**
  * About @SuppressWarnings("java:S1214"): <br>
@@ -20,4 +18,9 @@ public interface CommonConstant {
   String AUTHORIZATION_HEADER = "Authorization";
   int MAX_PAGE_SIZE = 500;
   long ADMIN_ROLE_ID = 1L;
+  String REFRESH_TOKEN_URI = "/sys/user/refreshToken";
+
+  interface RoleMessage {
+    String IMPORTANT_ROLE = "该角色为最重要的基础角色，不允许进行任何操作";
+  }
 }

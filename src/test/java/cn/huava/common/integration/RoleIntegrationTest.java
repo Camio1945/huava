@@ -2,7 +2,6 @@ package cn.huava.common.integration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import cn.huava.common.pojo.dto.ResDto;
 import cn.huava.sys.pojo.po.RolePo;
 import java.io.IOException;
 import lombok.NonNull;
@@ -43,14 +42,16 @@ class RoleIntegrationTest extends BaseTest {
   }
 
   void deleteRoleById() throws IOException {
-    Request req =
-        HttpUtil.createRequest(BASE_URL + "/sys/role/delete/" + createdRoleId, Method.DELETE);
+    Request req = HttpUtil.createRequest(BASE_URL + "/sys/role/delete", Method.DELETE);
+    RolePo rolePo = new RolePo();
+    rolePo.setId(createdRoleId);
+    req.body(JSONUtil.toJsonStr(rolePo));
     req.header("Authorization", "Bearer " + accessToken);
     try (Response resp = req.send()) {
+      assertEquals(200, resp.getStatus());
       String body = resp.bodyStr();
-      TypeReference<ResDto<Void>> type = new TypeReference<>() {};
-      ResDto<Void> dto = JSONUtil.toBean(body, type);
-      assertEquals(0, dto.getCode());
+      TypeReference<Void> type = new TypeReference<>() {};
+      Void dto = JSONUtil.toBean(body, type);
     }
     req = HttpUtil.createGet(BASE_URL + "/sys/role/get/" + createdRoleId);
     req.header("Authorization", "Bearer " + accessToken);
@@ -75,11 +76,9 @@ class RoleIntegrationTest extends BaseTest {
     po.setName(name).setDescription(name + "描述");
     req.body(JSONUtil.toJsonStr(po));
     try (Response resp = req.send()) {
+      assertEquals(200, resp.getStatus());
       String body = resp.bodyStr();
-      TypeReference<ResDto<Long>> type = new TypeReference<>() {};
-      ResDto<Long> dto = JSONUtil.toBean(body, type);
-      createdRoleId = dto.getData();
-      assertEquals(0, dto.getCode());
+      createdRoleId = Long.parseLong(body);
     }
   }
 
@@ -99,11 +98,10 @@ class RoleIntegrationTest extends BaseTest {
     Request req = HttpUtil.createGet(BASE_URL + "/sys/role/get/" + id);
     req.header("Authorization", "Bearer " + accessToken);
     try (Response resp = req.send()) {
+      assertEquals(200, resp.getStatus());
       String body = resp.bodyStr();
-      TypeReference<ResDto<RolePo>> type = new TypeReference<>() {};
-      ResDto<RolePo> dto = JSONUtil.toBean(body, type);
-      assertEquals(0, dto.getCode());
-      return dto.getData();
+      TypeReference<RolePo> type = new TypeReference<>() {};
+      return JSONUtil.toBean(body, type);
     }
   }
 
@@ -140,11 +138,9 @@ class RoleIntegrationTest extends BaseTest {
     Request req = HttpUtil.createGet(BASE_URL + "/sys/role/isNameExists?name=" + name);
     req.header("Authorization", "Bearer " + accessToken);
     try (Response resp = req.send()) {
+      assertEquals(200, resp.getStatus());
       String body = resp.bodyStr();
-      TypeReference<ResDto<Boolean>> type = new TypeReference<>() {};
-      ResDto<Boolean> dto = JSONUtil.toBean(body, type);
-      assertEquals(0, dto.getCode());
-      return dto.getData();
+      return Boolean.parseBoolean(body);
     }
   }
 }

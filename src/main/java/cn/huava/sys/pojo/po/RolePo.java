@@ -2,8 +2,7 @@ package cn.huava.sys.pojo.po;
 
 import cn.huava.common.pojo.po.BasePo;
 import cn.huava.common.validation.*;
-import cn.huava.sys.validation.role.BeforeDelete;
-import cn.huava.sys.validation.role.UniqueRoleName;
+import cn.huava.sys.validation.role.*;
 import com.baomidou.mybatisplus.annotation.TableName;
 import jakarta.validation.constraints.*;
 import lombok.Data;
@@ -18,10 +17,8 @@ import lombok.Data;
 @UniqueRoleName(
     message = "角色名称已存在",
     groups = {Create.class, Update.class})
-@BeforeDelete(
-    message = "角色下存在用户，不能删除",
-    groups = {Delete.class}
-)
+@BeforeDeleteRole(groups = {Delete.class})
+@BeforeUpdateRole(groups = {Update.class})
 public class RolePo extends BasePo {
   /** 名称 */
   @NotBlank(

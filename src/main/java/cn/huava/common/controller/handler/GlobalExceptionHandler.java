@@ -1,6 +1,5 @@
 package cn.huava.common.controller.handler;
 
-import cn.huava.common.pojo.dto.ResDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
@@ -18,29 +17,26 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 @Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
-  private static final String DUPLICATE_ENTRY = "Duplicate entry";
 
   @ExceptionHandler(IllegalArgumentException.class)
-  public ResponseEntity<ResDto<Object>> handle(IllegalArgumentException e, WebRequest request) {
+  public ResponseEntity<String> handle(IllegalArgumentException e, WebRequest request) {
     return getBadRequestRes(request, e, e.getMessage());
   }
 
-  private static ResponseEntity<ResDto<Object>> getBadRequestRes(
+  private static ResponseEntity<String> getBadRequestRes(
       WebRequest request, Exception e, String message) {
-    ResDto<Object> res = new ResDto<>().setCode(HttpStatus.BAD_REQUEST.value()).setMessage(message);
     String uri = ((ServletWebRequest) request).getRequest().getRequestURI();
     log.warn("API {} encountered illegal argument: {}", uri, e.getMessage());
-    return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
+    return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
   }
 
   @ExceptionHandler(DuplicateKeyException.class)
-  public ResponseEntity<ResDto<Object>> handle(DuplicateKeyException e, WebRequest request) {
+  public ResponseEntity<String> handle(DuplicateKeyException e, WebRequest request) {
     return getBadRequestRes(request, e, "数据已经存在");
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<ResDto<Object>> handle(
-      MethodArgumentNotValidException e, WebRequest request) {
+  public ResponseEntity<String> handle(MethodArgumentNotValidException e, WebRequest request) {
     String message = getMessage(e);
     return getBadRequestRes(request, e, message);
   }
@@ -58,24 +54,20 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler(NoResourceFoundException.class)
-  public ResponseEntity<ResDto<Object>> handle(NoResourceFoundException e, WebRequest request) {
-    ResDto<Object> res =
-        new ResDto<>().setCode(HttpStatus.NOT_FOUND.value()).setMessage(e.getMessage());
+  public ResponseEntity<String> handle(NoResourceFoundException e, WebRequest request) {
     String uri = ((ServletWebRequest) request).getRequest().getRequestURI();
     log.warn("API {} can not be handled: {}", uri, e.getMessage());
-    return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
+    return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
   }
 
   @ExceptionHandler(Exception.class)
-  public ResponseEntity<ResDto<Object>> handleGeneralException(Exception e, WebRequest request) {
+  public ResponseEntity<String> handleGeneralException(Exception e, WebRequest request) {
     return getServerErrorRes(request, e);
   }
 
-  private static ResponseEntity<ResDto<Object>> getServerErrorRes(WebRequest request, Exception e) {
-    ResDto<Object> res =
-        new ResDto<>().setCode(HttpStatus.INTERNAL_SERVER_ERROR.value()).setMessage(e.getMessage());
+  private static ResponseEntity<String> getServerErrorRes(WebRequest request, Exception e) {
     String uri = ((ServletWebRequest) request).getRequest().getRequestURI();
     log.error("API {} encountered server error", uri, e);
-    return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
+    return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
   }
 }

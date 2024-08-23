@@ -30,6 +30,7 @@ class CreateTokenService extends BaseService<UserMapper, UserPo> {
     Map<String, Object> payload = HashMap.newHashMap(3);
     payload.put("sub", userId);
     payload.put("iat", System.currentTimeMillis() / 1000);
+    // 1 hour
     payload.put("exp", System.currentTimeMillis() / 1000 + 60 * 60);
     return JWTUtil.createToken(payload, jwtKey);
   }
@@ -37,6 +38,7 @@ class CreateTokenService extends BaseService<UserMapper, UserPo> {
   private static String createRefreshToken(byte[] jwtKey) {
     Map<String, Object> payload = HashMap.newHashMap(3);
     payload.put("iat", System.currentTimeMillis() / 1000);
+    // 30 days
     payload.put("exp", System.currentTimeMillis() / 1000 + 60 * 60 * 24 * 30);
     return JWTUtil.createToken(payload, jwtKey);
   }

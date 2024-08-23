@@ -21,20 +21,20 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 class RefreshTokenService extends BaseService<UserMapper, UserPo> {
 
-  private final AceRefreshTokenService refreshTokenService;
-  private final AceJwtService jwtAceService;
+  private final AceRefreshTokenService aceRefreshTokenService;
+  private final AceJwtService aceJwtService;
 
   protected String refreshToken(@NonNull String refreshToken) {
-    RefreshTokenPo po = refreshTokenService.getByRefreshToken(refreshToken);
+    RefreshTokenPo po = aceRefreshTokenService.getByRefreshToken(refreshToken);
     if (po == null || po.getDeleteInfo() > 0) {
-      throw new IllegalArgumentException("refresh token invalid");
+      throw new IllegalArgumentException("Refresh token invalid");
     }
     JWT jwt = JWTUtil.parseToken(refreshToken);
     Long exp = jwt.getPayload("exp", Long.class);
     if (exp == null || exp * CommonConstant.MILLIS_PER_SECOND < System.currentTimeMillis()) {
-      throw new IllegalArgumentException("refresh token expired");
+      throw new IllegalArgumentException("Refresh token expired");
     }
-    UserJwtDto res = jwtAceService.createToken(po.getSysUserId());
+    UserJwtDto res = aceJwtService.createToken(po.getSysUserId());
     return res.getAccessToken();
   }
 }

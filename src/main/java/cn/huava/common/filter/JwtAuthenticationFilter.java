@@ -1,6 +1,7 @@
 package cn.huava.common.filter;
 
 import static cn.huava.common.constant.CommonConstant.AUTHORIZATION_HEADER;
+import static cn.huava.common.constant.CommonConstant.REFRESH_TOKEN_URI;
 
 import cn.huava.sys.auth.SysUserDetails;
 import cn.huava.sys.pojo.po.UserPo;
@@ -11,6 +12,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
 import lombok.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -36,19 +38,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
   @Override
   protected void doFilterInternal(
-      @NonNull HttpServletRequest request,
-      @NonNull HttpServletResponse response,
-      @NonNull FilterChain filterChain)
+      @NonNull final HttpServletRequest request,
+      @NonNull final HttpServletResponse response,
+      @NonNull final FilterChain filterChain)
       throws ServletException, IOException {
-    String token = getTokenFromRequest(request);
-    if (StringUtils.hasText(token) && jwtAceService.verifyToken(token)) {
-      Long userId = jwtAceService.getUserIdFromAccessToken(token);
-      String username = userAceService.getById(userId).getUsername();
-      UserDetails userDetails = buildUserDetails(username);
-      UsernamePasswordAuthenticationToken authenticationToken =
-          new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-      authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-      SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+    if (!request.getRequestURI().equals(REFRESH_TOKEN_URI)) {
+      String token = getTokenFromRequest(request);
+      if (StringUtils.hasText(token)) {
+        if (jwtAceService.isTokenExpired(token)) {
+          writeResponse(response);
+          return;
+        }
+        setAuthentication(request, token);
+      }
     }
     filterChain.doFilter(request, response);
   }
@@ -59,6 +61,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       return bearerToken.substring(BEARER_PREFIX.length());
     }
     return null;
+  }
+
+  private static void writeResponse(HttpServletResponse response) throws IOException {
+    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+    PrintWriter writer = response.getWriter();
+    writer.write("Access token expired");
+    writer.flush();
+  }
+
+  private void setAuthentication(HttpServletRequest request, String token) {
+    Long userId = jwtAceService.getUserIdFromAccessToken(token);
+    String username = userAceService.getById(userId).getUsername();
+    UserDetails userDetails = buildUserDetails(username);
+    UsernamePasswordAuthenticationToken authenticationToken =
+        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
   }
 
   private UserDetails buildUserDetails(String username) {

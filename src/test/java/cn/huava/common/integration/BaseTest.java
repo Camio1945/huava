@@ -2,7 +2,6 @@ package cn.huava.common.integration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import cn.huava.common.pojo.dto.ResDto;
 import cn.huava.common.util.Fn;
 import cn.huava.sys.pojo.dto.UserJwtDto;
 import cn.huava.sys.pojo.qo.LoginQo;
@@ -20,8 +19,6 @@ abstract class BaseTest {
   protected static final String BASE_URL = "http://localhost:22345";
   // private static final String BASE_URL = "http://192.168.0.100:22345";
 
-  protected static final TypeReference<ResDto<String>> STR_TYPE = new TypeReference<>() {};
-
   protected static String accessToken;
 
   protected static String refreshToken;
@@ -35,12 +32,12 @@ abstract class BaseTest {
             .setIsCaptchaDisabledForTesting(true);
     req.body(JSONUtil.toJsonStr(loginQo));
     try (Response resp = req.send()) {
+      assertEquals(200, resp.getStatus());
       String body = resp.bodyStr();
-      TypeReference<ResDto<UserJwtDto>> type = new TypeReference<>() {};
-      ResDto<UserJwtDto> dto = JSONUtil.toBean(body, type);
-      assertEquals(0, dto.getCode());
-      accessToken = dto.getData().getAccessToken();
-      refreshToken = dto.getData().getRefreshToken();
+      TypeReference<UserJwtDto> type = new TypeReference<>() {};
+      UserJwtDto dto = JSONUtil.toBean(body, type);
+      accessToken = dto.getAccessToken();
+      refreshToken = dto.getRefreshToken();
       assertTrue(Fn.isNotBlank(accessToken));
       assertTrue(Fn.isNotBlank(refreshToken));
     }

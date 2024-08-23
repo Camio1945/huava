@@ -1,12 +1,38 @@
 {
-  "types":[
-  ],
-  "lambdaCapturingTypes":[
-    {"name": "cn.huava.sys.service.SysUserLoginUserDetailsServiceImpl"},
-    {"name": "cn.huava.sys.service.sysrefreshtoken.AceSysRefreshTokenService"},
-    {"name": "cn.huava.sys.service.sysuser.LoginService"},
-    {"name": "cn.huava.common.config.SecurityConfig"}
-  ],
-  "proxies":[
-  ]
+    "types": [
+    ],
+    "proxies": [
+    ],
+    "lambdaCapturingTypes": [
+        {
+            "name": "cn.huava.common.config.SecurityConfig"
+        },
+        {
+            "name": "cn.huava.common.graalvm.NativeRuntimeHintsRegistrar"
+        },
+        {
+            "name": "cn.huava.common.graalvm.RuntimeHintsRegistrarConfig"
+        },
+        {
+            "name": "cn.huava.sys.service.refreshtoken.AceRefreshTokenService"
+        },
+        {
+            "name": "cn.huava.sys.service.role.AceRoleService"
+        },
+        {
+            "name": "cn.huava.sys.service.role.RolePageService"
+        },
+        {
+            "name": "cn.huava.sys.service.user.AceUserService"
+        },
+        {
+            "name": "cn.huava.sys.service.user.LoginService"
+        },
+        {
+            "name": "cn.huava.sys.service.UserLoginUserDetailsServiceImpl"
+        },
+        {
+            "name": "cn.huava.sys.validation.role.BeforeDeleteRoleValidator"
+        }
+    ]
 }

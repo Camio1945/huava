@@ -9,10 +9,10 @@ import java.lang.annotation.Target;
 /**
  * @author Camio1945
  */
-@Constraint(validatedBy = UniqueRoleNameValidator.class)
+@Constraint(validatedBy = BeforeDeleteRoleValidator.class)
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface UniqueRoleName {
+public @interface BeforeDeleteRole {
   String message() default "";
 
   Class<?>[] groups() default {};

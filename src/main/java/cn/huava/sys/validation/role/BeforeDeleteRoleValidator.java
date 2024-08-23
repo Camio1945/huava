@@ -1,7 +1,5 @@
 package cn.huava.sys.validation.role;
 
-import static cn.huava.common.constant.CommonConstant.ADMIN_ROLE_ID;
-
 import cn.huava.common.util.Fn;
 import cn.huava.sys.pojo.po.RolePo;
 import cn.huava.sys.pojo.po.UserRolePo;
@@ -10,10 +8,13 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
+import static cn.huava.common.constant.CommonConstant.ADMIN_ROLE_ID;
+import static cn.huava.common.constant.CommonConstant.RoleMessage.IMPORTANT_ROLE;
+
 /**
  * @author Camio1945
  */
-public class BeforeDeleteValidator implements ConstraintValidator<BeforeDelete, RolePo> {
+public class BeforeDeleteRoleValidator implements ConstraintValidator<BeforeDeleteRole, RolePo> {
 
   @Override
   public boolean isValid(RolePo rolePo, ConstraintValidatorContext context) {
@@ -22,7 +23,7 @@ public class BeforeDeleteValidator implements ConstraintValidator<BeforeDelete, 
       return customMessage(context, "角色ID不能为空");
     }
     if (id == ADMIN_ROLE_ID) {
-      return customMessage(context, "该角色为最重要的基础角色，不允许进行任何操作");
+      return customMessage(context, IMPORTANT_ROLE);
     }
     AceUserRoleService userRoleService = Fn.getBean(AceUserRoleService.class);
     long userCount =

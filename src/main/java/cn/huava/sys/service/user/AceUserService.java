@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 public class AceUserService extends BaseService<UserMapper, UserPo> {
   private final LoginService loginService;
   private final RefreshTokenService refreshTokenService;
+  private final LogoutService logoutService;
 
   public UserJwtDto login(@NonNull final HttpServletRequest req, @NonNull final LoginQo loginQo) {
     return loginService.login(req, loginQo);
@@ -33,5 +34,9 @@ public class AceUserService extends BaseService<UserMapper, UserPo> {
   public UserPo getByUserName(@NonNull final String username) {
     return getOne(
         Fn.buildUndeletedWrapper(UserPo::getDeleteInfo).eq(UserPo::getUsername, username));
+  }
+
+  public void logout(@NonNull final String refreshToken) {
+    logoutService.logout(refreshToken);
   }
 }

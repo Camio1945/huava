@@ -175,7 +175,7 @@ class RefreshCaptchaService {
     if (!Paths.get(path).isAbsolute()) {
       path = System.getProperty("user.home") + File.separator + path;
     }
-    path = StringUtils.cleanPath(path);
+    path = Fn.cleanPath(path);
     if (Fn.exists(path)) {
       return FileUtil.readUtf8String(path).trim();
     }

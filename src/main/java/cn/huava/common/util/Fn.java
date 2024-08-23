@@ -12,6 +12,7 @@ import org.dromara.hutool.core.bean.BeanUtil;
 import org.dromara.hutool.core.io.file.FileUtil;
 import org.dromara.hutool.core.text.*;
 import org.dromara.hutool.extra.spring.SpringUtil;
+import org.springframework.util.StringUtils;
 
 /**
  * Fn is short for function, like the same button on a laptop; it provides a facade for common
@@ -45,6 +46,10 @@ public class Fn {
 
   public static boolean isNotBlank(final CharSequence str) {
     return StrValidator.isNotBlank(str);
+  }
+
+  public static String cleanPath(String path) {
+    return StringUtils.cleanPath(path);
   }
 
   public static String format(final CharSequence template, final Object... params) {

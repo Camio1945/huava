@@ -2,12 +2,9 @@ package cn.huava.common.integration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import cn.huava.common.pojo.dto.ResDto;
 import cn.huava.common.util.Fn;
-import cn.huava.sys.pojo.po.RolePo;
 import cn.huava.sys.pojo.po.UserPo;
 import java.io.IOException;
-import lombok.NonNull;
 import org.dromara.hutool.core.data.id.IdUtil;
 import org.dromara.hutool.core.reflect.TypeReference;
 import org.dromara.hutool.http.HttpUtil;
@@ -39,9 +36,7 @@ class UserIntegrationTest extends BaseTest {
 
   void code() {
     String resp = HttpUtil.get(BASE_URL + "/sys/user/code");
-    ResDto<String> dto = JSONUtil.toBean(resp, STR_TYPE);
-    assertEquals(0, dto.getCode());
-    assertTrue(dto.getData().startsWith("http"));
+    assertTrue(resp.startsWith("http"));
   }
 
   void captcha() {
@@ -54,10 +49,9 @@ class UserIntegrationTest extends BaseTest {
     Request req = HttpUtil.createPost(BASE_URL + "/sys/user/refreshToken");
     req.body(refreshToken).contentType("text/plain");
     try (Response resp = req.send()) {
+      assertEquals(200, resp.getStatus());
       String body = resp.bodyStr();
-      ResDto<String> dto = JSONUtil.toBean(body, STR_TYPE);
-      assertEquals(0, dto.getCode());
-      assertTrue(Fn.isNotBlank(dto.getData()));
+      assertTrue(Fn.isNotBlank(body));
     }
   }
 
@@ -74,11 +68,9 @@ class UserIntegrationTest extends BaseTest {
     po.setUsername(IdUtil.nanoId()).setPassword("123456").setIsEnabled(true);
     req.body(JSONUtil.toJsonStr(po));
     try (Response resp = req.send()) {
+      assertEquals(200, resp.getStatus());
       String body = resp.bodyStr();
-      TypeReference<ResDto<Long>> type = new TypeReference<>() {};
-      ResDto<Long> dto = JSONUtil.toBean(body, type);
-      assertEquals(0, dto.getCode());
-      createdUserId = dto.getData();
+      createdUserId = Long.parseLong(body);
       assertTrue(createdUserId > 0);
     }
   }
@@ -91,10 +83,7 @@ class UserIntegrationTest extends BaseTest {
     po.setGender("M");
     req.body(JSONUtil.toJsonStr(po));
     try (Response resp = req.send()) {
-      String body = resp.bodyStr();
-      TypeReference<ResDto<Void>> type = new TypeReference<>() {};
-      ResDto<Void> dto = JSONUtil.toBean(body, type);
-      assertEquals(0, dto.getCode());
+      assertEquals(200, resp.getStatus());
     }
   }
 
@@ -103,14 +92,13 @@ class UserIntegrationTest extends BaseTest {
   }
 
   void deleteUserById() throws IOException {
-    Request req =
-        HttpUtil.createRequest(BASE_URL + "/sys/user/delete/" + createdUserId, Method.DELETE);
+    Request req = HttpUtil.createRequest(BASE_URL + "/sys/user/delete", Method.DELETE);
     req.header("Authorization", "Bearer " + accessToken);
+    UserPo userPo = new UserPo();
+    userPo.setId(createdUserId);
+    req.body(JSONUtil.toJsonStr(userPo));
     try (Response resp = req.send()) {
-      String body = resp.bodyStr();
-      TypeReference<ResDto<Void>> type = new TypeReference<>() {};
-      ResDto<Void> dto = JSONUtil.toBean(body, type);
-      assertEquals(0, dto.getCode());
+      assertEquals(200, resp.getStatus());
     }
     req = HttpUtil.createGet(BASE_URL + "/sys/user/get/" + createdUserId);
     req.header("Authorization", "Bearer " + accessToken);
@@ -123,12 +111,10 @@ class UserIntegrationTest extends BaseTest {
     Request req = HttpUtil.createGet(BASE_URL + "/sys/user/get/" + id);
     req.header("Authorization", "Bearer " + accessToken);
     try (Response resp = req.send()) {
+      assertEquals(200, resp.getStatus());
       String body = resp.bodyStr();
-      TypeReference<ResDto<UserPo>> type = new TypeReference<>() {};
-      ResDto<UserPo> dto = JSONUtil.toBean(body, type);
-      assertEquals(0, dto.getCode());
-      return dto.getData();
+      TypeReference<UserPo> type = new TypeReference<>() {};
+      return JSONUtil.toBean(body, type);
     }
   }
-
 }

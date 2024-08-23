@@ -2,6 +2,7 @@ package cn.huava.common.graalvm;
 
 import cn.huava.common.pojo.po.BasePo;
 import cn.huava.common.pojo.qo.PageQo;
+import cn.huava.sys.validation.role.*;
 import com.baomidou.mybatisplus.core.MybatisXMLLanguageDriver;
 import com.baomidou.mybatisplus.core.conditions.AbstractLambdaWrapper;
 import com.baomidou.mybatisplus.core.conditions.AbstractWrapper;
@@ -9,8 +10,7 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import java.util.ArrayList;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Stream;
 import java.util.zip.GZIPInputStream;
 import lombok.NonNull;
@@ -43,16 +43,29 @@ public class NativeRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
   }
 
   private void registerClasses(@NonNull RuntimeHints hints) {
-    Set<Class<?>> classes =
+    Set<Class<?>> classes = new HashSet<>();
+    addMiscellaneousClasses(classes);
+    addIbatisClasses(classes);
+    addHuavaClasses(classes);
+    classes.forEach(c -> hints.reflection().registerType(c, MemberCategory.values()));
+  }
+
+  private void addMiscellaneousClasses(Set<Class<?>> classes) {
+    Set<Class<?>> miscellaneousClasses =
         Set.of(
-            // huava
-            BasePo.class,
-            PageQo.class,
             // http response for gzip
             GZIPInputStream.class,
             // java
             ArrayList.class,
-            // ibatis, mybatis, mybatis-plus
+            // jackson
+            ToStringSerializer.class);
+    classes.addAll(miscellaneousClasses);
+  }
+
+  private void addIbatisClasses(Set<Class<?>> classes) {
+    // ibatis, mybatis, mybatis-plus
+    Set<Class<?>> ibatisClasses =
+        Set.of(
             AbstractLambdaWrapper.class,
             AbstractWrapper.class,
             LambdaQueryWrapper.class,
@@ -63,9 +76,19 @@ public class NativeRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
             StdOutImpl.class,
             UpdateWrapper.class,
             Wrapper.class,
-            XMLLanguageDriver.class,
-            // jackson
-            ToStringSerializer.class);
-    classes.forEach(c -> hints.reflection().registerType(c, MemberCategory.values()));
+            XMLLanguageDriver.class);
+    classes.addAll(ibatisClasses);
+  }
+
+  private void addHuavaClasses(Set<Class<?>> classes) {
+    // huava classes
+    Set<Class<?>> huavaClasses =
+        Set.of(
+            BasePo.class,
+            PageQo.class,
+            BeforeDeleteRoleValidator.class,
+            BeforeUpdateRoleValidator.class,
+            UniqueRoleNameValidator.class);
+    classes.addAll(huavaClasses);
   }
 }
