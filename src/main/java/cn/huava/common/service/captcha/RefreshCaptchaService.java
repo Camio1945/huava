@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.io.file.FileNameUtil;
 import org.dromara.hutool.core.io.file.FileUtil;
-import org.dromara.hutool.core.text.*;
 import org.dromara.hutool.core.util.RandomUtil;
 import org.dromara.hutool.http.HttpUtil;
 import org.dromara.hutool.json.JSONObject;
@@ -23,7 +22,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.stereotype.Service;
-import org.springframework.util.*;
 
 /**
  * 1. If it's not GraalVM native image mode, use local dynamic captcha (use java.awt to generate

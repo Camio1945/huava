@@ -1,10 +1,14 @@
 package cn.huava.sys.service.user;
 
+import cn.huava.common.pojo.dto.PageDto;
+import cn.huava.common.pojo.qo.PageQo;
 import cn.huava.common.service.BaseService;
 import cn.huava.common.util.Fn;
 import cn.huava.sys.mapper.UserMapper;
+import cn.huava.sys.pojo.dto.UserDto;
 import cn.huava.sys.pojo.dto.UserJwtDto;
-import cn.huava.sys.pojo.po.UserPo;
+import cn.huava.sys.pojo.po.UserExtPo;
+import cn.huava.sys.pojo.po.UserExtPo;
 import cn.huava.sys.pojo.qo.LoginQo;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.NonNull;
@@ -18,10 +22,11 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class AceUserService extends BaseService<UserMapper, UserPo> {
+public class AceUserService extends BaseService<UserMapper, UserExtPo> {
   private final LoginService loginService;
   private final RefreshTokenService refreshTokenService;
   private final LogoutService logoutService;
+  private final UserPageService userPageService;
 
   public UserJwtDto login(@NonNull final HttpServletRequest req, @NonNull final LoginQo loginQo) {
     return loginService.login(req, loginQo);
@@ -31,12 +36,23 @@ public class AceUserService extends BaseService<UserMapper, UserPo> {
     return refreshTokenService.refreshToken(refreshToken);
   }
 
-  public UserPo getByUserName(@NonNull final String username) {
+  public UserExtPo getByUserName(@NonNull final String username) {
     return getOne(
-        Fn.buildUndeletedWrapper(UserPo::getDeleteInfo).eq(UserPo::getUsername, username));
+        Fn.buildUndeletedWrapper(UserExtPo::getDeleteInfo).eq(UserExtPo::getUsername, username));
   }
 
   public void logout(@NonNull final String refreshToken) {
     logoutService.logout(refreshToken);
+  }
+
+  public PageDto<UserDto> userPage(@NonNull PageQo<UserExtPo> pageQo, @NonNull UserExtPo params) {
+    return userPageService.userPage(pageQo, params);
+  }
+
+  public boolean isUsernameExists(Long id, @NonNull String username) {
+    return exists(
+        Fn.buildUndeletedWrapper(UserExtPo::getDeleteInfo)
+            .eq(UserExtPo::getUsername, username)
+            .ne(id != null, UserExtPo::getId, id));
   }
 }

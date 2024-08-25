@@ -22,10 +22,18 @@ spring:
 
 project:
   jwt_key_base64: JsbZtEZD+oB3sMEnfbmFuqiBFGpNofZkNHTOeuXqPi8=
-  # used for online captcha , see https://www.mxnzp.com/doc/detail?id=24
+  # use for online captcha, see https://www.mxnzp.com/doc/detail?id=24
   mxnzp_roll_api:
     # mxnzp APP_ID and APP_SECRET path, can be relative path or absolute path
     # relative to user home directory (e.g. C:\Users\Administrator for Windows admin user)
     # I don't want to expose my own app_id and app_secret in public, so I use path instead of real value
     app_id_path: .huava/mxnzp_roll_api/app_id
     app_secret_path: .huava/mxnzp_roll_api/app_secret
+  attachment:
+    # the path where attachment files are stored, can be relative path or absolute path
+    # relative to user home directory (e.g. C:\Users\Administrator for Windows admin user)
+    path: .huava/attachment
+    # which service class to use to handle attachment upload, must implement the BaseUploadService interface
+    handle_class: cn.huava.common.service.attachment.UploadToLocalServiceImpl
+
+

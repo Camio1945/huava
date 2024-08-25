@@ -3,7 +3,7 @@ package cn.huava.sys.service.user;
 import cn.huava.common.service.BaseService;
 import cn.huava.sys.mapper.UserMapper;
 import cn.huava.sys.pojo.po.RefreshTokenPo;
-import cn.huava.sys.pojo.po.UserPo;
+import cn.huava.sys.pojo.po.UserExtPo;
 import cn.huava.sys.service.refreshtoken.AceRefreshTokenService;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-class LogoutService extends BaseService<UserMapper, UserPo> {
+class LogoutService extends BaseService<UserMapper, UserExtPo> {
 
   private final AceRefreshTokenService aceRefreshTokenService;
 

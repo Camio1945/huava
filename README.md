@@ -31,7 +31,7 @@ A scaffold for building Java Web applications which can be compiled to native im
 ## Init MySQL database
 
 Install MySQL 8.0, use your root user to execute the following SQL script to create the database, user, table and data:
-docs/sql/v0.0.1/huava-init-v0.0.1.sql
+docs/sql/<latestversion>/huava-init-<latestversion>.sql (if not exists, use the previous version's sql file)
 
 ## Compile to native image
 
@@ -304,5 +304,13 @@ String privateKeyBase64 = org.dromara.hutool.core.codec.binary.Base64.encode(key
 # Kudos to
 
 [若依管理系统](https://ruoyi.vip/)
+
+
+
+---
+
+# TODO
+
+[vue3+ts+element-plus密码强弱校验+密码自定义规则校验](https://blog.csdn.net/Johnson_7/article/details/126758162)
 
 

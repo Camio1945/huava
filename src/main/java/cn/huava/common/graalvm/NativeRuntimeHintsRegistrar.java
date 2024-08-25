@@ -1,7 +1,5 @@
 package cn.huava.common.graalvm;
 
-import cn.huava.common.pojo.po.BasePo;
-import cn.huava.common.pojo.qo.PageQo;
 import cn.huava.sys.validation.role.*;
 import com.baomidou.mybatisplus.core.MybatisXMLLanguageDriver;
 import com.baomidou.mybatisplus.core.conditions.AbstractLambdaWrapper;
@@ -9,6 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.AbstractWrapper;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import java.util.*;
 import java.util.stream.Stream;
@@ -17,8 +16,11 @@ import lombok.NonNull;
 import org.apache.ibatis.javassist.util.proxy.ProxyFactory;
 import org.apache.ibatis.logging.slf4j.Slf4jImpl;
 import org.apache.ibatis.logging.stdout.StdOutImpl;
+import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.scripting.defaults.RawLanguageDriver;
 import org.apache.ibatis.scripting.xmltags.XMLLanguageDriver;
+import org.dromara.hutool.core.reflect.ClassUtil;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.aot.hint.*;
 
 /**
@@ -68,7 +70,10 @@ public class NativeRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
         Set.of(
             AbstractLambdaWrapper.class,
             AbstractWrapper.class,
+            BoundSql.class,
+            SqlSessionTemplate.class,
             LambdaQueryWrapper.class,
+            MybatisPlusInterceptor.class,
             MybatisXMLLanguageDriver.class,
             ProxyFactory.class,
             RawLanguageDriver.class,
@@ -81,14 +86,6 @@ public class NativeRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
   }
 
   private void addHuavaClasses(Set<Class<?>> classes) {
-    // huava classes
-    Set<Class<?>> huavaClasses =
-        Set.of(
-            BasePo.class,
-            PageQo.class,
-            BeforeDeleteRoleValidator.class,
-            BeforeUpdateRoleValidator.class,
-            UniqueRoleNameValidator.class);
-    classes.addAll(huavaClasses);
+    classes.addAll(ClassUtil.scanPackage("cn.huava").stream().toList());
   }
 }

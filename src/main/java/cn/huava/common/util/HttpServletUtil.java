@@ -8,7 +8,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 /**
  * @author Camio1945
  */
-public class HttpServletUtil {
+class HttpServletUtil {
   private HttpServletUtil() {}
 
   /** Get the current request. (has no use in new Thread) */

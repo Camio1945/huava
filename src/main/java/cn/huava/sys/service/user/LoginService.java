@@ -5,7 +5,7 @@ import cn.huava.common.service.captcha.AceCaptchaService;
 import cn.huava.common.util.Fn;
 import cn.huava.sys.mapper.UserMapper;
 import cn.huava.sys.pojo.dto.UserJwtDto;
-import cn.huava.sys.pojo.po.UserPo;
+import cn.huava.sys.pojo.po.UserExtPo;
 import cn.huava.sys.pojo.qo.LoginQo;
 import cn.huava.sys.service.jwt.AceJwtService;
 import cn.huava.sys.service.refreshtoken.AceRefreshTokenService;
@@ -14,10 +14,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.dromara.hutool.core.lang.Assert;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -26,42 +24,43 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-class LoginService extends BaseService<UserMapper, UserPo> {
+class LoginService extends BaseService<UserMapper, UserExtPo> {
 
   private final AceRefreshTokenService sysRefreshTokenAceService;
   private final AceJwtService jwtAceService;
   private final AceCaptchaService aceCaptchaService;
+  private final PasswordEncoder passwordEncoder;
 
   protected UserJwtDto login(HttpServletRequest req, LoginQo loginQo) {
-    aceCaptchaService.validate(
-        req, loginQo.getCaptchaCode(), loginQo.getIsCaptchaDisabledForTesting());
+    validateCaptcha(req, loginQo);
     String username = loginQo.getUsername();
-    String password = loginQo.getPassword();
-    Authentication authentication = new UsernamePasswordAuthenticationToken(username, password);
-    authentication = authenticationManager().authenticate(authentication);
-    SecurityContextHolder.getContext().setAuthentication(authentication);
-    UserPo userPo =
-        baseMapper.selectOne(new LambdaQueryWrapper<UserPo>().eq(UserPo::getUsername, username));
-    UserJwtDto userJwtDto = jwtAceService.createToken(userPo.getId());
+    UserExtPo userExtPo = getUserExtPo(username);
+    validateUser(loginQo.getPassword(), userExtPo);
+    UserJwtDto userJwtDto = jwtAceService.createToken(userExtPo.getId());
     saveRefreshToken(username, userJwtDto);
     return userJwtDto;
   }
 
-  /**
-   * Note 1: Don't inject this like the ${@link #sysRefreshTokenAceService} or {@link
-   * #jwtAceService}, because there will be a circular reference.<br>
-   * Note 2: Don't use @Lazy annotation, it works fine in JVM mode, but will fail in GraalVM native
-   * image mode, cause some error like "Caused by: java.lang.ClassCastException:
-   * org.springframework.aop.framework.CglibAopProxy$SerializableNoOp cannot be cast to
-   * org.springframework.cglib.proxy.Dispatcher"
-   */
-  private AuthenticationManager authenticationManager() {
-    return Fn.getBean(AuthenticationManager.class);
+  private void validateCaptcha(HttpServletRequest req, LoginQo loginQo) {
+    Boolean isCaptchaDisabledForTesting = loginQo.getIsCaptchaDisabledForTesting();
+    aceCaptchaService.validate(req, loginQo.getCaptchaCode(), isCaptchaDisabledForTesting);
+  }
+
+  private UserExtPo getUserExtPo(String username) {
+    LambdaQueryWrapper<UserExtPo> wrapper = Fn.buildUndeletedWrapper(UserExtPo::getDeleteInfo);
+    return getOne(wrapper.eq(UserExtPo::getUsername, username));
+  }
+
+  private void validateUser(String password, UserExtPo userExtPo) {
+    Assert.isTrue(userExtPo != null, "用户名或密码错误");
+    Assert.isTrue(passwordEncoder.matches(password, userExtPo.getPassword()), "用户名或密码错误");
+    Assert.isTrue(userExtPo.getIsEnabled(), "用户已被禁用");
   }
 
   private void saveRefreshToken(String username, UserJwtDto userJwtDto) {
-    Wrapper<UserPo> wrapper = new LambdaQueryWrapper<UserPo>().eq(UserPo::getUsername, username);
-    UserPo userPo = baseMapper.selectOne(wrapper);
+    Wrapper<UserExtPo> wrapper =
+        new LambdaQueryWrapper<UserExtPo>().eq(UserExtPo::getUsername, username);
+    UserExtPo userPo = baseMapper.selectOne(wrapper);
     sysRefreshTokenAceService.saveRefreshToken(userPo.getId(), userJwtDto.getRefreshToken());
   }
 }

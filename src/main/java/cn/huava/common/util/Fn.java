@@ -80,12 +80,12 @@ public class Fn {
     return BeanUtil.toBean(source, clazz);
   }
 
-  public static <T> Page<T> buildPage(PageQo pageQo) {
-    return MybatisPlusUtil.buildPage(pageQo);
-  }
-
   public static <T> LambdaQueryWrapper<T> buildUndeletedWrapper(
       @NonNull final SFunction<T, ?> deleteInfoColumn) {
     return MybatisPlusUtil.buildUndeletedWrapper(deleteInfoColumn);
+  }
+
+  public static String encryptPassword(@NonNull final String str) {
+    return EncryptUtil.encryptPassword(str);
   }
 }

@@ -28,8 +28,8 @@ public class UserLoginUserDetailsServiceImpl implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) {
-    Wrapper<UserPo> wrapper = new LambdaQueryWrapper<UserPo>().eq(UserPo::getUsername, username);
-    UserPo userPo = userMapper.selectOne(wrapper);
+    Wrapper<UserExtPo> wrapper = new LambdaQueryWrapper<UserExtPo>().eq(UserExtPo::getUsername, username);
+    UserExtPo userPo = userMapper.selectOne(wrapper);
     if (userPo == null) {
       throw new UsernameNotFoundException("username or password error");
     }
@@ -37,7 +37,7 @@ public class UserLoginUserDetailsServiceImpl implements UserDetailsService {
     return new SysUserDetails(userPo, authorities);
   }
 
-  private Set<SimpleGrantedAuthority> getAuthorities(UserPo userPo) {
+  private Set<SimpleGrantedAuthority> getAuthorities(UserExtPo userPo) {
     Wrapper<UserRolePo> queryWrapper =
         new LambdaQueryWrapper<UserRolePo>().eq(UserRolePo::getUserId, userPo.getId());
     List<UserRolePo> userRoles = userRoleMapper.selectList(queryWrapper);

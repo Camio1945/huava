@@ -28,7 +28,7 @@ public class RoleController extends BaseController<AceRoleService, RoleMapper, R
 
   @GetMapping("/page")
   public ResponseEntity<PageDto<RolePo>> page(
-      @NonNull final PageQo pageQo, @NonNull final RolePo params) {
+      @NonNull final PageQo<RolePo> pageQo, @NonNull final RolePo params) {
     PageDto<RolePo> pageDto = service.rolePage(pageQo, params);
     return ResponseEntity.ok(pageDto);
   }

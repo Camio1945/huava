@@ -14,6 +14,9 @@
             "name": "cn.huava.common.graalvm.RuntimeHintsRegistrarConfig"
         },
         {
+            "name": "cn.huava.common.service.attachment.ServeFileService"
+        },
+        {
             "name": "cn.huava.sys.service.refreshtoken.AceRefreshTokenService"
         },
         {
@@ -29,10 +32,19 @@
             "name": "cn.huava.sys.service.user.LoginService"
         },
         {
+            "name": "cn.huava.sys.service.user.UserPageService"
+        },
+        {
             "name": "cn.huava.sys.service.UserLoginUserDetailsServiceImpl"
         },
         {
+            "name": "cn.huava.sys.service.userrole.AceUserRoleService"
+        },
+        {
             "name": "cn.huava.sys.validation.role.BeforeDeleteRoleValidator"
+        },
+        {
+            "name": "cn.huava.sys.validation.user.RoleIdsValidator"
         }
     ]
 }

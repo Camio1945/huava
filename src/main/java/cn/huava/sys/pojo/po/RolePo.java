@@ -25,11 +25,17 @@ public class RolePo extends BasePo {
       message = "名称不能为空",
       groups = {Create.class, Update.class})
   @Size(
-      min = 3,
+      min = 2,
       max = 20,
-      message = "名称长度应该为 3 ~ 20 个字符",
+      message = "名称长度应该为 2 ~ 20 个字符",
       groups = {Create.class, Update.class})
   private String name;
+
+  /** 排序 */
+  @NotNull(
+      message = "排序不能为空",
+      groups = {Create.class, Update.class})
+  private Integer sort;
 
   /** 描述 */
   @Size(

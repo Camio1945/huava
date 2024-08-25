@@ -8,6 +8,7 @@ import lombok.NonNull;
 import org.dromara.hutool.core.reflect.FieldUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -42,28 +43,54 @@ public abstract class BaseController<S extends BaseService<M, T>, M extends Base
     if (entity instanceof BasePo basePo && basePo.getDeleteInfo() > 0) {
       return ResponseEntity.notFound().build();
     }
+    afterGetById(entity);
     return ResponseEntity.ok(entity);
   }
 
+  /** Intended to be overridden by subclass if needed. */
+  protected void afterGetById(T entity) {}
+
   @PostMapping("/create")
+  @Transactional(rollbackFor = Throwable.class)
   public ResponseEntity<Long> create(
       @RequestBody @NonNull @Validated({Create.class}) final T entity) {
     Assert.isInstanceOf(BasePo.class, entity, "The entity must be an instance of BasePo");
     BasePo.beforeCreate(entity);
+    beforeSave(entity);
     boolean success = service.save(entity);
     Assert.isTrue(success, "Failed to create entity");
+    afterSave(entity);
     Long id = ((BasePo) entity).getId();
     return ResponseEntity.ok(id);
   }
 
+  /** Intended to be overridden by subclass if needed. */
+  @SuppressWarnings("unused")
+  protected void beforeSave(T entity) {}
+
+  /** Intended to be overridden by subclass if needed. */
+  @SuppressWarnings("unused")
+  protected void afterSave(T entity) {}
+
   @PutMapping("/update")
+  @Transactional(rollbackFor = Throwable.class)
   public ResponseEntity<Void> update(
       @RequestBody @NonNull @Validated({Update.class}) final T entity) {
     BasePo.beforeUpdate(entity);
+    beforeUpdate(entity);
     boolean success = service.updateById(entity);
     Assert.isTrue(success, "Failed to update entity");
+    afterUpdate(entity);
     return ResponseEntity.ok(null);
   }
+
+  /** Intended to be overridden by subclass if needed. */
+  @SuppressWarnings("unused")
+  protected void beforeUpdate(T entity) {}
+
+  /** Intended to be overridden by subclass if needed. */
+  @SuppressWarnings("unused")
+  protected void afterUpdate(T entity) {}
 
   @PatchMapping("/patch")
   public ResponseEntity<Void> patch(

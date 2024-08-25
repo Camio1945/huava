@@ -1,11 +1,14 @@
 package cn.huava.common.graalvm;
 
+import static org.dromara.hutool.core.io.file.FileNameUtil.EXT_JAVA;
+
 import cn.huava.common.util.Fn;
 import java.io.File;
 import java.util.List;
 import lombok.NonNull;
 import org.dromara.hutool.core.io.file.FileUtil;
 import org.dromara.hutool.core.lang.Assert;
+import org.dromara.hutool.core.reflect.ClassUtil;
 import org.dromara.hutool.json.JSONArray;
 import org.dromara.hutool.json.JSONObject;
 
@@ -19,8 +22,18 @@ class SerializationConfigGenerator {
   private static final String HUAVA_PATH = "";
 
   public static void main(String[] args) {
+    if (true) {
+      List<Class<?>> validators =
+          ClassUtil.scanPackage("cn.huava.sys").stream()
+              .filter(clazz -> clazz.getSimpleName().endsWith("Validator"))
+              .toList();
+      for (Class<?> validator : validators) {
+        System.out.println(validator);
+      }
+      return;
+    }
     String mainPath = getMainPath();
-    List<File> files = FileUtil.loopFiles(new File(mainPath), f -> f.getName().endsWith(".java"));
+    List<File> files = FileUtil.loopFiles(new File(mainPath), f -> f.getName().endsWith(EXT_JAVA));
     String serializationConfigJson = buildSerializationConfigJson(files);
     writeJsonToFileIfChanged(serializationConfigJson, mainPath);
   }
@@ -85,7 +98,7 @@ class SerializationConfigGenerator {
     String path = Fn.cleanPath(file.getAbsolutePath());
     String srcMainJava = "/src/main/java/";
     path = path.substring(path.indexOf(srcMainJava) + srcMainJava.length());
-    String className = path.replace("/", ".").replace(".java", "");
+    String className = path.replace("/", ".").replace(EXT_JAVA, "");
     lambdaJson.put("name", className);
     lambdas.add(lambdaJson);
   }

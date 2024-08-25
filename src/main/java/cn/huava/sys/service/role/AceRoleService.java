@@ -34,15 +34,14 @@ public class AceRoleService extends BaseService<RoleMapper, RolePo> {
     return roles.stream().map(RolePo::getName).toList();
   }
 
-  public PageDto<RolePo> rolePage(@NonNull PageQo pageQo, @NonNull final RolePo params) {
+  public PageDto<RolePo> rolePage(@NonNull PageQo<RolePo> pageQo, @NonNull final RolePo params) {
     return rolePageService.rolePage(pageQo, params);
   }
 
   public boolean isNameExists(Long id, @NonNull String name) {
-    LambdaQueryWrapper<RolePo> wrapper =
+    return exists(
         Fn.buildUndeletedWrapper(RolePo::getDeleteInfo)
             .eq(RolePo::getName, name)
-            .ne(id != null, RolePo::getId, id);
-    return exists(wrapper);
+            .ne(id != null, RolePo::getId, id));
   }
 }

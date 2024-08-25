@@ -21,8 +21,7 @@ import lombok.NonNull;
 public class BasePo implements Serializable {
   @Serial private static final long serialVersionUID = 1L;
 
-  /** 主键 （@JsonSerialize 是为了防止前后端精度不一致时导致四舍五入的问题） */
-  @JsonSerialize(using = ToStringSerializer.class)
+  /** 主键 */
   @TableId
   private Long id;
 

@@ -5,7 +5,7 @@ import cn.huava.common.service.BaseService;
 import cn.huava.sys.mapper.UserMapper;
 import cn.huava.sys.pojo.dto.UserJwtDto;
 import cn.huava.sys.pojo.po.RefreshTokenPo;
-import cn.huava.sys.pojo.po.UserPo;
+import cn.huava.sys.pojo.po.UserExtPo;
 import cn.huava.sys.service.jwt.AceJwtService;
 import cn.huava.sys.service.refreshtoken.AceRefreshTokenService;
 import lombok.*;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-class RefreshTokenService extends BaseService<UserMapper, UserPo> {
+class RefreshTokenService extends BaseService<UserMapper, UserExtPo> {
 
   private final AceRefreshTokenService aceRefreshTokenService;
   private final AceJwtService aceJwtService;

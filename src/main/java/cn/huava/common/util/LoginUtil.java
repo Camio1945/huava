@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 /**
  * @author Camio1945
  */
-public class LoginUtil {
+class LoginUtil {
   private LoginUtil() {}
 
   /** This method is intentionally protected, please use Fn.getLoginUser() as the only entry. */

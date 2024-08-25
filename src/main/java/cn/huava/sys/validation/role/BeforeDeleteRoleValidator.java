@@ -1,20 +1,22 @@
 package cn.huava.sys.validation.role;
 
+import static cn.huava.common.constant.CommonConstant.ADMIN_ROLE_ID;
+import static cn.huava.common.constant.CommonConstant.RoleMessage.IMPORTANT_ROLE;
+
 import cn.huava.common.util.Fn;
 import cn.huava.sys.pojo.po.RolePo;
 import cn.huava.sys.pojo.po.UserRolePo;
 import cn.huava.sys.service.userrole.AceUserRoleService;
+import cn.huava.sys.validation.common.BaseValidator;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-import static cn.huava.common.constant.CommonConstant.ADMIN_ROLE_ID;
-import static cn.huava.common.constant.CommonConstant.RoleMessage.IMPORTANT_ROLE;
-
 /**
  * @author Camio1945
  */
-public class BeforeDeleteRoleValidator implements ConstraintValidator<BeforeDeleteRole, RolePo> {
+public class BeforeDeleteRoleValidator extends BaseValidator
+    implements ConstraintValidator<BeforeDeleteRole, RolePo> {
 
   @Override
   public boolean isValid(RolePo rolePo, ConstraintValidatorContext context) {
@@ -32,11 +34,5 @@ public class BeforeDeleteRoleValidator implements ConstraintValidator<BeforeDele
       return customMessage(context, "角色下存在用户，不能删除");
     }
     return true;
-  }
-
-  private static boolean customMessage(ConstraintValidatorContext context, String messageTemplate) {
-    context.disableDefaultConstraintViolation();
-    context.buildConstraintViolationWithTemplate(messageTemplate).addConstraintViolation();
-    return false;
   }
 }
