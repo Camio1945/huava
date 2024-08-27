@@ -9,6 +9,7 @@ import cn.huava.sys.pojo.dto.*;
 import cn.huava.sys.pojo.po.*;
 import cn.huava.sys.pojo.po.UserExtPo;
 import cn.huava.sys.pojo.qo.LoginQo;
+import cn.huava.sys.pojo.qo.UpdatePasswordQo;
 import cn.huava.sys.service.role.AceRoleService;
 import cn.huava.sys.service.user.AceUserService;
 import cn.huava.sys.service.userrole.AceUserRoleService;
@@ -18,6 +19,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -77,6 +79,12 @@ public class UserController extends BaseController<AceUserService, UserMapper, U
   }
 
   @Override
+  protected void afterGetById(UserExtPo entity) {
+    entity.setPassword(null);
+    entity.setRoleIds(userRoleService.getRoleIdsByUserId(entity.getId()));
+  }
+
+  @Override
   protected void beforeSave(UserExtPo entity) {
     entity.setPassword(Fn.encryptPassword(entity.getPassword()));
   }
@@ -108,9 +116,10 @@ public class UserController extends BaseController<AceUserService, UserMapper, U
     userRoleService.saveUserRole(entity.getId(), entity.getRoleIds());
   }
 
-  @Override
-  protected void afterGetById(UserExtPo entity) {
-    entity.setPassword(null);
-    entity.setRoleIds(userRoleService.getRoleIdsByUserId(entity.getId()));
+  @PatchMapping("/updatePassword")
+  public ResponseEntity<Void> updatePassword(
+      @RequestBody @NonNull @Validated UpdatePasswordQo updatePasswordQo) {
+    service.updatePassword(updatePasswordQo);
+    return ResponseEntity.ok(null);
   }
 }

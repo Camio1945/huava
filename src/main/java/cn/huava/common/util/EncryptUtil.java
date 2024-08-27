@@ -13,5 +13,4 @@ class EncryptUtil {
     PasswordEncoder encoder = Fn.getBean(PasswordEncoder.class);
     return encoder.encode(str);
   }
-
 }

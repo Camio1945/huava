@@ -1,6 +1,5 @@
 package cn.huava.common.constant;
 
-
 /**
  * About @SuppressWarnings("java:S1214"): <br>
  * This rule raises an issue when an interface consists only of constant definitions without other

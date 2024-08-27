@@ -8,7 +8,6 @@ import cn.huava.sys.mapper.UserMapper;
 import cn.huava.sys.pojo.dto.UserDto;
 import cn.huava.sys.pojo.po.*;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import java.util.List;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +21,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 class UserPageService extends BaseService<UserMapper, UserExtPo> {
 
-  protected PageDto<UserDto> userPage(@NonNull PageQo<UserExtPo> pageQo, @NonNull final UserExtPo params) {
+  protected PageDto<UserDto> userPage(
+      @NonNull PageQo<UserExtPo> pageQo, @NonNull final UserExtPo params) {
     Wrapper<UserExtPo> wrapper =
         Fn.buildUndeletedWrapper(UserExtPo::getDeleteInfo)
             .eq(Fn.isNotBlank(params.getUsername()), UserExtPo::getUsername, params.getUsername())

@@ -28,7 +28,8 @@ public class UserLoginUserDetailsServiceImpl implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) {
-    Wrapper<UserExtPo> wrapper = new LambdaQueryWrapper<UserExtPo>().eq(UserExtPo::getUsername, username);
+    Wrapper<UserExtPo> wrapper =
+        new LambdaQueryWrapper<UserExtPo>().eq(UserExtPo::getUsername, username);
     UserExtPo userPo = userMapper.selectOne(wrapper);
     if (userPo == null) {
       throw new UsernameNotFoundException("username or password error");

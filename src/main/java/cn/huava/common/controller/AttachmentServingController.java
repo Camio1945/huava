@@ -4,7 +4,6 @@ import cn.huava.common.mapper.AttachmentMapper;
 import cn.huava.common.pojo.po.AttachmentPo;
 import cn.huava.common.service.attachment.AceAttachmentService;
 import cn.huava.common.util.Fn;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * When visiting path like /20240824/985d124c52a38fb1985d124c52a38fb1.java , return the file
+ *
  * @author Camio1945
  */
 @Slf4j
