@@ -40,7 +40,10 @@ public class NativeRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
     Stream.of(
             "org/apache/ibatis/builder/xml/*.dtd",
             "org/apache/ibatis/builder/xml/*.xsd",
-            "static_captcha/*")
+            "static_captcha/*",
+            "*.yml",
+            "*.yaml",
+            "*.properties")
         .forEach(hints.resources()::registerPattern);
   }
 
@@ -57,9 +60,9 @@ public class NativeRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
         Set.of(
             // http response for gzip
             GZIPInputStream.class,
-            // java
+            // Java
             ArrayList.class,
-            // jackson
+            // Jackson
             ToStringSerializer.class);
     classes.addAll(miscellaneousClasses);
   }

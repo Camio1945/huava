@@ -10,7 +10,7 @@
   </parent>
   <groupId>cn.huava</groupId>
   <artifactId>huava</artifactId>
-  <version>0.2.0-SNAPSHOT</version>
+  <version>0.2.1-SNAPSHOT</version>
   <name>huava</name>
   <description>huava</description>
   <properties>
@@ -43,7 +43,14 @@
       <version>3.5.7</version>
     </dependency>
 
-    <!-- connect to MySQL -->
+    <!-- Connect to Redis -->
+    <dependency>
+      <groupId>org.redisson</groupId>
+      <artifactId>redisson-spring-boot-starter</artifactId>
+      <version>3.35.0</version>
+    </dependency>
+
+    <!-- Connect to MySQL -->
     <dependency>
       <groupId>com.mysql</groupId>
       <artifactId>mysql-connector-j</artifactId>
@@ -95,6 +102,7 @@
             <!-- Support http and https protocols -->
             <buildArg>--enable-url-protocols=http,https</buildArg>
             <buildArg>--no-fallback</buildArg>
+            <buildArg>--initialize-at-build-time=org.redisson.misc.BiHashMap</buildArg>
             <!-- used to solve the problem of garbled Chinese characters in the database -->
             <buildArg>-H:+AddAllCharsets</buildArg>
             <buildArg>-H:+ReportExceptionStackTraces</buildArg>

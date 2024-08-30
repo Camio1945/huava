@@ -1,6 +1,8 @@
 package cn.huava.sys.controller;
 
 import cn.huava.common.service.captcha.AceCaptchaService;
+import cn.huava.common.util.RedisUtil;
+import cn.huava.sys.cache.UserCache;
 import cn.huava.sys.service.user.AceUserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,9 +22,12 @@ import org.springframework.web.bind.annotation.*;
 public class TempTestController {
   private final AceCaptchaService captchaService;
   private final AceUserService userService;
+  private final UserCache userCache;
 
   @GetMapping("/")
   public Object test(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-    return null;
+    userCache.getById(1L);
+    userCache.getById(1827702535554572289L);
+    return RedisUtil.getHitRatioPercentage();
   }
 }

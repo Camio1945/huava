@@ -1,0 +1,12 @@
+singleServerConfig:
+  address: "redis://192.168.0.102:6379"
+  password: up72@2021
+  connectionPoolSize: 64
+  connectionMinimumIdleSize: 10
+  idleConnectionTimeout: 10000
+  connectTimeout: 10000
+  timeout: 3000
+  retryAttempts: 3
+  retryInterval: 1500
+threads: 16
+nettyThreads: 32

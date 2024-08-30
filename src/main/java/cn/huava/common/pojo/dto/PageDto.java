@@ -9,12 +9,12 @@ import lombok.Data;
 @Data
 public class PageDto<T> {
   private List<T> list;
-  private long total;
+  private long count;
 
   public PageDto() {}
 
-  public PageDto(List<T> list, long total) {
+  public PageDto(List<T> list, long count) {
     this.list = list;
-    this.total = total;
+    this.count = count;
   }
 }

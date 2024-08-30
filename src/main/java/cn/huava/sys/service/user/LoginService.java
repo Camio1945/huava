@@ -47,7 +47,7 @@ class LoginService extends BaseService<UserMapper, UserExtPo> {
   }
 
   private UserExtPo getUserExtPo(String username) {
-    LambdaQueryWrapper<UserExtPo> wrapper = Fn.buildUndeletedWrapper(UserExtPo::getDeleteInfo);
+    LambdaQueryWrapper<UserExtPo> wrapper = Fn.undeletedWrapper(UserExtPo::getDeleteInfo);
     return getOne(wrapper.eq(UserExtPo::getUsername, username));
   }
 

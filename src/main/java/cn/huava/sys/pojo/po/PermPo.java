@@ -1,7 +1,13 @@
 package cn.huava.sys.pojo.po;
 
 import cn.huava.common.pojo.po.BasePo;
+import cn.huava.common.validation.Create;
+import cn.huava.common.validation.Update;
+import cn.huava.sys.enumeration.PermTypeEnum;
+import cn.huava.sys.validation.common.ValidEnum;
 import com.baomidou.mybatisplus.annotation.TableName;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
@@ -13,30 +19,52 @@ import lombok.Data;
 @TableName("sys_perm")
 public class PermPo extends BasePo {
 
-  /** 类型：M-菜单（用户是否能看到该页面），E-元素（用户是否能看到页面上的某个元素） */
+  /** 上级权限ID */
+  private Long pid;
+
+  /** 权限类型: D=目录(Directory)，M=菜单(Menu)，E=元素(Element) */
+  @ValidEnum(
+      enumClass = PermTypeEnum.class,
+      message = "权限类型的可选值只能为：D、M、E",
+      groups = {Create.class, Update.class})
   private String type;
 
   /** 名称 */
+  @NotEmpty(
+      message = "权限名称不能为空",
+      groups = {Create.class, Update.class})
   private String name;
-
-  /** 父菜单ID：0-一级菜单，其他值-父菜单ID */
-  private Long parentId;
-
-  /** 显示顺序：由低到高 */
-  private Integer orderNum;
-
-  /** 请求地址 */
-  private String url;
-
-  /** 打开方式：C-当前窗口（Current），B-新窗口（Blank） */
-  private String target;
-
-  /** 是否启用 */
-  private Boolean isEnabled;
 
   /** 图标 */
   private String icon;
 
-  /** 标识：如 sys:user:page */
-  private String mark;
+  /** 排序 */
+  @NotNull(
+      message = "权限排序不能为空",
+      groups = {Create.class, Update.class})
+  private Integer sort;
+
+  /** 接口URI */
+  private String uri;
+
+  /** 路由地址 */
+  private String paths;
+
+  /** 前端组件 */
+  private String component;
+
+  /** 选中路径 */
+  private String selected;
+
+  /** 路由参数 */
+  private String params;
+
+  /** 是否缓存 */
+  private Boolean isCache;
+
+  /** 是否显示 */
+  private Boolean isShow;
+
+  /** 是否启用 */
+  private Boolean isEnabled;
 }

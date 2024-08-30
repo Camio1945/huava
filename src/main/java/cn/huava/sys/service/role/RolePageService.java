@@ -21,7 +21,7 @@ class RolePageService extends BaseService<RoleMapper, RolePo> {
 
   protected PageDto<RolePo> rolePage(@NonNull PageQo<RolePo> pageQo, @NonNull final RolePo params) {
     Wrapper<RolePo> wrapper =
-        Fn.buildUndeletedWrapper(RolePo::getDeleteInfo)
+        Fn.undeletedWrapper(RolePo::getDeleteInfo)
             .like(Fn.isNotBlank(params.getName()), RolePo::getName, params.getName())
             .like(
                 Fn.isNotBlank(params.getDescription()),

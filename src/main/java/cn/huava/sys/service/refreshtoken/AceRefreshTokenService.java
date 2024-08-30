@@ -26,7 +26,7 @@ public class AceRefreshTokenService extends BaseService<RefreshTokenMapper, Refr
 
   public RefreshTokenPo getByRefreshToken(@NonNull String refreshToken) {
     Wrapper<RefreshTokenPo> wrapper =
-        Fn.buildUndeletedWrapper(RefreshTokenPo::getDeleteInfo)
+        Fn.undeletedWrapper(RefreshTokenPo::getDeleteInfo)
             .eq(RefreshTokenPo::getRefreshToken, refreshToken);
     return getOne(wrapper);
   }

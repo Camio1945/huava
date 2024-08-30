@@ -5,8 +5,7 @@ import cn.huava.common.pojo.qo.PageQo;
 import cn.huava.common.service.BaseService;
 import cn.huava.common.util.Fn;
 import cn.huava.sys.mapper.UserMapper;
-import cn.huava.sys.pojo.dto.UserDto;
-import cn.huava.sys.pojo.dto.UserJwtDto;
+import cn.huava.sys.pojo.dto.*;
 import cn.huava.sys.pojo.po.*;
 import cn.huava.sys.pojo.po.UserExtPo;
 import cn.huava.sys.pojo.qo.LoginQo;
@@ -28,6 +27,7 @@ import org.springframework.stereotype.Service;
 public class AceUserService extends BaseService<UserMapper, UserExtPo> {
   private final LoginService loginService;
   private final RefreshTokenService refreshTokenService;
+  private final GetUserInfoService getUserInfoService;
   private final LogoutService logoutService;
   private final UserPageService userPageService;
   private final PasswordEncoder passwordEncoder;
@@ -42,7 +42,7 @@ public class AceUserService extends BaseService<UserMapper, UserExtPo> {
 
   public UserExtPo getByUserName(@NonNull final String username) {
     return getOne(
-        Fn.buildUndeletedWrapper(UserExtPo::getDeleteInfo).eq(UserExtPo::getUsername, username));
+        Fn.undeletedWrapper(UserExtPo::getDeleteInfo).eq(UserExtPo::getUsername, username));
   }
 
   public void logout(@NonNull final String refreshToken) {
@@ -55,7 +55,7 @@ public class AceUserService extends BaseService<UserMapper, UserExtPo> {
 
   public boolean isUsernameExists(Long id, @NonNull String username) {
     return exists(
-        Fn.buildUndeletedWrapper(UserExtPo::getDeleteInfo)
+        Fn.undeletedWrapper(UserExtPo::getDeleteInfo)
             .eq(UserExtPo::getUsername, username)
             .ne(id != null, UserExtPo::getId, id));
   }
@@ -68,5 +68,9 @@ public class AceUserService extends BaseService<UserMapper, UserExtPo> {
             .eq(UserExtPo::getId, loginUser.getId())
             .set(UserExtPo::getPassword, encodedNewPassword);
     update(wrapper);
+  }
+
+  public UserInfoDto getUserInfoDto() {
+    return getUserInfoService.getUserInfoDto();
   }
 }

@@ -78,7 +78,7 @@ public class Fn {
     return BeanUtil.toBean(source, clazz);
   }
 
-  public static <T> LambdaQueryWrapper<T> buildUndeletedWrapper(
+  public static <T> LambdaQueryWrapper<T> undeletedWrapper(
       @NonNull final SFunction<T, ?> deleteInfoColumn) {
     return MybatisPlusUtil.buildUndeletedWrapper(deleteInfoColumn);
   }

@@ -66,11 +66,11 @@ public abstract class BaseController<S extends BaseService<M, T>, M extends Base
 
   /** Intended to be overridden by subclass if needed. */
   @SuppressWarnings("unused")
-  protected void beforeSave(T entity) {}
+  protected void beforeSave(@NonNull T entity) {}
 
   /** Intended to be overridden by subclass if needed. */
   @SuppressWarnings("unused")
-  protected void afterSave(T entity) {}
+  protected void afterSave(@NonNull T entity) {}
 
   @PutMapping("/update")
   @Transactional(rollbackFor = Throwable.class)
@@ -86,26 +86,30 @@ public abstract class BaseController<S extends BaseService<M, T>, M extends Base
 
   /** Intended to be overridden by subclass if needed. */
   @SuppressWarnings("unused")
-  protected void beforeUpdate(T entity) {}
+  protected void beforeUpdate(@NonNull T entity) {}
 
   /** Intended to be overridden by subclass if needed. */
   @SuppressWarnings("unused")
-  protected void afterUpdate(T entity) {}
-
-  @PatchMapping("/patch")
-  public ResponseEntity<Void> patch(
-      @RequestBody final T entity, @RequestParam(required = false) final String... fields) {
-    // TODO The patch method is not implemented yet
-    Assert.isTrue(false, "The patch method is not implemented yet");
-    return ResponseEntity.ok(null);
-  }
+  protected void afterUpdate(@NonNull T entity) {}
 
   @DeleteMapping("/delete")
   public ResponseEntity<Void> delete(
       @RequestBody @NonNull @Validated({Delete.class}) final T entity) {
     Long id = (Long) FieldUtil.getFieldValue(entity, "id");
+    Object obj = beforeDelete(id);
     boolean success = service.softDelete(id);
     Assert.isTrue(success, "Failed to delete entity");
+    afterDelete(obj);
     return ResponseEntity.ok(null);
   }
+
+  /** Intended to be overridden by subclass if needed. */
+  @SuppressWarnings("unused")
+  protected Object beforeDelete(@NonNull Long id) {
+    return null;
+  }
+
+  /** Intended to be overridden by subclass if needed. */
+  @SuppressWarnings("unused")
+  protected void afterDelete(Object obj) {}
 }

@@ -1,6 +1,7 @@
 package cn.huava.sys.pojo.po;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serial;
 import java.io.Serializable;
 import lombok.Data;
@@ -11,6 +12,7 @@ import lombok.Data;
  * @author Camio1945
  */
 @Data
+@TableName("sys_role_perm")
 public class RolePermPo implements Serializable {
   @Serial private static final long serialVersionUID = 1L;
 
@@ -22,4 +24,11 @@ public class RolePermPo implements Serializable {
 
   /** 权限ID */
   private Long permId;
+
+  public RolePermPo() {}
+
+  public RolePermPo(Long roleId, Long permId) {
+    this.roleId = roleId;
+    this.permId = permId;
+  }
 }

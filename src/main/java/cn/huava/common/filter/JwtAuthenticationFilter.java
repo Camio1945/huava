@@ -4,9 +4,9 @@ import static cn.huava.common.constant.CommonConstant.AUTHORIZATION_HEADER;
 import static cn.huava.common.constant.CommonConstant.REFRESH_TOKEN_URI;
 
 import cn.huava.sys.auth.SysUserDetails;
+import cn.huava.sys.cache.UserCache;
 import cn.huava.sys.pojo.po.UserPo;
 import cn.huava.sys.service.jwt.AceJwtService;
-import cn.huava.sys.service.user.AceUserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,7 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
   private final AceJwtService jwtAceService;
 
-  private final AceUserService userAceService;
+  private final UserCache userCache;
 
   @Override
   protected void doFilterInternal(
@@ -72,7 +72,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
   private void setAuthentication(HttpServletRequest request, String token) {
     Long userId = jwtAceService.getUserIdFromAccessToken(token);
-    String username = userAceService.getById(userId).getUsername();
+    String username = userCache.getById(userId).getUsername();
     UserDetails userDetails = buildUserDetails(username);
     UsernamePasswordAuthenticationToken authenticationToken =
         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

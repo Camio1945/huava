@@ -17,6 +17,18 @@
             "name": "cn.huava.common.service.attachment.ServeFileService"
         },
         {
+            "name": "cn.huava.sys.cache.RoleCache"
+        },
+        {
+            "name": "cn.huava.sys.cache.UserCache"
+        },
+        {
+            "name": "cn.huava.sys.cache.UserRoleCache"
+        },
+        {
+            "name": "cn.huava.sys.service.perm.GetAllPermService"
+        },
+        {
             "name": "cn.huava.sys.service.refreshtoken.AceRefreshTokenService"
         },
         {
@@ -27,6 +39,9 @@
         },
         {
             "name": "cn.huava.sys.service.user.AceUserService"
+        },
+        {
+            "name": "cn.huava.sys.service.user.GetUserInfoService"
         },
         {
             "name": "cn.huava.sys.service.user.LoginService"

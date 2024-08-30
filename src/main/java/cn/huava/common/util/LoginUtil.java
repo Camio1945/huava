@@ -1,7 +1,8 @@
 package cn.huava.common.util;
 
+import cn.huava.sys.cache.UserCache;
+import cn.huava.sys.pojo.po.UserExtPo;
 import cn.huava.sys.pojo.po.UserPo;
-import cn.huava.sys.service.user.AceUserService;
 import lombok.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +21,9 @@ class LoginUtil {
             SecurityContextHolder.getContext().getAuthentication();
     UserDetails userDetails = (UserDetails) authentication.getPrincipal();
     String username = userDetails.getUsername();
-    return Fn.getBean(AceUserService.class).getByUserName(username);
+    UserCache userCache = Fn.getBean(UserCache.class);
+    Long id = userCache.getIdByUsername(username);
+    UserExtPo userExtPo = userCache.getById(id);
+    return userExtPo;
   }
 }

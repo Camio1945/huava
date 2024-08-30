@@ -19,6 +19,15 @@ spring:
     password: eFS0H6_0_pkVm__o
   jackson:
     time-zone: GMT+8
+  redis:
+    redisson:
+      file: classpath:redisson-config.yml
+  cache:
+    type: redis
+    redis:
+      cache-null-values: true
+      # uses in RedisConfig.java, unit is minutes
+      time-to-live: 1440
 
 project:
   jwt_key_base64: JsbZtEZD+oB3sMEnfbmFuqiBFGpNofZkNHTOeuXqPi8=
@@ -35,5 +44,8 @@ project:
     path: .huava/attachment
     # which service class to use to handle attachment upload, must implement the BaseUploadService interface
     handle_class: cn.huava.common.service.attachment.UploadToLocalServiceImpl
-
+  # can have one of these 2 values: "all" or "main"
+  # "all" means all api will be authenticated, also means every api should be registered in the sys_perm table
+  # "main" means only these apis will be authenticated: ".../create", ".../delete", ".../update", ".../page"
+  api_auth_range: main
 

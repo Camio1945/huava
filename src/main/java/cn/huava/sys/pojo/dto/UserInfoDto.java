@@ -11,12 +11,6 @@ import lombok.Data;
 @Data
 public class UserInfoDto {
   private String username;
-  private List<String> roles;
-
-  public UserInfoDto() {}
-
-  public UserInfoDto(String username, List<String> roles) {
-    this.username = username;
-    this.roles = roles;
-  }
+  private String avatar;
+  private List<PermDto> menu;
 }

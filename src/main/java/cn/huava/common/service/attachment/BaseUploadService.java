@@ -10,5 +10,12 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
  * @author Camio1945
  */
 public abstract class BaseUploadService extends BaseService<AttachmentMapper, AttachmentPo> {
+
+  /**
+   * upload file
+   *
+   * @param req request (must be multipart request)
+   * @return
+   */
   protected abstract AttachmentPo upload(@NonNull final MultipartHttpServletRequest req);
 }
