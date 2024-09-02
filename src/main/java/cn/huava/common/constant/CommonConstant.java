@@ -22,6 +22,7 @@ public interface CommonConstant {
   String KEEP_ORIGINAL_PASSWORD = "KEEP_ORIGINAL_PASSWORD";
   int MIN_PASSWORD_LENGTH = 8;
   int MAX_PASSWORD_LENGTH = 20;
+  String MULTIPART_PARAM_NAME = "file";
 
   interface RoleMessage {
     String IMPORTANT_ROLE = "该角色为最重要的基础角色，不允许进行任何操作";

@@ -1,11 +1,16 @@
 package cn.huava.common.util;
 
+import static cn.huava.common.constant.CommonConstant.ENV_PROD;
+import static cn.huava.common.constant.CommonConstant.ENV_PRODUCTION;
+
 import java.time.Duration;
 import java.util.*;
 import lombok.NonNull;
 import org.dromara.hutool.core.convert.Convert;
+import org.dromara.hutool.core.lang.Assert;
 import org.dromara.hutool.core.math.NumberUtil;
 import org.dromara.hutool.core.util.RandomUtil;
+import org.dromara.hutool.extra.spring.SpringUtil;
 import org.redisson.api.*;
 import org.springframework.core.env.Environment;
 import org.springframework.data.redis.connection.RedisConnection;
@@ -39,6 +44,17 @@ public class RedisUtil {
           SingleFlightUtil.execute("redissonClient", () -> Fn.getBean(RedissonClient.class));
     }
     return redissonClient;
+  }
+
+  /**
+   * 清空非生产环境的 Redis 数据库（由于该操作非常危险，因此不允许在生产环境下执行）
+   *
+   * @return
+   */
+  public static void flushNonProductionDb() {
+    String env = SpringUtil.getProperty("spring.profiles.active");
+    Assert.isTrue(!ENV_PROD.equals(env) && !ENV_PRODUCTION.equals(env), "不允许在生产环境下清空 Redis 数据库");
+    getRedissonClient().getKeys().flushdb();
   }
 
   public static double getHitRatioPercentage() {
@@ -154,8 +170,6 @@ public class RedisUtil {
     map.put(key, value);
   }
 
-  // ============================ Set ==============================
-
   /**
    * Get all keys from a Redis Map.
    *
@@ -167,62 +181,4 @@ public class RedisUtil {
     return map.keySet();
   }
 
-  /**
-   * Add a value to a Redis Set.
-   *
-   * @param setName Set name
-   * @param value Value to add
-   */
-  public static void addSetValue(String setName, Object value) {
-    RSet<Object> set = getRedissonClient().getSet(setName);
-    set.add(value);
-  }
-
-  // ============================ List ==============================
-
-  /**
-   * Check if a value exists in a Redis Set.
-   *
-   * @param setName Set name
-   * @param value Value to check
-   * @return true if exists, false otherwise
-   */
-  public static boolean isSetMember(String setName, Object value) {
-    RSet<Object> set = getRedissonClient().getSet(setName);
-    return set.contains(value);
-  }
-
-  /**
-   * Add a value to a Redis List.
-   *
-   * @param listName List name
-   * @param value Value to add
-   */
-  public static void addListValue(String listName, Object value) {
-    RList<Object> list = getRedissonClient().getList(listName);
-    list.add(value);
-  }
-
-  /**
-   * Get a value from a Redis List by index.
-   *
-   * @param listName List name
-   * @param index Index
-   * @return Value at the specified index
-   */
-  public static Object getListValue(String listName, int index) {
-    RList<Object> list = getRedissonClient().getList(listName);
-    return list.get(index);
-  }
-
-  /**
-   * Get the size of a Redis List.
-   *
-   * @param listName List name
-   * @return Size of the list
-   */
-  public static int getListSize(String listName) {
-    RList<Object> list = getRedissonClient().getList(listName);
-    return list.size();
-  }
 }

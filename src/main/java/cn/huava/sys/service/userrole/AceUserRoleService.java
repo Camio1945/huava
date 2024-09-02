@@ -55,4 +55,8 @@ public class AceUserRoleService extends BaseService<UserRoleMapper, UserRolePo> 
             .select(UserRolePo::getRoleId);
     return list(wrapper).stream().map(UserRolePo::getRoleId).toList();
   }
+
+  public long countUserByRoleId(@NonNull Long roleId) {
+    return baseMapper.countUserByRoleId(roleId);
+  }
 }

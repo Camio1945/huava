@@ -1,29 +1,28 @@
+# huava
+
+A scaffold for building Java Web applications which can be compiled to native image using GraalVM.
 
 ---
 
-# huava （花瓦）
+# Principles
 
-一个用于构建 Java Web 应用程序的脚手架，可以使用 GraalVM 编译为本地镜像。
+1. Use Java 21 or the latest Java even if it is not LTS.
 
----
+2. Support GraalVM native image.
 
-# 原则
+3. Use the restful API, using methods not just GET and POST but also PUT, DELETE, and PATCH.
 
-1. 使用 Java 21 或最新的 Java，即使它不是 LTS。
+4. Follow almost all [Alibaba Java Coding Guidelines](https://plugins.jetbrains.com/plugin/22381-alibaba-java-coding-guidelines-fix-some-bug-/versions).
 
-2. 支持 GraalVM native image 本地镜像。这个是底线，为了提高启动速度、减少内存消耗，一定要支持 GraalVM native image。
+5. Follow almost all [SonarLint](https://plugins.jetbrains.com/plugin/7973-sonarlint) rules.
 
-3. 使用 RESTful API，不仅使用 GET 和 POST 方法，还使用 PUT、DELETE 和 PATCH 方法。
+6. In service layer, if a service has more than 1 public method and one method has more than 10 lines valid code, it should be extracted to a separate sub-service class.
 
-4. 尽量循环 [阿里巴巴 Java 编码规范](https://plugins.jetbrains.com/plugin/22381-alibaba-java-coding-guidelines-fix-some-bug-/versions)，但不是所有规范都支持，不支持的都有明确的理由。
+7. Use [google-java-format](https://plugins.jetbrains.com/plugin/8527-google-java-format) to format the code, in order to keep the code style consistent.
 
-5. 遵循几乎所有的 [SonarLint](https://plugins.jetbrains.com/plugin/7973-sonarlint) 规则，不支持的都有明确的理由。
+8. Write unit tests for as many codes as possible.
 
-6. 在服务层，如果一个服务有多个公共方法，并且某一个方法有超过 10 行有效代码，则应将其提取到一个单独的子服务类中。
-
-7. 使用 [google-java-format](https://plugins.jetbrains.com/plugin/8527-google-java-format) 格式化代码，以保持代码风格一致。
-
-8. 尽可能多地编写单元测试，尽量保证方法覆盖率在 90% 以上，代码行覆盖率在 90% 以上。
+9. Use English comments and documentation. (Intend to practice English for non-native English speakers.)
 
 ---
 

@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import static cn.huava.common.constant.CommonConstant.MULTIPART_PARAM_NAME;
+
 /**
  * Upload attachment to local disk's folder defined in application.yml<br>
  * Used by reflection<br>
@@ -45,7 +47,7 @@ public class UploadToLocalServiceImpl extends BaseUploadService {
 
   @SuppressWarnings("java:S2637") // SonarLint can not detect the use of Assert
   private static @NonNull MultipartFile getMultipartFile(final MultipartHttpServletRequest req) {
-    MultipartFile file = req.getFile("file");
+    MultipartFile file = req.getFile(MULTIPART_PARAM_NAME);
     Assert.isTrue(file != null && !file.isEmpty(), "解析不到上传的文件");
     return file;
   }

@@ -28,7 +28,7 @@ public abstract class BaseController<S extends BaseService<M, T>, M extends Base
    * subclass of this class will need to write something like the following code:
    *
    * <pre>
-   * public SysUserController(SysUserService service) {
+   * public UserController(UserService service) {
    *   super(service);
    * }
    * </pre>
@@ -52,7 +52,7 @@ public abstract class BaseController<S extends BaseService<M, T>, M extends Base
 
   @PostMapping("/create")
   @Transactional(rollbackFor = Throwable.class)
-  public ResponseEntity<Long> create(
+  public ResponseEntity<String> create(
       @RequestBody @NonNull @Validated({Create.class}) final T entity) {
     Assert.isInstanceOf(BasePo.class, entity, "The entity must be an instance of BasePo");
     BasePo.beforeCreate(entity);
@@ -61,7 +61,7 @@ public abstract class BaseController<S extends BaseService<M, T>, M extends Base
     Assert.isTrue(success, "Failed to create entity");
     afterSave(entity);
     Long id = ((BasePo) entity).getId();
-    return ResponseEntity.ok(id);
+    return ResponseEntity.ok(id.toString());
   }
 
   /** Intended to be overridden by subclass if needed. */

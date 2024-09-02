@@ -10,6 +10,7 @@ import org.dromara.hutool.core.bean.BeanUtil;
 import org.dromara.hutool.core.io.file.FileUtil;
 import org.dromara.hutool.core.text.*;
 import org.dromara.hutool.extra.spring.SpringUtil;
+import org.springframework.core.io.Resource;
 import org.springframework.util.StringUtils;
 
 /**
@@ -85,5 +86,9 @@ public class Fn {
 
   public static String encryptPassword(@NonNull final String str) {
     return EncryptUtil.encryptPassword(str);
+  }
+
+  public static byte[] resourceToBytes(@NonNull Resource resource) {
+    return ResourceUtil.resourceToBytes(resource);
   }
 }

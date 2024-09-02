@@ -6,6 +6,8 @@ import cn.huava.sys.pojo.dto.UserJwtDto;
 import cn.huava.sys.pojo.po.UserExtPo;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,9 +39,11 @@ class CreateTokenService extends BaseService<UserMapper, UserExtPo> {
 
   private static String createRefreshToken(byte[] jwtKey) {
     Map<String, Object> payload = HashMap.newHashMap(3);
+    // 这个 ID 是必须的，否则在同一秒内生成的 refreshToken 可能会相同，但数据要求惟一
+    payload.put("id", IdWorker.getIdStr());
     payload.put("iat", System.currentTimeMillis() / 1000);
     // 30 days
-    payload.put("exp", System.currentTimeMillis() / 1000 + 60 * 60 * 24 * 30);
+    payload.put("exp", System.currentTimeMillis() / 1000 + 30 * 24 * 60 * 60);
     return JWTUtil.createToken(payload, jwtKey);
   }
 }

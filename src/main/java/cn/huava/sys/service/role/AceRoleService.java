@@ -31,15 +31,6 @@ public class AceRoleService extends BaseService<RoleMapper, RolePo> {
   private final AceRolePermService rolePermService;
   private final RoleCache roleCache;
 
-  public List<String> getRoleNamesByUserId(@NonNull final Long userId) {
-    List<UserRolePo> userRoles =
-        userRoleService.list(
-            new LambdaQueryWrapper<UserRolePo>().eq(UserRolePo::getUserId, userId));
-    List<Long> roleIds = userRoles.stream().map(UserRolePo::getRoleId).toList();
-    List<RolePo> roles = listByIds(roleIds);
-    return roles.stream().map(RolePo::getName).toList();
-  }
-
   public PageDto<RolePo> rolePage(@NonNull PageQo<RolePo> pageQo, @NonNull final RolePo params) {
     return rolePageService.rolePage(pageQo, params);
   }

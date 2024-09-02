@@ -5,6 +5,8 @@ import static cn.huava.common.constant.CommonConstant.MIN_PASSWORD_LENGTH;
 
 import cn.huava.common.pojo.po.BasePo;
 import cn.huava.common.validation.*;
+import cn.huava.sys.enumeration.UserGenderEnum;
+import cn.huava.sys.validation.common.ValidEnum;
 import cn.huava.sys.validation.user.*;
 import com.baomidou.mybatisplus.annotation.TableName;
 import jakarta.validation.constraints.NotBlank;
@@ -68,6 +70,10 @@ public class UserPo extends BasePo {
   @Size(
       max = 1,
       message = "性别长度不能大于 1 个字符",
+      groups = {Create.class, Update.class})
+  @ValidEnum(
+      enumClass = UserGenderEnum.class,
+      message = "性别的可选值只能为：M、F、U",
       groups = {Create.class, Update.class})
   private String gender;
 

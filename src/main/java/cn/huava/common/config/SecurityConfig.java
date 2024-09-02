@@ -42,7 +42,6 @@ public class SecurityConfig {
               // AuthorizeHttpRequestsConfigurer$AuthorizationManagerRequestMatcherRegistry
               registry.requestMatchers("/captcha").permitAll();
               registry.requestMatchers("/sys/user/login").permitAll();
-              registry.requestMatchers("/sys/user/code").permitAll();
               registry.requestMatchers(REFRESH_TOKEN_URI).permitAll();
               registry.requestMatchers("/temp/test/**").permitAll();
               registry.requestMatchers(getImagesMatcher()).permitAll();

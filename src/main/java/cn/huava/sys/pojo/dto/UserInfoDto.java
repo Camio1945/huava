@@ -4,7 +4,7 @@ import java.util.List;
 import lombok.Data;
 
 /**
- * Used for api: /sys/user/info
+ * 用户信息，用于前端首页获取用户的菜单与权限
  *
  * @author Camio1945
  */
@@ -13,4 +13,5 @@ public class UserInfoDto {
   private String username;
   private String avatar;
   private List<PermDto> menu;
+  private List<String> uris;
 }

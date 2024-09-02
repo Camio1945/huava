@@ -1,6 +1,5 @@
 package cn.huava.common.graalvm;
 
-import cn.huava.sys.validation.role.*;
 import com.baomidou.mybatisplus.core.MybatisXMLLanguageDriver;
 import com.baomidou.mybatisplus.core.conditions.AbstractLambdaWrapper;
 import com.baomidou.mybatisplus.core.conditions.AbstractWrapper;
@@ -36,7 +35,7 @@ public class NativeRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
     registerClasses(hints);
   }
 
-  private void registerResources(@NonNull RuntimeHints hints) {
+  protected void registerResources(@NonNull RuntimeHints hints) {
     Stream.of(
             "org/apache/ibatis/builder/xml/*.dtd",
             "org/apache/ibatis/builder/xml/*.xsd",
@@ -47,7 +46,7 @@ public class NativeRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
         .forEach(hints.resources()::registerPattern);
   }
 
-  private void registerClasses(@NonNull RuntimeHints hints) {
+  protected void registerClasses(@NonNull RuntimeHints hints) {
     Set<Class<?>> classes = new HashSet<>();
     addMiscellaneousClasses(classes);
     addIbatisClasses(classes);
@@ -55,7 +54,7 @@ public class NativeRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
     classes.forEach(c -> hints.reflection().registerType(c, MemberCategory.values()));
   }
 
-  private void addMiscellaneousClasses(Set<Class<?>> classes) {
+  protected void addMiscellaneousClasses(Set<Class<?>> classes) {
     Set<Class<?>> miscellaneousClasses =
         Set.of(
             // http response for gzip
@@ -67,7 +66,7 @@ public class NativeRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
     classes.addAll(miscellaneousClasses);
   }
 
-  private void addIbatisClasses(Set<Class<?>> classes) {
+  protected void addIbatisClasses(Set<Class<?>> classes) {
     // ibatis, mybatis, mybatis-plus
     Set<Class<?>> ibatisClasses =
         Set.of(
@@ -88,7 +87,7 @@ public class NativeRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
     classes.addAll(ibatisClasses);
   }
 
-  private void addHuavaClasses(Set<Class<?>> classes) {
+  protected void addHuavaClasses(Set<Class<?>> classes) {
     classes.addAll(ClassUtil.scanPackage("cn.huava").stream().toList());
   }
 }

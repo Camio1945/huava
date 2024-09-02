@@ -81,9 +81,13 @@ public class UserCache {
    * @param after 已经保存到数据库之后的用户
    */
   public void afterSaveOrUpdate(UserExtPo after) {
+    deleteKeys(after);
+  }
+
+  private void deleteKeys(UserExtPo user) {
     String[] keys = {
-      USER_ID_CACHE_PREFIX + "::" + after.getId(),
-      USER_USERNAME_CACHE_PREFIX + "::" + after.getUsername()
+      USER_ID_CACHE_PREFIX + "::" + user.getId(),
+      USER_USERNAME_CACHE_PREFIX + "::" + user.getUsername()
     };
     RedisUtil.delete(keys);
   }
@@ -94,11 +98,7 @@ public class UserCache {
    * @param before 删除前的用户
    */
   public void afterDelete(UserExtPo before) {
-    String[] keys = {
-      USER_ID_CACHE_PREFIX + "::" + before.getId(),
-      USER_USERNAME_CACHE_PREFIX + "::" + before.getUsername()
-    };
-    RedisUtil.delete(keys);
+    deleteKeys(before);
   }
 
   /**

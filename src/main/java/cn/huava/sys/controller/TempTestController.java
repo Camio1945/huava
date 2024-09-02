@@ -24,10 +24,13 @@ public class TempTestController {
   private final AceUserService userService;
   private final UserCache userCache;
 
+  @GetMapping("/hello")
+  public String hello() {
+    return "world";
+  }
+
   @GetMapping("/")
   public Object test(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-    userCache.getById(1L);
-    userCache.getById(1827702535554572289L);
     return RedisUtil.getHitRatioPercentage();
   }
 }

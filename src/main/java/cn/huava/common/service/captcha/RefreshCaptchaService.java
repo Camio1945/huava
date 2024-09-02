@@ -92,7 +92,7 @@ class RefreshCaptchaService {
     String filename = resource.getFilename();
     String captchaCode = FileNameUtil.mainName(filename);
     req.getSession().setAttribute(CommonConstant.CAPTCHA_CODE_SESSION_KEY, captchaCode);
-    writeResponse(resp, resourceToBytes(resource));
+    writeResponse(resp, Fn.resourceToBytes(resource));
   }
 
   private static void writeResponse(HttpServletResponse resp, byte[] imageBytes)
@@ -155,18 +155,6 @@ class RefreshCaptchaService {
                       .getResources("classpath:static_captcha/*"));
     }
     return localStaticImages[RandomUtil.randomInt(0, localStaticImages.length)];
-  }
-
-  private static byte[] resourceToBytes(Resource resource) throws IOException {
-    try (InputStream inputStream = resource.getInputStream();
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-      byte[] buffer = new byte[1024];
-      int bytesRead;
-      while ((bytesRead = inputStream.read(buffer)) != -1) {
-        outputStream.write(buffer, 0, bytesRead);
-      }
-      return outputStream.toByteArray();
-    }
   }
 
   private static String readContent(String path) {

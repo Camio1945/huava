@@ -4,6 +4,7 @@ import cn.huava.common.pojo.dto.PageDto;
 import cn.huava.common.pojo.qo.PageQo;
 import cn.huava.common.service.BaseService;
 import cn.huava.common.util.Fn;
+import cn.huava.sys.cache.UserCache;
 import cn.huava.sys.mapper.UserMapper;
 import cn.huava.sys.pojo.dto.*;
 import cn.huava.sys.pojo.po.*;
@@ -31,6 +32,7 @@ public class AceUserService extends BaseService<UserMapper, UserExtPo> {
   private final LogoutService logoutService;
   private final UserPageService userPageService;
   private final PasswordEncoder passwordEncoder;
+  private final UserCache userCache;
 
   public UserJwtDto login(@NonNull final HttpServletRequest req, @NonNull final LoginQo loginQo) {
     return loginService.login(req, loginQo);
@@ -38,11 +40,6 @@ public class AceUserService extends BaseService<UserMapper, UserExtPo> {
 
   public String refreshToken(@NonNull final String refreshToken) {
     return refreshTokenService.refreshToken(refreshToken);
-  }
-
-  public UserExtPo getByUserName(@NonNull final String username) {
-    return getOne(
-        Fn.undeletedWrapper(UserExtPo::getDeleteInfo).eq(UserExtPo::getUsername, username));
   }
 
   public void logout(@NonNull final String refreshToken) {
@@ -68,6 +65,7 @@ public class AceUserService extends BaseService<UserMapper, UserExtPo> {
             .eq(UserExtPo::getId, loginUser.getId())
             .set(UserExtPo::getPassword, encodedNewPassword);
     update(wrapper);
+    userCache.afterSaveOrUpdate((UserExtPo) loginUser);
   }
 
   public UserInfoDto getUserInfoDto() {
