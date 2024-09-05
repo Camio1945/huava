@@ -11,6 +11,8 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 /**
+ * 删除角色前的校验器，与 {@link BeforeDeleteRole} 注解配合使用
+ *
  * @author Camio1945
  */
 public class BeforeDeleteRoleValidator extends BaseValidator

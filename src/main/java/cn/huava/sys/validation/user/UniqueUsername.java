@@ -7,6 +7,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * 用户名唯一性校验器注解，与 {@link UniqueUsernameValidator} 配合使用
+ *
  * @author Camio1945
  */
 @Constraint(validatedBy = UniqueUsernameValidator.class)

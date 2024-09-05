@@ -7,15 +7,17 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 /**
+ * 用户所拥有的角色 Mapper 持久化层
+ *
  * @author Camio1945
  */
 @Mapper
 public interface UserRoleMapper extends BaseMapper<UserRolePo> {
 
   /**
-   * 根据角色ID查询用户数量
+   * 根据角色 id 查询用户数量
    *
-   * @param roleId 角色ID
+   * @param roleId 角色 id
    * @return
    */
   @Select(

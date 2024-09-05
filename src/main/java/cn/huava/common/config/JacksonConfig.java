@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 /**
- * Solve the problem of Long type precision loss in front and back end interaction
+ * 解决前后端交互时 Long 类型精度丢失的问题
  *
  * @author Camio1945
  */

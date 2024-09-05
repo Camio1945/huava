@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 /**
+ * 附件服务主入口类
+ *
  * @author Camio1945
  */
 @Slf4j

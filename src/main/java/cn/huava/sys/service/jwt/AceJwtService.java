@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
+ * JWT 服务主入口类<br>
+ *
  * @author Camio1945
  */
 @Slf4j
@@ -28,10 +30,6 @@ public class AceJwtService {
     return createTokenService.createToken(userId, getJwtKeyBytes());
   }
 
-  private byte[] getJwtKeyBytes() {
-    return Base64.getDecoder().decode(jwtKeyBase64);
-  }
-
   public Long getUserIdFromAccessToken(@NonNull final String token) {
     return JWTUtil.parseToken(token).getPayload("sub", Long.class);
   }
@@ -41,5 +39,9 @@ public class AceJwtService {
     JWT jwt = JWTUtil.parseToken(token);
     Long exp = jwt.getPayload("exp", Long.class);
     return exp != null && exp * CommonConstant.MILLIS_PER_SECOND <= System.currentTimeMillis();
+  }
+
+  private byte[] getJwtKeyBytes() {
+    return Base64.getDecoder().decode(jwtKeyBase64);
   }
 }

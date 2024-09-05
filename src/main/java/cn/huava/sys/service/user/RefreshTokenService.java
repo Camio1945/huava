@@ -14,6 +14,8 @@ import org.dromara.hutool.json.jwt.*;
 import org.springframework.stereotype.Service;
 
 /**
+ * 退出登录
+ *
  * @author Camio1945
  */
 @Slf4j

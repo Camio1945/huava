@@ -42,10 +42,9 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 
 /**
- * This class and the containing class {@link NativeRuntimeHintsRegistrar} is used for building
- * GraalVM native image.<br>
- * This class's main code is to add native image support for MyBatis-Plus. <br>
- * Kudos to <a href="https://github.com/nieqiurong/mybatis-native-demo">mybatis-native-demo</a>
+ * 当前类以及它所包含的 {@link NativeRuntimeHintsRegistrar} 类都是用来构建 GraalVM native image 的。<br>
+ * 当前类的主要功能是为了让 MyBatis-Plus 支持 GraalVM native image。<br>
+ * 参考自 <a href="https://github.com/nieqiurong/mybatis-native-demo">mybatis-native-demo</a> 。
  *
  * @author Camio1945
  */
@@ -54,7 +53,7 @@ import org.springframework.util.ReflectionUtils;
 public class RuntimeHintsRegistrarConfig {
 
   /**
-   * This bean is necessary, otherwise this kind of error will occur:
+   * 这个 bean 是必需的，否则会出现以下错误：
    *
    * <pre>
    * Error creating bean with name 'sysUserRoleMapper': Unsatisfied dependency expressed through constructor parameter 0:
@@ -69,7 +68,7 @@ public class RuntimeHintsRegistrarConfig {
   }
 
   /**
-   * This bean is necessary, otherwise this kind of error will occor:
+   * 这个 bean 是必需的，否则会出现以下错误：
    *
    * <pre>
    * Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Unable to start web server

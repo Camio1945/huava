@@ -38,14 +38,6 @@ public class RedisUtil {
     return bucket.isExists();
   }
 
-  private static RedissonClient getRedissonClient() {
-    if (redissonClient == null) {
-      redissonClient =
-          SingleFlightUtil.execute("redissonClient", () -> Fn.getBean(RedissonClient.class));
-    }
-    return redissonClient;
-  }
-
   /**
    * 清空非生产环境的 Redis 数据库（由于该操作非常危险，因此不允许在生产环境下执行）
    *
@@ -99,8 +91,6 @@ public class RedisUtil {
     return Duration.ofSeconds(seconds + offset);
   }
 
-  // ============================ String ==============================
-
   /**
    * Delete a key (or keys) from Redis.
    *
@@ -109,6 +99,8 @@ public class RedisUtil {
   public static void delete(@NonNull String... keys) {
     getRedissonClient().getKeys().delete(keys);
   }
+
+  // ============================ String ==============================
 
   /**
    * Get the value of a key from Redis.
@@ -132,8 +124,6 @@ public class RedisUtil {
     bucket.set(value);
   }
 
-  // ============================ Map ==============================
-
   /**
    * Set a key-value pair in Redis with expiration time.
    *
@@ -145,6 +135,8 @@ public class RedisUtil {
     RBucket<Object> bucket = getRedissonClient().getBucket(key);
     bucket.set(value, Duration.ofSeconds(ttlInSeconds));
   }
+
+  // ============================ Map ==============================
 
   /**
    * Get a value from a Redis Map by key.
@@ -181,4 +173,11 @@ public class RedisUtil {
     return map.keySet();
   }
 
+  private static RedissonClient getRedissonClient() {
+    if (redissonClient == null) {
+      redissonClient =
+          SingleFlightUtil.execute("redissonClient", () -> Fn.getBean(RedissonClient.class));
+    }
+    return redissonClient;
+  }
 }

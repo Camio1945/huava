@@ -35,6 +35,10 @@ public class RoleCache {
     return SingleFlightUtil.execute(key, () -> getPermUrisByRoleIdInner(roleId));
   }
 
+  public void deleteCache(@NonNull Long roleId) {
+    RedisUtil.delete(URIS_CACHE_PREFIX + "::" + roleId);
+  }
+
   private Set<String> getPermUrisByRoleIdInner(Long roleId) {
     LambdaQueryWrapper<RolePermPo> wrapper = new LambdaQueryWrapper<>();
     wrapper.eq(RolePermPo::getRoleId, roleId).select(RolePermPo::getPermId);
@@ -44,9 +48,5 @@ public class RoleCache {
       return Collections.emptySet();
     }
     return permMapper.selectBatchIds(permIds).stream().map(PermPo::getUri).collect(toSet());
-  }
-
-  public void deleteCache(@NonNull Long roleId) {
-    RedisUtil.delete(URIS_CACHE_PREFIX + "::" + roleId);
   }
 }

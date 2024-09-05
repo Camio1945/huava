@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 /**
+ * 刷新 token 服务主入口类<br>
+ *
  * @author Camio1945
  */
 @Slf4j

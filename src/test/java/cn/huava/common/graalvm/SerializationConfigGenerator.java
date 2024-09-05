@@ -12,6 +12,7 @@ import org.dromara.hutool.json.JSONArray;
 import org.dromara.hutool.json.JSONObject;
 
 /**
+ * 生成 serialization-config.json 文件，用于 GraalVM native image。<br>
  * Generate the serialization-config.json file for GraalVM native image.<br>
  * File path : src/main/resources/META-INF/native-image/serialization-config.json
  *

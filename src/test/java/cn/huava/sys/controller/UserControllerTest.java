@@ -1,6 +1,5 @@
 package cn.huava.sys.controller;
 
-import static cn.huava.common.constant.CommonConstant.ADMIN_USER_ID;
 import static cn.huava.common.constant.CommonConstant.CAPTCHA_CODE_SESSION_KEY;
 import static cn.huava.sys.controller.ApiTestUtil.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -267,5 +266,4 @@ public class UserControllerTest {
     assertEquals(updateParamObj.getGender(), updatedObj.getGender());
     assertEquals(updateParamObj.getIsEnabled(), updatedObj.getIsEnabled());
   }
-
 }

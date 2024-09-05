@@ -10,6 +10,6 @@ public enum UserGenderEnum {
   M,
   /** Female 女 */
   F,
-  /** Unknown 未知*/
+  /** Unknown 未知 */
   U
 }

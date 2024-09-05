@@ -56,45 +56,6 @@ class RefreshCaptchaService {
     }
   }
 
-  private void refreshForNativeImage(HttpServletRequest req, HttpServletResponse resp)
-      throws IOException {
-    if (refreshByOnlineApi(req, resp)) {
-      return;
-    }
-    refreshByLocalStaticImage(req, resp);
-  }
-
-  private void refreshForJava(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-    LineCaptcha captcha = CaptchaUtil.ofLineCaptcha(100, 40, 4, 4);
-    req.getSession().setAttribute(CommonConstant.CAPTCHA_CODE_SESSION_KEY, captcha.getCode());
-    writeResponse(resp, captcha.getImageBytes());
-  }
-
-  private boolean refreshByOnlineApi(HttpServletRequest req, HttpServletResponse resp) {
-    initAppIdIfNeeded(appIdPath);
-    initAppSecretIfNeeded(appSecretPath);
-    if (Fn.isBlank(appId) || Fn.isBlank(appSecret)) {
-      return false;
-    }
-    try {
-      JSONObject jsonObject = getJsonFromOnlineApi(appId, appSecret);
-      writeBase64ImageToResponse(req, resp, jsonObject);
-      return true;
-    } catch (Exception e) {
-      log.error("refresh captcha by online api error", e);
-    }
-    return false;
-  }
-
-  private void refreshByLocalStaticImage(HttpServletRequest req, HttpServletResponse resp)
-      throws IOException {
-    Resource resource = getRandomLocalStaticImage();
-    String filename = resource.getFilename();
-    String captchaCode = FileNameUtil.mainName(filename);
-    req.getSession().setAttribute(CommonConstant.CAPTCHA_CODE_SESSION_KEY, captchaCode);
-    writeResponse(resp, Fn.resourceToBytes(resource));
-  }
-
   private static void writeResponse(HttpServletResponse resp, byte[] imageBytes)
       throws IOException {
     resp.setContentType("image/jpeg");
@@ -166,5 +127,44 @@ class RefreshCaptchaService {
       return FileUtil.readUtf8String(path).trim();
     }
     return null;
+  }
+
+  private void refreshForNativeImage(HttpServletRequest req, HttpServletResponse resp)
+      throws IOException {
+    if (refreshByOnlineApi(req, resp)) {
+      return;
+    }
+    refreshByLocalStaticImage(req, resp);
+  }
+
+  private void refreshForJava(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    LineCaptcha captcha = CaptchaUtil.ofLineCaptcha(100, 40, 4, 4);
+    req.getSession().setAttribute(CommonConstant.CAPTCHA_CODE_SESSION_KEY, captcha.getCode());
+    writeResponse(resp, captcha.getImageBytes());
+  }
+
+  private boolean refreshByOnlineApi(HttpServletRequest req, HttpServletResponse resp) {
+    initAppIdIfNeeded(appIdPath);
+    initAppSecretIfNeeded(appSecretPath);
+    if (Fn.isBlank(appId) || Fn.isBlank(appSecret)) {
+      return false;
+    }
+    try {
+      JSONObject jsonObject = getJsonFromOnlineApi(appId, appSecret);
+      writeBase64ImageToResponse(req, resp, jsonObject);
+      return true;
+    } catch (Exception e) {
+      log.error("refresh captcha by online api error", e);
+    }
+    return false;
+  }
+
+  private void refreshByLocalStaticImage(HttpServletRequest req, HttpServletResponse resp)
+      throws IOException {
+    Resource resource = getRandomLocalStaticImage();
+    String filename = resource.getFilename();
+    String captchaCode = FileNameUtil.mainName(filename);
+    req.getSession().setAttribute(CommonConstant.CAPTCHA_CODE_SESSION_KEY, captchaCode);
+    writeResponse(resp, Fn.resourceToBytes(resource));
   }
 }

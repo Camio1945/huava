@@ -19,6 +19,8 @@ import org.dromara.hutool.core.collection.CollUtil;
 import org.springframework.stereotype.Service;
 
 /**
+ * 用户分页查询
+ *
  * @author Camio1945
  */
 @Slf4j
@@ -33,6 +35,11 @@ class UserPageService extends BaseService<UserMapper, UserExtPo> {
     List<UserDto> userDtos = pageQo.getRecords().stream().map(UserDto::new).toList();
     setRoleIds(userDtos);
     return new PageDto<>(userDtos, pageQo.getTotal());
+  }
+
+  private static Map<Long, List<Long>> getUserIdToRoleIdsMap(List<UserRolePo> userRoles) {
+    return userRoles.stream()
+        .collect(groupingBy(UserRolePo::getUserId, mapping(UserRolePo::getRoleId, toList())));
   }
 
   /** Note: the `params` renamed to po to save some space */
@@ -63,10 +70,5 @@ class UserPageService extends BaseService<UserMapper, UserExtPo> {
     List<Long> userIds = userDtos.stream().map(UserDto::getId).toList();
     LambdaUpdateWrapper<UserRolePo> wrapper = new LambdaUpdateWrapper<>();
     return userRoleService.list(wrapper.in(UserRolePo::getUserId, userIds));
-  }
-
-  private static Map<Long, List<Long>> getUserIdToRoleIdsMap(List<UserRolePo> userRoles) {
-    return userRoles.stream()
-        .collect(groupingBy(UserRolePo::getUserId, mapping(UserRolePo::getRoleId, toList())));
   }
 }

@@ -9,7 +9,7 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * attachment 附件
+ * 附件
  *
  * @author Camio1945
  */

@@ -26,26 +26,26 @@ spring:
     type: redis
     redis:
       cache-null-values: true
-      # uses in RedisConfig.java, unit is minutes
+      # 在 RedisConfig.java 中用到，单位是分钟
       time-to-live: 1440
 
 project:
   jwt_key_base64: JsbZtEZD+oB3sMEnfbmFuqiBFGpNofZkNHTOeuXqPi8=
-  # use for online captcha, see https://www.mxnzp.com/doc/detail?id=24
+  # 用于在线验证码， 详情见 https://www.mxnzp.com/doc/detail?id=24
   mxnzp_roll_api:
-    # mxnzp APP_ID and APP_SECRET path, can be relative path or absolute path
-    # relative to user home directory (e.g. C:\Users\Administrator for Windows admin user)
-    # I don't want to expose my own app_id and app_secret in public, so I use path instead of real value
+    # mxnzp APP_ID 和 APP_SECRET 路径，可以是相对路径也可以是绝对路径
+    # 相对的是用户的家(home)目录 (如 Windows 下的超级管理员对应了 C:\Users\Administrator )
+    # 本来这里可以直接存值的，但考虑到每个项目都应该自己去申请，我不想暴露自己的信息，所以还是存到文件里
     app_id_path: .huava/mxnzp_roll_api/app_id
     app_secret_path: .huava/mxnzp_roll_api/app_secret
   attachment:
-    # the path where attachment files are stored, can be relative path or absolute path
-    # relative to user home directory (e.g. C:\Users\Administrator for Windows admin user)
+    # 存储附件的路径，可以是相对路径或绝对路径
+    # 相对的是用户的家(home)目录 (如 Windows 下的超级管理员对应了 C:\Users\Administrator )
     path: .huava/attachment
-    # which service class to use to handle attachment upload, must implement the BaseUploadService interface
+    # 使用哪个服务类来处理附件上传， 必须继承 BaseUploadService 类
     handle_class: cn.huava.common.service.attachment.UploadToLocalServiceImpl
-  # can have one of these 2 values: "all" or "main"
-  # "all" means all api will be authenticated, also means every api should be registered in the sys_perm table
-  # "main" means only these apis will be authenticated: ".../create", ".../delete", ".../update", ".../page"
+  # api 权限校验的范围，有两种取值: "all" 或 "main"
+  # "all" 表示所有 API 都将被校验，也意味着每个 API 都应该在 sys_perm 表中注册
+  # "main" 表示只有以下增删改查的接口才会被校验： ".../create", ".../delete", ".../update", ".../page"
   api_auth_range: main
 

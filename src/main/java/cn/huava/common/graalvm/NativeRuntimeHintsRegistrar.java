@@ -23,7 +23,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.aot.hint.*;
 
 /**
- * Register resources and classes for GraalVM native image.
+ * 为 GraalVM native image 注册资源和类。<br>
+ * 当前类你理解为一个附属类，它在 {@link RuntimeHintsRegistrarConfig} 的注解中用到。
  *
  * @author Camio1945
  */

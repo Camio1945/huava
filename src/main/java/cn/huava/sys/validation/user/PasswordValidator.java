@@ -9,6 +9,8 @@ import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
+ * 用户密码校验器，与 {@link Password} 注解配合使用
+ *
  * @author Camio1945
  */
 public class PasswordValidator extends BaseValidator

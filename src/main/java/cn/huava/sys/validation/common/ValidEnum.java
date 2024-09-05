@@ -8,6 +8,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * 枚举类型校验器注解，与 {@link EnumValidator} 配合使用
+ *
  * @author Camio1945
  */
 @Target({ElementType.FIELD, ElementType.PARAMETER})

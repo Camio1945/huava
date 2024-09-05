@@ -30,18 +30,18 @@ class ValidateCaptchaService {
     validateCaptchaCode(req, captchaCode);
   }
 
-  private boolean shouldIgnoreCaptcha(Boolean isCaptchaDisabledForTesting) {
-    return !activeEnv.equals(CommonConstant.ENV_PROD)
-        && !activeEnv.equals(CommonConstant.ENV_PRODUCTION)
-        && isCaptchaDisabledForTesting != null
-        && isCaptchaDisabledForTesting;
-  }
-
   private static void validateCaptchaCode(HttpServletRequest req, String captchaCode) {
     Assert.notBlank(captchaCode, "请输入验证码");
     String sessionCode =
         (String) req.getSession().getAttribute(CommonConstant.CAPTCHA_CODE_SESSION_KEY);
     Assert.equals(captchaCode, sessionCode, "验证码不正确，请重试");
     req.getSession().removeAttribute(CommonConstant.CAPTCHA_CODE_SESSION_KEY);
+  }
+
+  private boolean shouldIgnoreCaptcha(Boolean isCaptchaDisabledForTesting) {
+    return !activeEnv.equals(CommonConstant.ENV_PROD)
+        && !activeEnv.equals(CommonConstant.ENV_PRODUCTION)
+        && isCaptchaDisabledForTesting != null
+        && isCaptchaDisabledForTesting;
   }
 }

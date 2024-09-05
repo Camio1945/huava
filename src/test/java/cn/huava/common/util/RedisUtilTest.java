@@ -1,11 +1,9 @@
 package cn.huava.common.util;
 
-
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.dromara.hutool.core.data.id.IdUtil;
-
 import java.util.Set;
+import org.dromara.hutool.core.data.id.IdUtil;
 
 /** 测试 {@link RedisUtil} 类，由于依赖 Spring 环境，所以需要在 {@link cn.huava.MainTest} 中调用当前类。 */
 public class RedisUtilTest {

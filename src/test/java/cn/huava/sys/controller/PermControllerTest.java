@@ -69,11 +69,12 @@ public class PermControllerTest {
   private static void update() throws Exception {
     PermPo updateParamObj = new PermPo();
     updateParamObj.setId(createdId);
-    updateParamObj .setType(PermTypeEnum.E.name())
-                   .setPid(4L)
-                   .setName(IdUtil.nanoId(10))
-                   .setUri("/tempTestNew")
-                   .setSort(11);
+    updateParamObj
+        .setType(PermTypeEnum.E.name())
+        .setPid(4L)
+        .setName(IdUtil.nanoId(10))
+        .setUri("/tempTestNew")
+        .setSort(11);
     RequestBuilder req = initReq().put("/sys/perm/update").contentJson(updateParamObj).build();
     mockMvc.perform(req).andExpect(status().isOk());
     PermPo updatedObj = getById(updateParamObj.getId());

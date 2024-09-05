@@ -7,6 +7,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * 用户所拥有的角色 ids 校验器注解，与 {@link RoleIdsValidator} 配合使用
+ *
  * @author Camio1945
  */
 @Constraint(validatedBy = RoleIdsValidator.class)

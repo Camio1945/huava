@@ -14,8 +14,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * Base Controller to provide common CRUD operations. <br>
- * Generic: T - Entity Type, M - Mapper Type, S - Service Type <br>
+ * 基础控制器，提供增删改查的功能（不包含分页查询）<br>
+ * 泛型：T - 实体类型， M - MyBatis 的 Mapper 类型， S - Service 类型 <br>
  *
  * @author Camio1945
  */
@@ -23,9 +23,8 @@ import org.springframework.web.bind.annotation.*;
 public abstract class BaseController<S extends BaseService<M, T>, M extends BaseMapper<T>, T> {
 
   /**
-   * About @SuppressWarnings("java:S6813"): Without @SuppressWarnings("java:S6813"), the SonarLint
-   * will complain about the @Autowired annotation. But without @Autowired annotation, every
-   * subclass of this class will need to write something like the following code:
+   * 关于 @SuppressWarnings("java:S6813")： 如果没有这个注解， SonarLint 会警告说我们不应该使用 @Autowired
+   * 注解，但是如果不使用 @Autowired 注解，那每一个子类都需要写一些类似这样的代码:
    *
    * <pre>
    * public UserController(UserService service) {
@@ -37,6 +36,7 @@ public abstract class BaseController<S extends BaseService<M, T>, M extends Base
   @Autowired
   protected S service;
 
+  /** 根据 id 查询对象 */
   @GetMapping("/get/{id}")
   public ResponseEntity<T> getById(@PathVariable @NonNull final Long id) {
     T entity = service.getById(id);
@@ -47,9 +47,7 @@ public abstract class BaseController<S extends BaseService<M, T>, M extends Base
     return ResponseEntity.ok(entity);
   }
 
-  /** Intended to be overridden by subclass if needed. */
-  protected void afterGetById(T entity) {}
-
+  /** 增 */
   @PostMapping("/create")
   @Transactional(rollbackFor = Throwable.class)
   public ResponseEntity<String> create(
@@ -64,14 +62,7 @@ public abstract class BaseController<S extends BaseService<M, T>, M extends Base
     return ResponseEntity.ok(id.toString());
   }
 
-  /** Intended to be overridden by subclass if needed. */
-  @SuppressWarnings("unused")
-  protected void beforeSave(@NonNull T entity) {}
-
-  /** Intended to be overridden by subclass if needed. */
-  @SuppressWarnings("unused")
-  protected void afterSave(@NonNull T entity) {}
-
+  /** 改 */
   @PutMapping("/update")
   @Transactional(rollbackFor = Throwable.class)
   public ResponseEntity<Void> update(
@@ -84,14 +75,7 @@ public abstract class BaseController<S extends BaseService<M, T>, M extends Base
     return ResponseEntity.ok(null);
   }
 
-  /** Intended to be overridden by subclass if needed. */
-  @SuppressWarnings("unused")
-  protected void beforeUpdate(@NonNull T entity) {}
-
-  /** Intended to be overridden by subclass if needed. */
-  @SuppressWarnings("unused")
-  protected void afterUpdate(@NonNull T entity) {}
-
+  /** 删 */
   @DeleteMapping("/delete")
   public ResponseEntity<Void> delete(
       @RequestBody @NonNull @Validated({Delete.class}) final T entity) {
@@ -103,13 +87,55 @@ public abstract class BaseController<S extends BaseService<M, T>, M extends Base
     return ResponseEntity.ok(null);
   }
 
-  /** Intended to be overridden by subclass if needed. */
-  @SuppressWarnings("unused")
+  /**
+   * 根据 id 获取对象之后额外要做的事情，子类可在有需要的时候选择性地覆盖本方法
+   *
+   * @param entity 根据 id 查询到的对象
+   */
+  protected void afterGetById(T entity) {}
+
+  /**
+   * 在保存到数据库之前额外要做的事情，子类可在有需要的时候选择性地覆盖本方法
+   *
+   * @param entity 要保存的对象
+   */
+  protected void beforeSave(@NonNull T entity) {}
+
+  /**
+   * 在保存到数据库之后额外要做的事情，子类可在有需要的时候选择性地覆盖本方法
+   *
+   * @param entity 保存后的对象
+   */
+  protected void afterSave(@NonNull T entity) {}
+
+  /**
+   * 在更新到数据库之前额外要做的事情，子类可在有需要的时候选择性地覆盖本方法
+   *
+   * @param entity 要更新的对象
+   */
+  protected void beforeUpdate(@NonNull T entity) {}
+
+  /**
+   * 在更新到数据库之后额外要做的事情，子类可在有需要的时候选择性地覆盖本方法
+   *
+   * @param entity 更新后的对象
+   */
+  protected void afterUpdate(@NonNull T entity) {}
+
+  /**
+   * 在删除数据之前额外要做的事情，子类可在有需要的时候选择性地覆盖本方法
+   *
+   * @param id 要删除的对象的 id
+   * @return 由子类决定要返回什么对象，这个返回的对象会传给 {@link #afterDelete(Object)} 方法
+   */
   protected Object beforeDelete(@NonNull Long id) {
     return null;
   }
 
-  /** Intended to be overridden by subclass if needed. */
-  @SuppressWarnings("unused")
+  /**
+   * 在删除数据之后额外要做的事情，子类可在有需要的时候选择性地覆盖本方法
+   *
+   * @param obj 是 {@link #beforeDelete} 方法返回的对象
+   */
   protected void afterDelete(Object obj) {}
 }

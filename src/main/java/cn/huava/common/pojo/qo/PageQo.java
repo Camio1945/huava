@@ -7,6 +7,8 @@ import lombok.Data;
 import org.dromara.hutool.core.lang.Assert;
 
 /**
+ * 分页查询对象
+ *
  * @author Camio1945
  */
 @Data

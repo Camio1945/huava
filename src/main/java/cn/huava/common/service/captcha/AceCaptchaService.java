@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 /**
+ * 验证码服务主入口类<br>
  * 1. If it's not GraalVM native image mode, use local dynamic captcha (use java.awt to generate
  * every time). <br>
  * 2. If it is GraalVM native image mode, try to use the online captcha API first. <br>

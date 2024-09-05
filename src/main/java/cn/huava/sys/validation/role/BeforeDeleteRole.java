@@ -7,6 +7,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * 删除角色前的校验器注解，与 {@link BeforeDeleteRoleValidator} 配合使用
+ *
  * @author Camio1945
  */
 @Constraint(validatedBy = BeforeDeleteRoleValidator.class)

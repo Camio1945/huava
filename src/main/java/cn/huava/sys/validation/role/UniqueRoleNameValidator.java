@@ -8,6 +8,8 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 /**
+ * 创建角色时的唯一性校验器，与 {@link UniqueRoleName} 注解配合使用
+ *
  * @author Camio1945
  */
 public class UniqueRoleNameValidator extends BaseValidator
@@ -16,7 +18,7 @@ public class UniqueRoleNameValidator extends BaseValidator
   @Override
   public boolean isValid(RolePo rolePo, ConstraintValidatorContext context) {
     String name = rolePo.getName();
-    // when name is blank, other validator will do their job
+    // 如果名称为空，其他校验器会生效，不需要在这里做处理
     if (Fn.isBlank(name)) {
       return true;
     }

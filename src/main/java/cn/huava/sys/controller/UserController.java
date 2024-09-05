@@ -69,6 +69,13 @@ public class UserController extends BaseController<AceUserService, UserMapper, U
     return ResponseEntity.ok(service.isUsernameExists(id, username));
   }
 
+  @PatchMapping("/updatePassword")
+  public ResponseEntity<Void> updatePassword(
+      @RequestBody @NonNull @Validated UpdatePasswordQo updatePasswordQo) {
+    service.updatePassword(updatePasswordQo);
+    return ResponseEntity.ok(null);
+  }
+
   @Override
   protected void afterGetById(@NonNull UserExtPo entity) {
     entity.setPassword(null);
@@ -123,12 +130,5 @@ public class UserController extends BaseController<AceUserService, UserMapper, U
     userRoleService.saveUserRole(entity.getId(), entity.getRoleIds());
     userCache.afterSaveOrUpdate(entity);
     userRoleCache.deleteCache(entity.getId());
-  }
-
-  @PatchMapping("/updatePassword")
-  public ResponseEntity<Void> updatePassword(
-      @RequestBody @NonNull @Validated UpdatePasswordQo updatePasswordQo) {
-    service.updatePassword(updatePasswordQo);
-    return ResponseEntity.ok(null);
   }
 }

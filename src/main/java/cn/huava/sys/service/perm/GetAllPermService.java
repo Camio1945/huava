@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 /**
+ * 获取所有的权限
+ *
  * @author Camio1945
  */
 @Slf4j

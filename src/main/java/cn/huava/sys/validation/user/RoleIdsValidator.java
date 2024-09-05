@@ -11,6 +11,8 @@ import java.util.List;
 import org.dromara.hutool.core.collection.CollUtil;
 
 /**
+ * 用户所拥有的角色 ids 校验器，与 {@link RoleIds} 注解配合使用
+ *
  * @author Camio1945
  */
 public class RoleIdsValidator extends BaseValidator

@@ -7,6 +7,8 @@ import jakarta.validation.ConstraintValidatorContext;
 import org.dromara.hutool.core.lang.Assert;
 
 /**
+ * 基础验证器，用于被其他校验器继承
+ *
  * @author Camio1945
  */
 public class BaseValidator {

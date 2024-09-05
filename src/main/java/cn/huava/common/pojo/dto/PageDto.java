@@ -4,6 +4,8 @@ import java.util.List;
 import lombok.Data;
 
 /**
+ * 分页结果 DTO
+ *
  * @author Camio1945
  */
 @Data

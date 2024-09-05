@@ -18,7 +18,7 @@ public abstract class BaseUploadService extends BaseService<AttachmentMapper, At
    * upload file
    *
    * @param req request (must be multipart request)
-   * @return
+   * @return attachmentPo
    */
   protected abstract AttachmentPo upload(@NonNull final MultipartHttpServletRequest req);
 }

@@ -9,7 +9,6 @@ import cn.huava.sys.mapper.RoleMapper;
 import cn.huava.sys.pojo.po.*;
 import cn.huava.sys.pojo.qo.SetPermQo;
 import cn.huava.sys.service.roleperm.AceRolePermService;
-import cn.huava.sys.service.userrole.AceUserRoleService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import java.util.List;
 import lombok.NonNull;
@@ -20,13 +19,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
+ * 角色服务主入口类<br>
+ *
  * @author Camio1945
  */
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class AceRoleService extends BaseService<RoleMapper, RolePo> {
-  private final AceUserRoleService userRoleService;
   private final RolePageService rolePageService;
   private final AceRolePermService rolePermService;
   private final RoleCache roleCache;

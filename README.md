@@ -1,4 +1,3 @@
-
 ---
 
 # huava （花瓦）
@@ -9,9 +8,9 @@
 
 # 原则
 
-1. 使用 Java 21 或最新的 Java，即使它不是 LTS。
+1. 支持 GraalVM native image 本地镜像。这个是底线，为了提高启动速度、减少内存消耗，一定要支持 GraalVM native image。
 
-2. 支持 GraalVM native image 本地镜像。这个是底线，为了提高启动速度、减少内存消耗，一定要支持 GraalVM native image。
+2. 使用 Java 21。
 
 3. 使用 RESTful API，不仅使用 GET 和 POST 方法，还使用 PUT、DELETE 和 PATCH 方法。
 
@@ -27,20 +26,23 @@
 
 ---
 
-# How to use
+# 使用
 
-## Init MySQL database
+## 初始化数据库
 
-Install MySQL 8.0, use your root user to execute the following SQL script to create the database, user, table and data:
-docs/sql/<latestversion>/huava-init-<latestversion>.sql (if not exists, use the previous version's sql file)
+安装 MySQL 8.0，使用 root 用户执行如下 SQL 脚本创建数据库、用户、表和数据：
 
-## Compile to native image
+docs/<latestversion>/huava-init-<latestversion>.sql
 
-### Linux
+其中 `<latestversion>` 代表最新版本号，如 `v0.2.3`，某个找不到就往前面的版本找，因为并不是每一个版本的 SQL 语句都会有变化。
 
-Prerequisites: gcc, zlib-devel.
+## 编译成本地镜像
 
-Example for RedHat-based Linux:
+### Linux 系统
+
+依赖软件: gcc、zlib-devel
+
+以 RedHat 系列的 Linux 系统为例，执行以下命令:
 
 ```shell
 yum install -y gcc zlib-devel
@@ -49,241 +51,189 @@ chmod +x mvnw
 ./mvnw -Pnative clean native:compile
 ```
 
-### Windows
+其中 `huava` 就是本项目的文件夹。
 
-Prerequisites: x64 Native Tools Command Prompt for VS 2022 (or later)
+生成的可执行文件路径： huava/target/huava
+
+### Windows 系统
+
+依赖软件: x64 Native Tools Command Prompt for VS 2022 (或更新的版本)
+
+在 `x64 Native Tools Command Prompt for VS 2022` 命令提示符下执行以下命令:
 
 ```
 cd huava
 mvnw -Pnative clean native:compile
 ```
 
+其中 `huava` 就是本项目的文件夹。
+
+生成的可执行文件路径： huava/target/huava.exe
 ---
 
-# Dependencies
+# 问答
 
-1. GraalVM Java
-2. SpringBoot
-3. Mybatis-Plus
-4. Hutool
-5. Lombok
-6. MySQL 8.0
-7. Redis
+### 1. 为什么叫 huava？
 
----
-
-# Q&A
-
-### 1. Why the name huava?
-
-I want it to be short, hu is my family name, and java is the programming language I use, so I combined them to create the name huava, just like guava.
+后面的 `ava` 来自 `Java`，前面的 `hu` 是中文的拼音，我是湖(hu)北人，姓胡(hu)，还很喜欢 hutool 工具包，结合起来就变成了
+`huava`（中文谐音`花瓦`）。一句话描述就是：一个喜欢 hutool 的姓胡的湖北人写的一个 Java 脚手架。
 
 ---
 
-### 2. Why MySQL over PostgreSQL?
+### 2. 为什么选择 MySQL 而不是 PostgreSQL？
 
-PostgreSQL is faster , MySQL is more popular, both are great choice. But I may want to use distributed RDBMS in the future, which is TiDB, and TiDB is compatible with MySQL protocol, so I choose MySQL.
-
----
-
-### 3. Encountered "Caused by: java.lang.ClassNotFoundException: ...$$Lambda/0x..."
-
-Cause: The code uses lambda expression, which is not supported by GraalVM.
-
-Solution: Register your class in [LambdaRegistrationFeature.java](src%2Fmain%2Fjava%2Fcn%2Fhuava%2Fcommon%2Fconfig%2FLambdaRegistrationFeature.java) file, in the
-`duringSetup` method (examples are already there).
+PostgreSQL 更快，MySQL 更流行，都是很好的选择。但考虑到我以后可能会使用分布式 RDBMS TiDB，而 TiDB 兼容 MySQL 协议，所以第一阶段选择先支持 MySQL 数据库。
 
 ---
 
-### 4. Why the services has only one layer but not two (interface and implement)?
+### 3. 遇到 "Caused by: java.lang.ClassNotFoundException: ...$$Lambda/0x..." 错误
 
-In my own experience, one service usually corresponds to a table in the database, and one service interface usually has only one implementation during the whole lifetime of a project. So my opinion is that if an interface has only one implementation for good, it's better to use just one single layer.
+原因：代码使用了 lambda 表达式，而 GraalVM 不支持。
 
----
+解决方案： 如果找不到的类是你自己写的类（而不是 jar 包中依赖的类），那么执行一下 SerializationConfigGenerator.java 就行了，会自动扫描本项目中用到了 Lambda 表达式的类。
 
-### 5. Why keep a table's services in a folder but not in a single service class?
-
-I don't want large classes. A class that has more than 200 lines is a large class for me. I want to split large methods into small classes.
-
-If a method has more than 15 lines of valid code in it (comment not included), it is a large method for me. Then it will be extracted into multiple methods, but that will make the single service class less clear, so it is better to move them to a separate sub-service class.
+如果报错的是 jar 包中的类：TODO，我还没遇到过这种情况，遇到了再说。
 
 ---
 
-### 6. Why does the main service class's name end with `AceService` but not `MainService` or just `Service`?
+### 4. 为什么服务只有一层而不是两层（接口和实现）？
 
-I want the main service class to be alphabetically first, so I named it `AceService`.
-
----
-
-### 7. Why are all the sub-service classes not public and their methods protected?
-
-In this way, we can make the main service class a facade, the only entrance to the outside world, to achieve low coupling.
-
-Note: The sub-service classes may contain lambda expressions in them, and since the class is not public, it cannot be registered in the
-`LambdaRegistrationFeature.java` file; it needs to be registered in the
-`src/main/resources/META-INF/native-image/serialization-config.json` file, e.g.:
-
-```json
-{
-  "types": [
-  ],
-  "lambdaCapturingTypes": [
-    {
-      "name": "cn.huava.sys.service.sysuser.LoginService"
-    },
-    {
-      "name": "cn.huava.common.config.SecurityConfig"
-    }
-  ],
-  "proxies": [
-  ]
-}
-```
+根据我的经验，一个 Service 通常对应数据库中的一张表，并且在项目的整个生命周期中，一个 Service 接口通常只有一个实现。我的观点是，如果一个接口只有一个实现，那就没有必要使用接口。
 
 ---
 
-### 8. Why use foreign keys in tables when Alibaba is strongly against it?
+### 5. 为什么将业务表对应的 Service 保存在一个文件夹中而不是一个单一的 Service 类中？
 
-The [Alibaba Java Development Guidelines](https://github.com/alibaba/p3c/blob/master/Java%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C(%E9%BB%84%E5%B1%B1%E7%89%88).pdf) strongly against foreign keys, because they can cause performance issues when inserting data.
+为了防止出现代码行数过多的大类。
 
-But I've seen a lot of programmers edit the database by hand and destroy the integrity of the data, and it's very hard to recover from such mistakes. So I still use foreign keys in my project.
-
-If the performance issue occurs, you can delete the foreign keys, and by that time, the project will have probably been deployed in production mode, we will have much less opportunity to edit data by hand.
-
-So the process is:
-
-1. Use foreign keys in the beginning.
-2. Develop the project, the foreign keys will protect the data integrity.
-3. If and only if the performance issue occurs in production, delete the foreign keys.
+对我来说，一个类超过 200 行代码就算是大类。一个方法有超过 15 行有效代码（不包括注释）就是大方法。我会尽量把大方法拆分到单独的 Service 类中。
 
 ---
 
-### 9. What's the rules of abbreviation?
+### 6. 为什么主服务类的名称以 `Ace` 开头，而不是以 `Main` 或 `Facade` 开头？
 
-Rules: TODO
-
-Example:
-
-1. `Permission` has 10 characters; it's not too long, but the table has the prefix`sys`, so the persistent class becomes
-   `SysPermission`, and there is another class based on it called`SysRolePermission`, and then
-   `AceSysRolePermissionService` and`SysRolePermissionMapper`; it's kind of too long for me now. So I abbreviate it to
-   `perm`.
+我希望主服务类在字母顺序上排在第一位，`Ace` 可以引申出 `第一` 的意思，所以用了它。
+Please translate this to Chinese for me:
 
 ---
 
-### 10. Why combine java classes (like `RuntimeHintsRegistrarConfig.java`) and
+### 7. 为什么所有子 Service 类都不是 public 的，且所有的方法都是 protected 的？
 
-`src/main/resources/META-INF/native-image` folder as two means to register GraalVM native image?
-
-Though [Collecting Metadata with the Tracing Agent](https://www.graalvm.org/latest/reference-manual/native-image/metadata/AutomaticMetadataCollection/) is convenient, it generates a large amount of metadata, for example, the
-`SysRoleMapper.java`'s metadata is like this (41 other methods are ignored):
-
-```json
-{
-  "name": "cn.huava.sys.mapper.RoleMapper",
-  "queryAllDeclaredMethods": true,
-  "queryAllPublicMethods": true,
-  "methods": [
-    {
-      "name": "delete",
-      "parameterTypes": [
-        "com.baomidou.mybatisplus.core.conditions.Wrapper"
-      ]
-    }
-    // Here ignored 41 other methods
-  ]
-}
-```
-
-But the `RuntimeHintsRegistrarConfig.java` can handle all `*Mapper.java` generically, saves a lot of code.
-
-But the
-`src/main/resources/META-INF/native-image` folder is still necessary. For example, the sub-service classes are all not public; they cannot be referenced in the
-`NativeHintsRegistrar.java` file; they need to be registered in the
-`src/main/resources/META-INF/native-image/serialization-config.json` file.
-
-To sum up, the Java classes are necessary for less code, and the
-`src/main/resources/META-INF/native-image` folder is necessary for more control.
-
-For my experience, only `serialization-config.json` is needed; these are not needed: `jni-config.json`,
-`predefined-classes-config.json`, `proxy-config.json`, `reflect-config.json`, `resource-config.json`.
-
+这样就能实现门面模式，将主 Service 类变成对外提供的唯一入口，从而实现低耦合。
 
 ---
 
-### 11. In the `pojo` folder, what the difference between `dto`, `po`, `qo`?
+### 8. 阿里巴巴强烈反对在表中使用外键，为什么 huava 项目里面还是建了外键？
 
-`pojo`: plain old java object.
+[阿里巴巴 Java 开发手册](https://github.com/alibaba/p3c/blob/master/Java%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C(%E9%BB%84%E5%B1%B1%E7%89%88).pdf) 之所以反对使用外键，是因为它们在插入数据时可能会导致性能问题，因为以阿里的体量，性能是一个很重要的考量因素。
 
-`dto`: data transfer object.
+但但是大部分的普通项目并没有那么高的并发，尤其是在开发阶段，性能问题并不会很突出。但是开发阶段有很多程序员会手动编辑数据库，如果不建外键的话，经常会破坏数据的完整性。所以我还是选择要建外键。
 
-`po`: persistent object, represents a row in the database table.
+如果后续上线前压测时出现了性能问题，再删除外键也不迟。那个时候代码已经趋于稳定，手动改数据库的情况相对就少很多了。
 
-`qo`: quest object / request object. (not just query object)
+因此，推荐过程如下：
 
-`dto`, `po`, `qo` are all `pojo`.
-
-There are two kinds of `pojo` objects: those for request, and those for response.
-
-Both `qo` and `po` can be used for request.
-
-Both `dto` and `po` can be used for response.
-
-If po is enough, don't use `dto` or `qo`.
-
-Notes: They are all lowercase intentionally.
+1. 建表时使用外键。
+2. 开发项目时，利用外键保护数据的完整性。
+3. 如果上线前压测出现了性能问题，就删除外键；如果没有性能问题，就保留外键。
 
 ---
 
-### 12. Why don't encapsulate the `page` method in the `BaseController`?
+### 9. 什么情况下英语单词要使用缩写？
 
-The pros of encapsulating the `page` method in the
-`BaseController` is to save a lot of code; the cons are that it is not easy to extend.
+规则：TODO
 
-For example, let's say this is the code in the `BaseController`:
+例子：
+
+1. `Permission` 有 10 个字符，不算太长，但是有另一个基于它的类叫做 `RolePermission`，然后还有 `RolePermissionService` 和
+   `RolePermissionMapper`，就有点长了，所以我把它缩写成 `perm`。
+
+参考链接：
+
+1. [软件行业的一些词语的缩写](https://docs.oracle.com/cd/E29376_01/hrcs90r5/eng/psbooks/atpb/chapter.htm?File=atpb/htm/atpb06.htm)
+
+2. 查缩写的网站：[https://www.abbreviations.com/abbreviation/ABBREVIATION](https://www.abbreviations.com/abbreviation/ABBREVIATION)
+
+---
+
+### 10. 在 `pojo` 文件夹中，`dto`, `po`, `qo` 有什么区别？
+
+`pojo`: 普通 Java 对象 (plain old java object).
+
+`dto`: 数据传输对象 (data transfer object).
+
+`po`: 持久化对象 (persistent object)，一个对象对应了数据库表中的一行记录.
+
+`qo`: 请求对象 (quest object / request object). (注意，`q` 代表的是 `quest`，而不是 `query`)
+
+`dto`, `po`, `qo` 都是 `pojo`。
+
+`pojo` 对象有两种：用于请求的和用于响应的。
+
+`qo` 和 `po` 都可以用于请求。
+
+`dto` 和 `po` 都可以用于响应。
+
+如果 `po` 就能满足要求，就不要使用 `dto` 或 `qo`。
+
+注：这些单词是有意小写的，不要使用全大写的方式，原因如下：
+
+如果使用全大写，当定义用户列表时，可能会写成： `List<UserDTO> userDTOs = new ArrayList();`
+
+这时编译器就会有警告：variable [userDTOs] not conform to the lowerCamelCase
+
+但如果是 `List<UserDto> userDtos = new ArrayList();` 就不会有警告。
+
+---
+
+### 11. 为什么不在 `BaseController` 中封装 `page` 方法？
+
+在 `BaseController` 中封装 `page` 方法的优点是可以节省大量代码，缺点是难以扩展。
+
+比如，假设这是 `BaseController` 中通用的代码：
 
 ```java
 
 @GetMapping("/page")
 public ResponseEntity<ResDto<PageDto<T>>> page(
     @NonNull final PageQo pageQo, @NonNull final T params) {
-  // code
+  // 代码
 }
 ```
 
-Normally, there are two situations when we need to override the page method:
+如果这个代码封装得好的话，可以解决很多场景中的分页查询问题。但是一旦需要定制的时候，在子类中重写 `page` 方法时就会有问题。
 
-1. Change the `PageDto<T>` to a different type, say `PageDto<RoleDto>`.
+通常，我们需要重写 `page` 方法的情况有两种：
 
-2. Change the `T params` to a different type, say `RoleQo`.
+1. 将 `PageDto<T>` 改为另一种类型，例如 `PageDto<RoleDto>`。
 
-In either case, we'll need to write a new method with a new `@GetMapping` path in the SubController, like this:
+2. 将 `T params` 改为另一种类型，例如 `RoleQo`。
+
+在这两种情况下，直接重写都不行，必须在子类中定义一个带有 `@GetMapping` 路径的新方法，比如：
 
 ```java
 
 @GetMapping("/customPage")
 public ResponseEntity<ResDto<PageDto<RolePo>>> page(
     @NonNull final PageQo pageQo, @NonNull final RoleQo params) {
-  // code
+  // 代码
 }
 ```
 
-Which is not very convenient for communicating with the frontend  because sometimes they should use
-`page` and sometimes they should use `customPage`.
-
+这不利于跟前端通信，因为前端可能已经习惯了调 `page` 方法。
 
 ---
 
-# Abbreviations Table
+# 缩写表格
 
-|  Original word  | Abbreviation |
-|:---------------:|:------------:|
-|   permission    |     perm     |
-| response/result |     res      |
-|    parameter    |    param     |
-|                 |              |
-|                 |              |
-|                 |              |
+|       原单词       |  缩写   |
+|:---------------:|:-----:|
+|   permission    | perm  |
+| response/result |  res  |
+|    parameter    | param |
+|                 |       |
+|                 |       |
+|                 |       |
 
 ---
 
@@ -312,6 +262,8 @@ String privateKeyBase64 = org.dromara.hutool.core.codec.binary.Base64.encode(key
 ---
 
 # TODO
+
+前端密码加密后再传到后端，后端再次加密后保存到数据库。
 
 [vue3+ts+element-plus密码强弱校验+密码自定义规则校验](https://blog.csdn.net/Johnson_7/article/details/126758162)
 

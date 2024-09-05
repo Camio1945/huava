@@ -7,6 +7,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
+ * 密码加密器配置
+ *
  * @author Camio1945
  */
 @Configuration
@@ -15,8 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class PasswordEncoderConfig {
 
   /**
-   * This bean cannot be in {@link SecurityConfig} class; otherwise, it will generate circular
-   * dependencies.
+   * 密码加密器<br>
+   * 注：这个 Bean 不能写在 {@link SecurityConfig} 类中，否则会出现循环依赖的问题
    */
   @Bean
   public PasswordEncoder passwordEncoder() {

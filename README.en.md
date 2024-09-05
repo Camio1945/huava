@@ -6,9 +6,9 @@ A scaffold for building Java Web applications which can be compiled to native im
 
 # Principles
 
-1. Use Java 21 or the latest Java even if it is not LTS.
+1. Support GraalVM native image.
 
-2. Support GraalVM native image.
+2. Use Java 21 or the latest Java even if it is not LTS.
 
 3. Use the restful API, using methods not just GET and POST but also PUT, DELETE, and PATCH.
 
@@ -21,8 +21,6 @@ A scaffold for building Java Web applications which can be compiled to native im
 7. Use [google-java-format](https://plugins.jetbrains.com/plugin/8527-google-java-format) to format the code, in order to keep the code style consistent.
 
 8. Write unit tests for as many codes as possible.
-
-9. Use English comments and documentation. (Intend to practice English for non-native English speakers.)
 
 ---
 
@@ -56,18 +54,6 @@ Prerequisites: x64 Native Tools Command Prompt for VS 2022 (or later)
 cd huava
 mvnw -Pnative clean native:compile
 ```
-
----
-
-# Dependencies
-
-1. GraalVM Java
-2. SpringBoot
-3. Mybatis-Plus
-4. Hutool
-5. Lombok
-6. MySQL 8.0
-7. Redis
 
 ---
 
@@ -108,7 +94,7 @@ If a method has more than 15 lines of valid code in it (comment not included), i
 
 ---
 
-### 6. Why does the main service class's name end with `AceService` but not `MainService` or just `Service`?
+### 6. Why does the main service class's name starts with `Ace` but not `Main` or  `Facade`?
 
 I want the main service class to be alphabetically first, so I named it `AceService`.
 
@@ -170,47 +156,7 @@ Example:
 
 ---
 
-### 10. Why combine java classes (like `RuntimeHintsRegistrarConfig.java`) and
-
-`src/main/resources/META-INF/native-image` folder as two means to register GraalVM native image?
-
-Though [Collecting Metadata with the Tracing Agent](https://www.graalvm.org/latest/reference-manual/native-image/metadata/AutomaticMetadataCollection/) is convenient, it generates a large amount of metadata, for example, the
-`SysRoleMapper.java`'s metadata is like this (41 other methods are ignored):
-
-```json
-{
-  "name": "cn.huava.sys.mapper.RoleMapper",
-  "queryAllDeclaredMethods": true,
-  "queryAllPublicMethods": true,
-  "methods": [
-    {
-      "name": "delete",
-      "parameterTypes": [
-        "com.baomidou.mybatisplus.core.conditions.Wrapper"
-      ]
-    }
-    // Here ignored 41 other methods
-  ]
-}
-```
-
-But the `RuntimeHintsRegistrarConfig.java` can handle all `*Mapper.java` generically, saves a lot of code.
-
-But the
-`src/main/resources/META-INF/native-image` folder is still necessary. For example, the sub-service classes are all not public; they cannot be referenced in the
-`NativeHintsRegistrar.java` file; they need to be registered in the
-`src/main/resources/META-INF/native-image/serialization-config.json` file.
-
-To sum up, the Java classes are necessary for less code, and the
-`src/main/resources/META-INF/native-image` folder is necessary for more control.
-
-For my experience, only `serialization-config.json` is needed; these are not needed: `jni-config.json`,
-`predefined-classes-config.json`, `proxy-config.json`, `reflect-config.json`, `resource-config.json`.
-
-
----
-
-### 11. In the `pojo` folder, what the difference between `dto`, `po`, `qo`?
+### 10. In the `pojo` folder, what the difference between `dto`, `po`, `qo`?
 
 `pojo`: plain old java object.
 
@@ -234,7 +180,7 @@ Notes: They are all lowercase intentionally.
 
 ---
 
-### 12. Why don't encapsulate the `page` method in the `BaseController`?
+### 11. Why don't encapsulate the `page` method in the `BaseController`?
 
 The pros of encapsulating the `page` method in the
 `BaseController` is to save a lot of code; the cons are that it is not easy to extend.

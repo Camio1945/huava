@@ -9,6 +9,8 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 /**
+ * 删除用户前的校验器，与 {@link BeforeDeleteUser} 注解配合使用
+ *
  * @author Camio1945
  */
 public class BeforeDeleteUserValidator extends BaseValidator

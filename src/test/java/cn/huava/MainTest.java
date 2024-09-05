@@ -11,9 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.test.web.servlet.*;
 
 /**
- * Test the apis that do not require login (not all of them). Such apis are not many, so we just
- * write them in one class.<br>
- * 测试不需要登录的接口（只测试了一部分）。这样的接口不是很多，因此直接写到一个类里面。
+ * 主要的测试类
  *
  * @author Camio1945
  */
@@ -26,7 +24,7 @@ class MainTest extends WithSpringBootTestAnnotation {
   @Autowired MockMvc mockMvc;
 
   @Test
-  @Order(1) // has to be run first, because it initializes the mockMvc, flushes redis db
+  @Order(1) // 必须在第 1 位执行， 因为这个方法里面初始化了 mockMvc， 清空了 redis 数据库
   void tempTestControllerTest() throws Exception {
     ApiTestUtil.mockMvc = mockMvc;
     RedisUtil.flushNonProductionDb();
@@ -34,13 +32,13 @@ class MainTest extends WithSpringBootTestAnnotation {
   }
 
   @Test
-  @Order(2) // has to be run second, because it initializes captcha which is used by login api
+  @Order(2) // 必须在第 2 位执行，方法里面初始化了验证码，用于后续的登录
   void captchaControllerTest() throws Exception {
     CaptchaControllerTest.testAll();
   }
 
   @Test
-  @Order(3) // has to be run third, because it logs in the user
+  @Order(3) // 必须在第 3 位执行，方法里面执行了登录操作，后续的方法才有权限执行
   void userControllerTest() throws Exception {
     UserControllerTest.testAllExceptLogout();
   }
@@ -70,7 +68,7 @@ class MainTest extends WithSpringBootTestAnnotation {
   }
 
   @Test
-  @Order(Integer.MAX_VALUE) // has to be run last, because it logs out the user
+  @Order(Integer.MAX_VALUE) // 必须在最后执行，因为会退出登录
   void logout() throws Exception {
     AuthTest.testAll();
   }

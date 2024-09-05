@@ -7,6 +7,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * 更新角色前的校验器注解，与 {@link BeforeUpdateRoleValidator} 配合使用
+ *
  * @author Camio1945
  */
 @Constraint(validatedBy = BeforeUpdateRoleValidator.class)

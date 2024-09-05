@@ -41,6 +41,7 @@ public class RedisConfig implements CachingConfigurer {
 
 record RandomOffsetTtlFunction(Duration duration) implements RedisCacheWriter.TtlFunction {
 
+  /** 这个方法在每次生成 ttl 时都会执行，保证了缓存不会同时过期，而会产生随机的偏移，因此规避了缓存雪崩的问题 */
   @Override
   public @NonNull Duration getTimeToLive(@NonNull Object key, @Nullable Object value) {
     return RedisUtil.randomOffsetDuration(duration);

@@ -1,7 +1,6 @@
 package cn.huava.common.filter;
 
-import static cn.huava.common.constant.CommonConstant.AUTHORIZATION_HEADER;
-import static cn.huava.common.constant.CommonConstant.REFRESH_TOKEN_URI;
+import static cn.huava.common.constant.CommonConstant.*;
 
 import cn.huava.sys.auth.SysUserDetails;
 import cn.huava.sys.cache.UserCache;
@@ -24,13 +23,15 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 /**
+ * JWT 认证过滤器<br>
+ * 1. 如果 token 已过期， 则返回 401 状态码（前端可以根据这个状态码刷新 token 或者重新登录）<br>
+ * 2. 如果 token 有效，则从 token 中获取用户 ID，再从缓存中查询用户信息，并设置到 SecurityContextHolder 中，以便后续的请求获取登录用户<br>
+ *
  * @author Camio1945
  */
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-
-  private static final String BEARER_PREFIX = "Bearer ";
 
   private final AceJwtService jwtAceService;
 
@@ -55,19 +56,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     filterChain.doFilter(request, response);
   }
 
+  private static void writeResponse(HttpServletResponse response) throws IOException {
+    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+    PrintWriter writer = response.getWriter();
+    writer.write("Access token expired");
+    writer.flush();
+  }
+
   private String getTokenFromRequest(HttpServletRequest request) {
     String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
     if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
       return bearerToken.substring(BEARER_PREFIX.length());
     }
     return null;
-  }
-
-  private static void writeResponse(HttpServletResponse response) throws IOException {
-    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-    PrintWriter writer = response.getWriter();
-    writer.write("Access token expired");
-    writer.flush();
   }
 
   private void setAuthentication(HttpServletRequest request, String token) {

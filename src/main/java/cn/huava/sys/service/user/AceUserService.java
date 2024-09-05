@@ -20,6 +20,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
+ * 用户服务主入口类<br>
+ *
  * @author Camio1945
  */
 @Slf4j

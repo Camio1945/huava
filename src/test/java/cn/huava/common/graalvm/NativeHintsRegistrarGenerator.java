@@ -7,6 +7,7 @@ import org.dromara.hutool.core.io.file.FileUtil;
 import org.dromara.hutool.json.*;
 
 /**
+ * 这个类是在研究 GraalVM native image 时临时使用的，这里仅作为备份，不要使用。<br>
  * It just a backup file, don't use it.<br>
  * Used to generate code from config files. <br>
  * 1. The config files comes from <a
@@ -110,8 +111,10 @@ public class NativeHintsRegistrarGenerator {
           || className.startsWith("java.util.logging.SimpleFormatter")
           || className.startsWith("javax.imageio.spi.ImageReaderWriterSpi")
           || className.startsWith("com.baomidou.mybatisplus.autoconfigure.DdlAutoConfiguration")
-          || className.startsWith("com.baomidou.mybatisplus.autoconfigure.MybatisDependsOnDatabaseInitializationDetector")
-          || className.startsWith("com.baomidou.mybatisplus.autoconfigure.MybatisPlusAutoConfiguration")
+          || className.startsWith(
+              "com.baomidou.mybatisplus.autoconfigure.MybatisDependsOnDatabaseInitializationDetector")
+          || className.startsWith(
+              "com.baomidou.mybatisplus.autoconfigure.MybatisPlusAutoConfiguration")
           || className.startsWith("com.baomidou.mybatisplus.autoconfigure.SafetyEncryptProcessor")
           || className.startsWith("org.apache.tomcat.util.net.AbstractEndpoint")
           || className.startsWith("org.dromara.hutool.extra.spring.SpringUtil")
@@ -122,8 +125,7 @@ public class NativeHintsRegistrarGenerator {
           || className.startsWith("cn.huava.common.filter.JwtAuthenticationFilter")
           || className.startsWith("cn.huava.common.graalvm.RuntimeHintsRegistrarConfig")
           || className.startsWith("cn.huava.sys.service.SysUserLoginUserDetailsServiceImpl")
-          || className.contains("$")
-      ) {
+          || className.contains("$")) {
         continue;
       }
       remainArray.add(json);

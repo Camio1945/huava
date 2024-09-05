@@ -22,6 +22,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 /**
+ * 获取用户信息
+ *
  * @author Camio1945
  */
 @Slf4j
@@ -31,6 +33,14 @@ class GetUserInfoService extends BaseService<UserMapper, UserExtPo> {
   private final AceRolePermService rolePermService;
   private final AcePermService permService;
   private final UserRoleCache userRoleCache;
+
+  protected UserInfoDto getUserInfoDto() {
+    UserInfoDto userInfoDto = new UserInfoDto();
+    UserPo loginUser = Fn.getLoginUser();
+    setBaseInfo(loginUser, userInfoDto);
+    setMenuAndPerms(loginUser, userInfoDto);
+    return userInfoDto;
+  }
 
   private static List<String> buildUris(List<PermPo> perms, boolean isAdmin, Set<Long> permIds) {
     if (isAdmin) {
@@ -44,14 +54,6 @@ class GetUserInfoService extends BaseService<UserMapper, UserExtPo> {
         .stream()
         .sorted()
         .toList();
-  }
-
-  protected UserInfoDto getUserInfoDto() {
-    UserInfoDto userInfoDto = new UserInfoDto();
-    UserPo loginUser = Fn.getLoginUser();
-    setBaseInfo(loginUser, userInfoDto);
-    setMenuAndPerms(loginUser, userInfoDto);
-    return userInfoDto;
   }
 
   private void setBaseInfo(UserPo loginUser, UserInfoDto dto) {

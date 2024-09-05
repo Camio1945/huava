@@ -7,6 +7,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * 用户密码校验器注解，与 {@link PasswordValidator} 配合使用
+ *
  * @author Camio1945
  */
 @Constraint(validatedBy = PasswordValidator.class)

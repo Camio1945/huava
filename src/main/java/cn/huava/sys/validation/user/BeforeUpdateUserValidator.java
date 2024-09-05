@@ -10,6 +10,8 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 /**
+ * 更新用户前的校验器，与 {@link BeforeUpdateUser} 注解配合使用
+ *
  * @author Camio1945
  */
 public class BeforeUpdateUserValidator extends BaseValidator

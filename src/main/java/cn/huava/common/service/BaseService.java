@@ -9,7 +9,7 @@ import org.dromara.hutool.core.lang.Assert;
 
 /**
  * Base Service to provide common CRUD operations. <br>
- * Generic: T - Entity Type, M - Mapper Type <br>
+ * 泛型：T - 实体类型, M - MyBatis 的 Mapper 类型 <br>
  *
  * @author Camio1945
  */

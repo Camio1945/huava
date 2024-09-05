@@ -9,6 +9,8 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 /**
+ * 更新角色前的校验器，与 {@link BeforeUpdateRole} 注解配合使用
+ *
  * @author Camio1945
  */
 public class BeforeUpdateRoleValidator extends BaseValidator

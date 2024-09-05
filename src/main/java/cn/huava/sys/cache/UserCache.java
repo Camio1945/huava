@@ -67,14 +67,6 @@ public class UserCache {
         });
   }
 
-  private UserCache getUserCache() {
-    if (userCache != null) {
-      return userCache;
-    }
-    userCache = SingleFlightUtil.execute("userCache", () -> Fn.getBean(UserCache.class));
-    return userCache;
-  }
-
   /**
    * 新增或修改操作后的缓存处理
    *
@@ -82,14 +74,6 @@ public class UserCache {
    */
   public void afterSaveOrUpdate(UserExtPo after) {
     deleteKeys(after);
-  }
-
-  private void deleteKeys(UserExtPo user) {
-    String[] keys = {
-      USER_ID_CACHE_PREFIX + "::" + user.getId(),
-      USER_USERNAME_CACHE_PREFIX + "::" + user.getUsername()
-    };
-    RedisUtil.delete(keys);
   }
 
   /**
@@ -108,5 +92,21 @@ public class UserCache {
    */
   public void beforeUpdate(UserExtPo before) {
     RedisUtil.delete(USER_USERNAME_CACHE_PREFIX + "::" + before.getUsername());
+  }
+
+  private UserCache getUserCache() {
+    if (userCache != null) {
+      return userCache;
+    }
+    userCache = SingleFlightUtil.execute("userCache", () -> Fn.getBean(UserCache.class));
+    return userCache;
+  }
+
+  private void deleteKeys(UserExtPo user) {
+    String[] keys = {
+      USER_ID_CACHE_PREFIX + "::" + user.getId(),
+      USER_USERNAME_CACHE_PREFIX + "::" + user.getUsername()
+    };
+    RedisUtil.delete(keys);
   }
 }

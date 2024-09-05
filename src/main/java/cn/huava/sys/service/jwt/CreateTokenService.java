@@ -4,10 +4,9 @@ import cn.huava.common.service.BaseService;
 import cn.huava.sys.mapper.UserMapper;
 import cn.huava.sys.pojo.dto.UserJwtDto;
 import cn.huava.sys.pojo.po.UserExtPo;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +14,8 @@ import org.dromara.hutool.json.jwt.JWTUtil;
 import org.springframework.stereotype.Service;
 
 /**
+ * 创建 token，包含 access token 和 refresh token
+ *
  * @author Camio1945
  */
 @Slf4j

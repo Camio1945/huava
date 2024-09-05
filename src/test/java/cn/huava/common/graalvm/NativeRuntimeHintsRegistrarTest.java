@@ -7,6 +7,7 @@ import java.util.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.aot.hint.*;
 
+/** 为了提升代码测试覆盖率加的，用处不大 */
 class NativeRuntimeHintsRegistrarTest {
 
   private RuntimeHints runtimeHints = new RuntimeHints();

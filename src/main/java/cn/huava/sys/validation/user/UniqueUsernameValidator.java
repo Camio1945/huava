@@ -8,6 +8,8 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 /**
+ * 用户名唯一性校验器，与 {@link UniqueUsername} 注解配合使用
+ *
  * @author Camio1945
  */
 public class UniqueUsernameValidator extends BaseValidator
@@ -16,7 +18,7 @@ public class UniqueUsernameValidator extends BaseValidator
   @Override
   public boolean isValid(UserPo userPo, ConstraintValidatorContext context) {
     String username = userPo.getUsername();
-    // when username is blank, other validator will do their job
+    // 如果用户名为空，其他校验器会生效，不需要在这里做处理
     if (Fn.isBlank(username)) {
       return true;
     }

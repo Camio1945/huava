@@ -22,6 +22,9 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 
 /**
+ * 提供文件（比如文件头像）。<br>
+ * 如果访问的文件是图片，则会在浏览器直接显示图片；如果不是图片，则会下载文件。<br>
+ *
  * @author Camio1945
  */
 @Slf4j
@@ -45,6 +48,16 @@ class ServeFileService extends BaseService<AttachmentMapper, AttachmentPo> {
         .contentType(MediaType.parseMediaType(mimeType))
         .lastModified(getLastModified(filePath).toEpochMilli())
         .body(resource);
+  }
+
+  private static long getCacheTime() {
+    // 缓存 100 年，以秒为单位
+    return 100 * 365 * 24 * 60 * 60L;
+  }
+
+  private static Instant getLastModified(String filePath) throws IOException {
+    BasicFileAttributes attr = Files.readAttributes(Path.of(filePath), BasicFileAttributes.class);
+    return attr.lastModifiedTime().toInstant();
   }
 
   private void convertAttachmentPathToAbsolutePath() {
@@ -71,16 +84,6 @@ class ServeFileService extends BaseService<AttachmentMapper, AttachmentPo> {
     String contentDispositionPrefix =
         isImage(FileNameUtil.extName(filePath)) ? "inline" : "attachment";
     return contentDispositionPrefix + "; filename=\"" + attachmentPo.getOriginalName() + "\"";
-  }
-
-  private static long getCacheTime() {
-    // 100 years cache time (of seconds)
-    return 100 * 365 * 24 * 60 * 60L;
-  }
-
-  private static Instant getLastModified(String filePath) throws IOException {
-    BasicFileAttributes attr = Files.readAttributes(Path.of(filePath), BasicFileAttributes.class);
-    return attr.lastModifiedTime().toInstant();
   }
 
   private boolean isImage(String fileExtension) {

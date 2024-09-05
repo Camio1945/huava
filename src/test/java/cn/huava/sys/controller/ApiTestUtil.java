@@ -1,6 +1,7 @@
 package cn.huava.sys.controller;
 
 import static cn.huava.common.constant.CommonConstant.AUTHORIZATION_HEADER;
+import static cn.huava.common.constant.CommonConstant.BEARER_PREFIX;
 
 import lombok.NonNull;
 import org.dromara.hutool.json.JSONUtil;
@@ -141,7 +142,7 @@ public class ApiTestUtil {
         req.session(ApiTestUtil.session);
       }
       if (this.needToken) {
-        req.header(AUTHORIZATION_HEADER, "Bearer " + accessToken);
+        req.header(AUTHORIZATION_HEADER, BEARER_PREFIX + accessToken);
       }
       if (this.contentType == null) {
         req.contentType("application/json;charset=UTF-8");
