@@ -5,7 +5,7 @@ import static cn.huava.common.constant.CommonConstant.RoleMessage.IMPORTANT_USER
 
 import cn.huava.common.util.Fn;
 import cn.huava.sys.pojo.po.UserPo;
-import cn.huava.sys.validation.common.BaseValidator;
+import cn.huava.common.validation.BaseValidator;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

@@ -48,6 +48,11 @@ public class RoleControllerTest {
    * 测试添加角色接口。
    */
   private static void create() throws Exception {
+    normalCreate();
+    abnormalCreate();
+  }
+
+  private static void normalCreate() throws Exception {
     createParamObj = new RolePo();
     createParamObj.setName(IdUtil.nanoId(10)).setSort(10).setDescription("测试角色");
     RequestBuilder req = initReq().post("/sys/role/create").contentJson(createParamObj).build();
@@ -56,6 +61,11 @@ public class RoleControllerTest {
     assertNotNull(createdIdStr);
     assertTrue(NumberUtil.isLong(createdIdStr));
     createdId = Long.parseLong(createdIdStr);
+  }
+
+  private static void abnormalCreate() throws Exception {
+    RequestBuilder req = initReq().post("/sys/role/create").contentJson(new RolePo()).build();
+    mockMvc.perform(req).andExpect(status().isBadRequest());
   }
 
   private static void getById() throws Exception {

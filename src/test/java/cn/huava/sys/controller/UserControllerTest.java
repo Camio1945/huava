@@ -45,7 +45,7 @@ public class UserControllerTest {
     getById();
     page();
     isUsernameExists();
-    loginByCreatedUser();
+    loginAndMySelfByCreatedUser();
     update();
     updatePassword();
     deleteById();
@@ -143,13 +143,24 @@ public class UserControllerTest {
   }
 
   /** 使用新创建的用户登录 */
-  private static void loginByCreatedUser() throws Exception {
+  private static void loginAndMySelfByCreatedUser() throws Exception {
     RequestBuilder req = buildLoginReq(createParamObj.getUsername(), createParamObj.getPassword());
     MvcResult res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
     String resJsonStr = res.getResponse().getContentAsString();
     UserJwtDto userJwtDto = JSONUtil.toBean(resJsonStr, UserJwtDto.class);
     assertFalse(userJwtDto.getAccessToken().isEmpty());
     assertFalse(userJwtDto.getRefreshToken().isEmpty());
+    String preservedAccessToken = accessToken;
+    accessToken = userJwtDto.getAccessToken();
+
+    req = initReq().get("/sys/user/mySelf").build();
+    res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
+    resJsonStr = res.getResponse().getContentAsString();
+    UserInfoDto userInfoDto = JSONUtil.toBean(resJsonStr, UserInfoDto.class);
+    assertNotNull(userInfoDto);
+    assertEquals(createParamObj.getUsername(), userInfoDto.getUsername());
+    assertFalse(userInfoDto.getMenu().isEmpty());
+    accessToken = preservedAccessToken;
   }
 
   private static void update() throws Exception {

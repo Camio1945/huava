@@ -49,7 +49,7 @@ class RefreshCaptchaService {
   private String appSecretPath;
 
   protected void refresh(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-    if (ImageInfo.inImageRuntimeCode()) {
+    if (Fn.isInGraalVmNativeImage()) {
       refreshForNativeImage(req, resp);
     } else {
       refreshForJava(req, resp);

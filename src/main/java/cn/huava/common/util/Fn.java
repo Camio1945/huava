@@ -91,4 +91,13 @@ public class Fn {
   public static byte[] resourceToBytes(@NonNull Resource resource) {
     return ResourceUtil.resourceToBytes(resource);
   }
+
+  public static boolean isInGraalVmNativeImage() {
+    return EnvironmentUtil.isInGraalVmNativeImage();
+  }
+
+  public static boolean isInJar() {
+    return EnvironmentUtil.isInJar();
+  }
+
 }

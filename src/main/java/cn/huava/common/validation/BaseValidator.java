@@ -1,4 +1,4 @@
-package cn.huava.sys.validation.common;
+package cn.huava.common.validation;
 
 import cn.huava.common.pojo.po.BasePo;
 import cn.huava.common.util.Fn;

@@ -14,4 +14,9 @@ class FnTest {
     assertFalse(Fn.exists(new File("")));
     assertTrue(Fn.exists(new File(System.getProperty("user.home"))));
   }
+
+  @Test
+  void isInJar() {
+    assertFalse(Fn.isInJar());
+  }
 }

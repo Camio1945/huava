@@ -3,7 +3,7 @@ package cn.huava.sys.validation.role;
 import cn.huava.common.util.Fn;
 import cn.huava.sys.pojo.po.RolePo;
 import cn.huava.sys.service.role.AceRoleService;
-import cn.huava.sys.validation.common.BaseValidator;
+import cn.huava.common.validation.BaseValidator;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

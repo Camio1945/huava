@@ -1,5 +1,6 @@
 package cn.huava.common.graalvm;
 
+import cn.huava.common.annotation.UnreachableForTesting;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -10,6 +11,8 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import cn.huava.common.annotation.VisibleForTesting;
 import lombok.NonNull;
 import org.apache.commons.logging.LogFactory;
 import org.apache.ibatis.annotations.DeleteProvider;
@@ -48,7 +51,9 @@ import org.springframework.util.ReflectionUtils;
  *
  * @author Camio1945
  */
-@Configuration(proxyBeanMethods = false)
+@Configuration
+@VisibleForTesting
+@UnreachableForTesting("很多代码在单元测试时执行不到，因为那就是在 GraalVM native image 里面调用的。")
 @ImportRuntimeHints(NativeRuntimeHintsRegistrar.class)
 public class RuntimeHintsRegistrarConfig {
 
@@ -104,6 +109,7 @@ public class RuntimeHintsRegistrarConfig {
     }
 
     @Override
+    @UnreachableForTesting
     public BeanFactoryInitializationAotContribution processAheadOfTime(
         ConfigurableListableBeanFactory beanFactory) {
       String[] beanNames = beanFactory.getBeanNamesForType(MapperFactoryBean.class);
@@ -132,14 +138,14 @@ public class RuntimeHintsRegistrarConfig {
       };
     }
 
-    private void registerReflectionTypeIfNecessary(Class<?> type, RuntimeHints hints) {
+    protected void registerReflectionTypeIfNecessary(Class<?> type, RuntimeHints hints) {
       String java = "java";
       if (!type.isPrimitive() && !type.getName().startsWith(java)) {
         hints.reflection().registerType(type, MemberCategory.values());
       }
     }
 
-    private void registerMapperRelationships(Class<?> mapperInterfaceType, RuntimeHints hints) {
+    protected void registerMapperRelationships(Class<?> mapperInterfaceType, RuntimeHints hints) {
       Method[] methods = ReflectionUtils.getAllDeclaredMethods(mapperInterfaceType);
       for (Method method : methods) {
         if (method.getDeclaringClass() != Object.class) {
@@ -161,8 +167,7 @@ public class RuntimeHintsRegistrarConfig {
       }
     }
 
-    @SafeVarargs
-    private <T extends Annotation> void registerSqlProviderTypes(
+    protected <T extends Annotation> void registerSqlProviderTypes(
         Method method,
         RuntimeHints hints,
         Class<T> annotationType,
@@ -176,7 +181,7 @@ public class RuntimeHintsRegistrarConfig {
   }
 
   static class MyBatisMapperTypeUtils {
-    private MyBatisMapperTypeUtils() {
+    protected MyBatisMapperTypeUtils() {
       // NOP
     }
 
@@ -241,6 +246,7 @@ public class RuntimeHintsRegistrarConfig {
       }
     }
 
+    @UnreachableForTesting("第二个 if 分支的代码只在 GraalVM native image 编译时才会执行到")
     private void resolveMapperFactoryBeanTypeIfNecessary(RootBeanDefinition beanDefinition) {
       if (!beanDefinition.hasBeanClass()
           || !MapperFactoryBean.class.isAssignableFrom(beanDefinition.getBeanClass())) {
@@ -259,7 +265,7 @@ public class RuntimeHintsRegistrarConfig {
       }
     }
 
-    private Class<?> getMapperInterface(RootBeanDefinition beanDefinition) {
+    protected Class<?> getMapperInterface(RootBeanDefinition beanDefinition) {
       try {
         return (Class<?>) beanDefinition.getPropertyValues().get("mapperInterface");
       } catch (Exception e) {

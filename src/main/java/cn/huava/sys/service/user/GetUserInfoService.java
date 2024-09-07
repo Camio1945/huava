@@ -70,8 +70,14 @@ class GetUserInfoService extends BaseService<UserMapper, UserExtPo> {
 
   private void setMenuAndPerms(UserPo loginUser, UserInfoDto userInfoDto) {
     List<PermPo> perms = getPerms();
+    // 根据用户 ID 或用户所属的角色 ID 来判断是否属于超级管理员
     boolean isAdmin = loginUser.getId() == CommonConstant.ADMIN_USER_ID;
-    final Set<Long> permIds = getPermIds(isAdmin, loginUser);
+    List<Long> roleIds = null;
+    if (!isAdmin) {
+      roleIds = userRoleCache.getRoleIdsByUserId(loginUser.getId());
+      isAdmin = roleIds.contains(CommonConstant.ADMIN_ROLE_ID);
+    }
+    final Set<Long> permIds = getPermIds(isAdmin, roleIds);
     userInfoDto.setMenu(buildMenuTree(perms, isAdmin, permIds));
     userInfoDto.setUris(buildUris(perms, isAdmin, permIds));
   }
@@ -95,10 +101,9 @@ class GetUserInfoService extends BaseService<UserMapper, UserExtPo> {
   }
 
   /** Get all the perm ids the user have */
-  private Set<Long> getPermIds(boolean isAdmin, UserPo loginUser) {
+  private Set<Long> getPermIds(boolean isAdmin, List<Long> roleIds) {
     final Set<Long> permIds = new HashSet<>();
     if (!isAdmin) {
-      List<Long> roleIds = userRoleCache.getRoleIdsByUserId(loginUser.getId());
       Wrapper<RolePermPo> wrapper =
           new LambdaQueryWrapper<RolePermPo>()
               .in(RolePermPo::getRoleId, roleIds)

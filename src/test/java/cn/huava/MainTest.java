@@ -1,6 +1,7 @@
 package cn.huava;
 
 import cn.huava.common.WithSpringBootTestAnnotation;
+import cn.huava.common.graalvm.RuntimeHintsRegistrarConfigTest;
 import cn.huava.common.util.RedisUtil;
 import cn.huava.common.util.RedisUtilTest;
 import cn.huava.sys.controller.*;
@@ -65,6 +66,13 @@ class MainTest extends WithSpringBootTestAnnotation {
   @Order(6)
   void permControllerTest() throws Exception {
     PermControllerTest.testAll();
+  }
+
+  /** 不重要的测试，一般是为了提升覆盖率而增加的。 */
+  @Test
+  @Order(Integer.MAX_VALUE - 1)
+  void notImportantTest() throws Exception {
+    RuntimeHintsRegistrarConfigTest.testAll();
   }
 
   @Test

@@ -6,7 +6,7 @@ import static cn.huava.common.constant.CommonConstant.MIN_PASSWORD_LENGTH;
 import cn.huava.common.pojo.po.BasePo;
 import cn.huava.common.validation.*;
 import cn.huava.sys.enumeration.UserGenderEnum;
-import cn.huava.sys.validation.common.ValidEnum;
+import cn.huava.common.validation.ValidEnum;
 import cn.huava.sys.validation.user.*;
 import com.baomidou.mybatisplus.annotation.TableName;
 import jakarta.validation.constraints.NotBlank;

@@ -6,7 +6,7 @@ import static cn.huava.common.constant.CommonConstant.ENV_PRODUCTION;
 import java.time.Duration;
 import java.util.*;
 import lombok.NonNull;
-import org.dromara.hutool.core.convert.Convert;
+import org.dromara.hutool.core.convert.ConvertUtil;
 import org.dromara.hutool.core.lang.Assert;
 import org.dromara.hutool.core.math.NumberUtil;
 import org.dromara.hutool.core.util.RandomUtil;
@@ -38,11 +38,7 @@ public class RedisUtil {
     return bucket.isExists();
   }
 
-  /**
-   * 清空非生产环境的 Redis 数据库（由于该操作非常危险，因此不允许在生产环境下执行）
-   *
-   * @return
-   */
+  /** 清空非生产环境的 Redis 数据库（由于该操作非常危险，因此不允许在生产环境下执行） */
   public static void flushNonProductionDb() {
     String env = SpringUtil.getProperty("spring.profiles.active");
     Assert.isTrue(!ENV_PROD.equals(env) && !ENV_PRODUCTION.equals(env), "不允许在生产环境下清空 Redis 数据库");
@@ -56,8 +52,8 @@ public class RedisUtil {
     RedisServerCommands redisServerCommands = connection.serverCommands();
     Properties info = redisServerCommands.info();
     assert info != null;
-    long keyspaceHits = Convert.toLong(info.getProperty("keyspace_hits"));
-    long keyspaceMisses = Convert.toLong(info.getProperty("keyspace_misses"));
+    long keyspaceHits = ConvertUtil.toLong(info.getProperty("keyspace_hits"));
+    long keyspaceMisses = ConvertUtil.toLong(info.getProperty("keyspace_misses"));
     long total = keyspaceHits + keyspaceMisses;
     if (total <= 0) {
       return -1;
@@ -73,7 +69,7 @@ public class RedisUtil {
   public static long randomOffsetDurationInSeconds() {
     String minutesStr =
         Fn.getBean(Environment.class).getProperty("spring.cache.redis.time-to-live");
-    long minutes = Convert.toLong(minutesStr);
+    long minutes = ConvertUtil.toLong(minutesStr);
     Duration duration = Duration.ofMinutes(minutes);
     return randomOffsetDuration(duration).getSeconds();
   }
@@ -81,8 +77,8 @@ public class RedisUtil {
   /**
    * 生成带随机偏移量的 TTL 时间，比如原先设置的是 60 秒，那么实际过期时间将在 [60,66] 秒之间，以解决缓存雪崩问题。
    *
-   * @param duration
-   * @return
+   * @param duration Duration
+   * @return Duration
    */
   public static Duration randomOffsetDuration(Duration duration) {
     long seconds = duration.getSeconds();

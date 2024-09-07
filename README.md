@@ -267,4 +267,8 @@ String privateKeyBase64 = org.dromara.hutool.core.codec.binary.Base64.encode(key
 
 [vue3+ts+element-plus密码强弱校验+密码自定义规则校验](https://blog.csdn.net/Johnson_7/article/details/126758162)
 
+IP 地址发生变化，请重新登录。
 
+踢人（一个账号在同一时间只允许在一个地方登录）。
+
+Bug：打开用户列表，再打开角色列表，添加一个新角色，再切换回用户列表，添加新用户，发现刚添加的新角色是不可见的。

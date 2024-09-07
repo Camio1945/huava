@@ -1,4 +1,4 @@
-package cn.huava.sys.validation.common;
+package cn.huava.common.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

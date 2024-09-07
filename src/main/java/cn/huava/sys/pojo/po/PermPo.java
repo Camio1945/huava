@@ -4,7 +4,7 @@ import cn.huava.common.pojo.po.BasePo;
 import cn.huava.common.validation.Create;
 import cn.huava.common.validation.Update;
 import cn.huava.sys.enumeration.PermTypeEnum;
-import cn.huava.sys.validation.common.ValidEnum;
+import cn.huava.common.validation.ValidEnum;
 import com.baomidou.mybatisplus.annotation.TableName;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

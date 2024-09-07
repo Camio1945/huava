@@ -4,7 +4,7 @@ import static cn.huava.common.constant.CommonConstant.ADMIN_ROLE_ID;
 import static cn.huava.common.constant.CommonConstant.RoleMessage.IMPORTANT_ROLE;
 
 import cn.huava.sys.pojo.po.RolePo;
-import cn.huava.sys.validation.common.BaseValidator;
+import cn.huava.common.validation.BaseValidator;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
