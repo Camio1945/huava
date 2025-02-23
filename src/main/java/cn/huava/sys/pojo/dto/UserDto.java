@@ -13,6 +13,7 @@ import org.dromara.hutool.core.bean.BeanUtil;
 @Data
 public class UserDto extends UserPo {
 
+  /** 用户所拥有的角色 id 列表 */
   private List<Long> roleIds;
 
   public UserDto(UserPo po) {

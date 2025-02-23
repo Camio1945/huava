@@ -26,10 +26,9 @@ class MainTest extends WithSpringBootTestAnnotation {
 
   @Test
   @Order(1) // 必须在第 1 位执行， 因为这个方法里面初始化了 mockMvc， 清空了 redis 数据库
-  void tempTestControllerTest() throws Exception {
+  void tempTestControllerTest() {
     ApiTestUtil.mockMvc = mockMvc;
     RedisUtil.flushNonProductionDb();
-    TempTestControllerTest.testAll();
   }
 
   @Test

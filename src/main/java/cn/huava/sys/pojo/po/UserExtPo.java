@@ -8,7 +8,7 @@ import java.util.List;
 import lombok.Data;
 
 /**
- * 用户
+ * 用户扩展对象，增加了用户所属的角色 id 列表
  *
  * @author Camio1945
  */

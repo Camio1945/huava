@@ -1,6 +1,6 @@
 package cn.huava.common.pojo.po;
 
-import static org.dromara.hutool.core.date.DatePattern.PURE_DATETIME_MS_FORMAT;
+import static org.dromara.hutool.core.date.DateFormatPool.PURE_DATETIME_MS_FORMAT;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;

@@ -2,7 +2,6 @@ package cn.huava.common.graalvm;
 
 import static org.dromara.hutool.core.io.file.FileNameUtil.EXT_JAVA;
 
-import cn.huava.common.annotation.VisibleForTesting;
 import cn.huava.common.util.Fn;
 import java.io.File;
 import java.util.List;
@@ -21,7 +20,6 @@ import org.dromara.hutool.json.JSONObject;
  * @author Camio1945
  */
 @Slf4j
-@VisibleForTesting
 public class SerializationConfigGenerator {
   /** 源代码 main 目录的路径，如：D:/git/huava/src/main */
   protected static String mainPath;
@@ -106,7 +104,7 @@ public class SerializationConfigGenerator {
     String srcMainJava = "/src/main/java/";
     path = path.substring(path.indexOf(srcMainJava) + srcMainJava.length());
     String className = path.replace("/", ".").replace(EXT_JAVA, "");
-    lambdaJson.put("name", className);
+    lambdaJson.putValue("name", className);
     lambdas.add(lambdaJson);
   }
 }

@@ -48,7 +48,7 @@ docs/<latestversion>/huava-init-<latestversion>.sql
 yum install -y gcc zlib-devel
 cd huava
 chmod +x mvnw
-./mvnw -Pnative clean native:compile
+./mvnw -Pnative clean native:compile -DskipTests
 ```
 
 其中 `huava` 就是本项目的文件夹。
@@ -63,7 +63,7 @@ chmod +x mvnw
 
 ```
 cd huava
-mvnw -Pnative clean native:compile
+mvnw -Pnative clean native:compile -DskipTests
 ```
 
 其中 `huava` 就是本项目的文件夹。

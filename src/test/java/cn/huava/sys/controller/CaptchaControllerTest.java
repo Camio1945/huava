@@ -13,7 +13,6 @@ import java.io.File;
 import java.nio.file.Paths;
 import org.dromara.hutool.core.io.file.FileUtil;
 import org.dromara.hutool.extra.spring.SpringUtil;
-import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MvcResult;
 
 /**
@@ -53,7 +52,6 @@ public class CaptchaControllerTest {
   }
 
   private static void sendRequest() throws Exception {
-    session = new MockHttpSession();
     MvcResult res =
         mockMvc.perform(get("/captcha").session(session)).andExpect(status().isOk()).andReturn();
     assertTrue(res.getResponse().getContentAsByteArray().length > 0);

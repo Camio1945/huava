@@ -169,7 +169,7 @@ public class RedisUtil {
     return map.keySet();
   }
 
-  private static RedissonClient getRedissonClient() {
+  public static RedissonClient getRedissonClient() {
     if (redissonClient == null) {
       redissonClient =
           SingleFlightUtil.execute("redissonClient", () -> Fn.getBean(RedissonClient.class));

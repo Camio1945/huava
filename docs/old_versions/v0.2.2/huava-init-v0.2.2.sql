@@ -1,8 +1,7 @@
 drop database if exists huava;
-drop user if exists 'huava'@'%';
 create database huava default character set utf8mb4 collate utf8mb4_general_ci;
 use huava;
-create user 'huava'@'%' identified by 'eFS0H6_0_pkVm__o';
+create user if not exists 'huava'@'%' identified by 'eFS0H6_0_pkVm__o';
 grant all privileges on huava.* to 'huava'@'%';
 flush privileges;
 

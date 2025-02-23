@@ -1,6 +1,6 @@
 singleServerConfig:
-  address: "redis://192.168.0.102:6379"
-  password: up72@2021
+  address: "redis://localhost:6379"
+  password: Camio_1945
   connectionPoolSize: 64
   connectionMinimumIdleSize: 10
   idleConnectionTimeout: 10000

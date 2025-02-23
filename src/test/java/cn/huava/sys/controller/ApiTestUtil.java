@@ -22,7 +22,7 @@ public class ApiTestUtil {
   public static MockMvc mockMvc;
 
   /** set in {@link CaptchaControllerTest#captcha} */
-  public static MockHttpSession session;
+  public static MockHttpSession session = new MockHttpSession();
 
   /**
    * set in {@link UserControllerTest#login} and {@link UserControllerTest#refreshToken()} and

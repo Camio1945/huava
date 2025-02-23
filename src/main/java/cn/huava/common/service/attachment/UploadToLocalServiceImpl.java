@@ -1,6 +1,7 @@
 package cn.huava.common.service.attachment;
 
 import static cn.huava.common.constant.CommonConstant.MULTIPART_PARAM_NAME;
+import static org.dromara.hutool.core.date.DateFormatPool.PURE_DATE_PATTERN;
 
 import cn.huava.common.pojo.po.AttachmentPo;
 import cn.huava.common.util.Fn;
@@ -11,7 +12,6 @@ import java.util.Date;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.data.id.IdUtil;
-import org.dromara.hutool.core.date.DatePattern;
 import org.dromara.hutool.core.date.DateUtil;
 import org.dromara.hutool.core.io.file.FileNameUtil;
 import org.dromara.hutool.core.io.file.FileUtil;
@@ -60,13 +60,6 @@ public class UploadToLocalServiceImpl extends BaseUploadService {
         .setCreateTime(new Date());
   }
 
-  private static String getExt(String fileName) {
-    String ext = FileNameUtil.extName(fileName);
-    ext = Fn.isBlank(ext) ? "" : "." + ext;
-    ext = ext.toLowerCase();
-    return ext;
-  }
-
   @SneakyThrows(IOException.class)
   private String saveFile(MultipartFile file) {
     String destFilePath = buildFilePath(file.getOriginalFilename());
@@ -83,10 +76,17 @@ public class UploadToLocalServiceImpl extends BaseUploadService {
     }
     attachmentPath = Fn.cleanPath(attachmentPath);
     String ext = getExt(fileName);
-    String date = DateUtil.format(new Date(), DatePattern.PURE_DATE_PATTERN);
+    String date = DateUtil.format(new Date(), PURE_DATE_PATTERN);
     // e.g. : C:/Users/Administrator/.huava/attachment/20240824/39da49c481234228a70bf18d41b3e8ee.jpg
     String folderPath = attachmentPath + File.separator + date;
     FileUtil.mkdir(folderPath);
     return Fn.cleanPath(folderPath + File.separator + IdUtil.fastSimpleUUID() + ext);
+  }
+
+  private static String getExt(String fileName) {
+    String ext = FileNameUtil.extName(fileName);
+    ext = Fn.isBlank(ext) ? "" : "." + ext;
+    ext = ext.toLowerCase();
+    return ext;
   }
 }

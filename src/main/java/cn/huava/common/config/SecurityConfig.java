@@ -2,7 +2,7 @@ package cn.huava.common.config;
 
 import static cn.huava.common.constant.CommonConstant.REFRESH_TOKEN_URI;
 
-import cn.huava.common.filter.JwtAuthenticationFilter;
+import cn.huava.common.filter.JwtAuthFilter;
 import cn.huava.common.filter.UriAuthFilter;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ import org.springframework.web.filter.CorsFilter;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-  private final JwtAuthenticationFilter jwtAuthenticationFilter;
+  private final JwtAuthFilter jwtAuthenticationFilter;
   private final UriAuthFilter uriAuthFilter;
 
   @Bean
@@ -43,10 +43,10 @@ public class SecurityConfig {
               // 其他请求需要认证
               registry.anyRequest().authenticated();
             })
-        // 添加 JWT 认证过滤器，Spring 要求必须指定在顺序，这里随便指定到 CorsFilter 的后面，但不一定非要是 CorsFilter
+        // 添加 JWT 认证过滤器，Spring 要求必须指定顺序，这里随便指定到 CorsFilter 的后面，但不一定非要是 CorsFilter
         .addFilterAfter(jwtAuthenticationFilter, CorsFilter.class)
         // 添加 URI 认证过滤器，用于验证用户是否有权限访问某个 URI，必须在 JwtAuthenticationFilter 之后
-        .addFilterAfter(uriAuthFilter, JwtAuthenticationFilter.class)
+        .addFilterAfter(uriAuthFilter, JwtAuthFilter.class)
         .build();
   }
 

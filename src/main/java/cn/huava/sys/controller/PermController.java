@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
+ * 权限控制器
+ *
  * @author Camio1945
  */
 @Slf4j

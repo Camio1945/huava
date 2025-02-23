@@ -69,7 +69,7 @@
     <dependency>
       <groupId>org.dromara.hutool</groupId>
       <artifactId>hutool-all</artifactId>
-      <version>6.0.0-M16</version>
+      <version>6.0.0-M19</version>
     </dependency>
 
     <!-- test -->
@@ -103,6 +103,7 @@
             <buildArg>--enable-url-protocols=http,https</buildArg>
             <buildArg>--no-fallback</buildArg>
             <buildArg>--initialize-at-build-time=org.redisson.misc.BiHashMap</buildArg>
+            <buildArg>--initialize-at-run-time=sun.net.dns.ResolverConfigurationImpl</buildArg>
             <!-- used to solve the problem of garbled Chinese characters in the database -->
             <buildArg>-H:+AddAllCharsets</buildArg>
             <buildArg>-H:+ReportExceptionStackTraces</buildArg>
