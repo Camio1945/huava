@@ -118,4 +118,5 @@ huava.zip
 src/test/java/cn/huava/temp
 src/test/java/cn/huava/**/TempTest*.java
 
-
+**/source_codes
+**/git_ignores
