@@ -1,0 +1,17 @@
+{
+  "types": [
+  ],
+  "proxies": [
+  ],
+  "lambdaCapturingTypes": [
+    {
+      "name": "java.awt.GraphicsEnvironment"
+    },
+    {
+      "name": "cn.huava.common.graalvm.RuntimeHintsRegistrarConfig"
+    },
+    {
+      "name": "cn.huava.common.graalvm.NativeRuntimeHintsRegistrar"
+    }
+  ]
+}

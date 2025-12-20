@@ -36,6 +36,13 @@
     </dependency>
 
     <dependency>
+      <groupId>cn.hutool.v7</groupId>
+      <artifactId>hutool-all</artifactId>
+      <version>7.0.0-M3</version>
+    </dependency>
+
+    <!-- ########## Testing ##########  -->
+    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-webmvc-test</artifactId>
       <scope>test</scope>
