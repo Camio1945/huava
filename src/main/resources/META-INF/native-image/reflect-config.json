@@ -50,6 +50,30 @@
     "fields": [
       {
         "name": "nBits"
+      },
+      {
+        "name": "colorSpace"
+      },
+      {
+        "name": "numComponents"
+      },
+      {
+        "name": "maxBits"
+      },
+      {
+        "name": "supportsAlpha"
+      },
+      {
+        "name": "isAlphaPre"
+      },
+      {
+        "name": "transparency"
+      }
+    ],
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": ["int"]
       }
     ]
   },
@@ -65,6 +89,16 @@
   },
   {
     "name": "java.awt.RenderingHints",
+    "allPublicMethods": true,
+    "allPublicFields": true
+  },
+  {
+    "name": "java.awt.image.IndexColorModel",
+    "allPublicMethods": true,
+    "allPublicFields": true
+  },
+  {
+    "name": "java.awt.image.DirectColorModel",
     "allPublicMethods": true,
     "allPublicFields": true
   }
