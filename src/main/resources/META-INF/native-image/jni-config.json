@@ -1,0 +1,37 @@
+[
+  {
+    "name": "java.awt.GraphicsEnvironment",
+    "methods": [
+      {
+        "name": "getLocalGraphicsEnvironment",
+        "parameterTypes": []
+      },
+      {
+        "name": "isHeadless",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "java.awt.Toolkit",
+    "methods": [
+      {
+        "name": "getDefaultToolkit",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "java.lang.System",
+    "methods": [
+      {
+        "name": "loadLibrary",
+        "parameterTypes": ["java.lang.String"]
+      },
+      {
+        "name": "load",
+        "parameterTypes": ["java.lang.String"]
+      }
+    ]
+  }
+]

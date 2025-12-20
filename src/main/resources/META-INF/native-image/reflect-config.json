@@ -1,0 +1,71 @@
+[
+  {
+    "name": "java.awt.GraphicsEnvironment",
+    "allPublicMethods": true,
+    "allPublicFields": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "java.awt.Toolkit",
+    "allPublicMethods": true,
+    "allPublicFields": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "java.awt.Font",
+    "allPublicMethods": true,
+    "allPublicFields": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": ["java.lang.String", "int", "int"]
+      }
+    ]
+  },
+  {
+    "name": "java.awt.image.BufferedImage",
+    "allPublicMethods": true,
+    "allPublicFields": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": ["int", "int", "int"]
+      }
+    ]
+  },
+  {
+    "name": "java.awt.image.ColorModel",
+    "allPublicMethods": true,
+    "allPublicFields": true,
+    "fields": [
+      {
+        "name": "nBits"
+      }
+    ]
+  },
+  {
+    "name": "java.awt.Color",
+    "allPublicMethods": true,
+    "allPublicFields": true
+  },
+  {
+    "name": "java.awt.BasicStroke",
+    "allPublicMethods": true,
+    "allPublicFields": true
+  },
+  {
+    "name": "java.awt.RenderingHints",
+    "allPublicMethods": true,
+    "allPublicFields": true
+  }
+]

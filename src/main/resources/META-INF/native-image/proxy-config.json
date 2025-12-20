@@ -1,0 +1,9 @@
+[
+  {
+    "interfaces": [
+      "java.awt.image.ImageObserver",
+      "java.awt.MenuContainer",
+      "java.awt.image.ImageProducer"
+    ]
+  }
+]

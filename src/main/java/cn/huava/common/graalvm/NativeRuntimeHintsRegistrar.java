@@ -55,8 +55,16 @@ public class NativeRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
   }
 
   protected void addAwtClasses(Set<Class<?>> classes) {
-    Set<Class<?>> miscellaneousClasses = Set.of(GraphicsEnvironment.class);
-    classes.addAll(miscellaneousClasses);
+    Set<Class<?>> awtClasses = Set.of(
+      GraphicsEnvironment.class,
+      Toolkit.class,
+      Font.class,
+      java.awt.image.BufferedImage.class,
+      java.awt.Color.class,
+      java.awt.BasicStroke.class,
+      java.awt.RenderingHints.class
+    );
+    classes.addAll(awtClasses);
   }
 
   protected void addIbatisClasses(Set<Class<?>> classes) {
