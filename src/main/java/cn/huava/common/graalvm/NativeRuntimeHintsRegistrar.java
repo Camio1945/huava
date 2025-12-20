@@ -55,15 +55,28 @@ public class NativeRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
   }
 
   protected void addAwtClasses(Set<Class<?>> classes) {
-    Set<Class<?>> awtClasses = Set.of(
-      GraphicsEnvironment.class,
-      Toolkit.class,
-      Font.class,
-      java.awt.image.BufferedImage.class,
-      java.awt.Color.class,
-      java.awt.BasicStroke.class,
-      java.awt.RenderingHints.class
-    );
+    Set<Class<?>> awtClasses =
+        new HashSet<>(
+            Set.of(
+                GraphicsEnvironment.class,
+                Toolkit.class,
+                Font.class,
+                java.awt.image.BufferedImage.class,
+                java.awt.Color.class,
+                java.awt.BasicStroke.class,
+                java.awt.RenderingHints.class,
+                java.awt.image.ColorModel.class,
+                java.awt.image.ComponentColorModel.class,
+                java.awt.image.DirectColorModel.class,
+                java.awt.image.IndexColorModel.class,
+                java.awt.image.Raster.class,
+                java.awt.image.SampleModel.class,
+                java.awt.image.SinglePixelPackedSampleModel.class));
+    try {
+      awtClasses.add(Class.forName("sun.awt.X11.XToolkit"));
+    } catch (ClassNotFoundException e) {
+      // do nothing
+    }
     classes.addAll(awtClasses);
   }
 
