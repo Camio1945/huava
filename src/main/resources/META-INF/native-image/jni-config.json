@@ -350,7 +350,12 @@
     "methods": [
       {
         "name": "<init>",
-        "parameterTypes": ["long", "sun.java2d.loops.SurfaceType", "sun.java2d.loops.CompositeType", "sun.java2d.loops.SurfaceType"]
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
       }
     ]
   },
@@ -359,7 +364,12 @@
     "methods": [
       {
         "name": "<init>",
-        "parameterTypes": ["long", "sun.java2d.loops.SurfaceType", "sun.java2d.loops.CompositeType", "sun.java2d.loops.SurfaceType"]
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
       }
     ]
   },
@@ -368,7 +378,12 @@
     "methods": [
       {
         "name": "<init>",
-        "parameterTypes": ["long", "sun.java2d.loops.SurfaceType", "sun.java2d.loops.CompositeType", "sun.java2d.loops.SurfaceType"]
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
       }
     ]
   },
@@ -377,7 +392,12 @@
     "methods": [
       {
         "name": "<init>",
-        "parameterTypes": ["long", "sun.java2d.loops.SurfaceType", "sun.java2d.loops.CompositeType", "sun.java2d.loops.SurfaceType"]
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
       }
     ]
   },
@@ -386,7 +406,40 @@
     "methods": [
       {
         "name": "<init>",
-        "parameterTypes": ["long", "sun.java2d.loops.SurfaceType", "sun.java2d.loops.CompositeType", "sun.java2d.loops.SurfaceType"]
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.FillParallelogram",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.DrawParallelogram",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
       }
     ]
   }

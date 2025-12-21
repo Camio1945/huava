@@ -76,6 +76,11 @@ public class NativeRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
       awtClasses.add(Class.forName("sun.awt.X11.XToolkit"));
       awtClasses.add(Class.forName("sun.java2d.InvalidPipeException"));
       awtClasses.add(Class.forName("sun.java2d.loops.Blit"));
+      awtClasses.add(Class.forName("sun.java2d.loops.BlitBg"));
+      awtClasses.add(Class.forName("sun.java2d.loops.ScaledBlit"));
+      awtClasses.add(Class.forName("sun.java2d.loops.FillRect"));
+      awtClasses.add(Class.forName("sun.java2d.loops.FillSpans"));
+      awtClasses.add(Class.forName("sun.java2d.loops.FillParallelogram"));
     } catch (ClassNotFoundException e) {
       // do nothing
     }
