@@ -67,6 +67,147 @@
       {
         "name": "is_sRGB"
       }
+    ],
+    "methods": [
+      {
+        "name": "getRGBdefault",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "java.awt.image.BufferedImage",
+    "fields": [
+      {
+        "name": "raster"
+      },
+      {
+        "name": "imageType"
+      },
+      {
+        "name": "colorModel"
+      }
+    ],
+    "methods": [
+      {
+        "name": "getRGB",
+        "parameterTypes": [
+          "int",
+          "int",
+          "int",
+          "int",
+          "[I",
+          "int",
+          "int"
+        ]
+      },
+      {
+        "name": "setRGB",
+        "parameterTypes": [
+          "int",
+          "int",
+          "int",
+          "int",
+          "[I",
+          "int",
+          "int"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "java.awt.image.Raster",
+    "fields": [
+      {
+        "name": "minX"
+      },
+      {
+        "name": "minY"
+      },
+      {
+        "name": "width"
+      },
+      {
+        "name": "height"
+      },
+      {
+        "name": "sampleModelTranslateX"
+      },
+      {
+        "name": "sampleModelTranslateY"
+      },
+      {
+        "name": "numBands"
+      },
+      {
+        "name": "numDataElements"
+      },
+      {
+        "name": "sampleModel"
+      },
+      {
+        "name": "dataBuffer"
+      }
+    ]
+  },
+  {
+    "name": "java.awt.image.SampleModel",
+    "fields": [
+      {
+        "name": "width"
+      },
+      {
+        "name": "height"
+      },
+      {
+        "name": "numBands"
+      },
+      {
+        "name": "dataType"
+      }
+    ],
+    "methods": [
+      {
+        "name": "getPixels",
+        "parameterTypes": [
+          "int",
+          "int",
+          "int",
+          "int",
+          "[I",
+          "java.awt.image.DataBuffer"
+        ]
+      },
+      {
+        "name": "setPixels",
+        "parameterTypes": [
+          "int",
+          "int",
+          "int",
+          "int",
+          "[I",
+          "java.awt.image.DataBuffer"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "java.awt.image.SinglePixelPackedSampleModel",
+    "fields": [
+      { "name": "bitMasks" },
+      { "name": "bitOffsets" },
+      { "name": "bitSizes" },
+      { "name": "maxBitSize" }
+    ]
+  },
+  {
+    "name": "sun.awt.image.IntegerComponentRaster",
+    "fields": [
+      { "name": "data" },
+      { "name": "scanlineStride" },
+      { "name": "pixelStride" },
+      { "name": "dataOffsets" },
+      { "name": "type" }
     ]
   }
 ]

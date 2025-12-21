@@ -74,6 +74,7 @@ public class NativeRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
                 java.awt.image.SinglePixelPackedSampleModel.class));
     try {
       awtClasses.add(Class.forName("sun.awt.X11.XToolkit"));
+      awtClasses.add(Class.forName("sun.java2d.InvalidPipeException"));
     } catch (ClassNotFoundException e) {
       // do nothing
     }
