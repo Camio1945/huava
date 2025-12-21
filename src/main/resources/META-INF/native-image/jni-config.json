@@ -232,5 +232,23 @@
       { "name": "map_size" },
       { "name": "allgrayopaque" }
     ]
+  },
+  {
+    "name": "sun.java2d.pipe.Region",
+    "fields": [
+      { "name": "endIndex" },
+      { "name": "lox" },
+      { "name": "hix" },
+      { "name": "loy" },
+      { "name": "hiy" },
+      { "name": "bands" }
+    ]
+  },
+  {
+    "name": "sun.java2d.pipe.RegionIterator",
+    "fields": [
+      { "name": "region" },
+      { "name": "curIndex" }
+    ]
   }
 ]
