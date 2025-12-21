@@ -1570,6 +1570,24 @@
     ]
   },
   {
+    "name": "sun.font.SunFontManager",
+    "methods": [
+      {
+        "name": "initIDs",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "sun.font.FontDesignMetrics",
+    "methods": [
+      {
+        "name": "getMetrics",
+        "parameterTypes": ["sun.font.Font2D"]
+      }
+    ]
+  },
+  {
     "name": "sun.font.CharToGlyphMapper",
     "methods": [
       {
@@ -1584,11 +1602,55 @@
       {
         "name": "getGlyphMetrics",
         "parameterTypes": ["int"]
+      },
+      {
+        "name": "getFontMetrics",
+        "parameterTypes": []
       }
     ]
   },
   {
-    "name": "java.awt.geom.Point2D$Float"
+    "name": "sun.font.GlyphList",
+    "methods": [
+      {
+        "name": "getPoint",
+        "parameterTypes": ["int", "java.awt.geom.Point2D$Float"]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.SunGraphics2D",
+    "methods": [
+      {
+        "name": "getFontMetrics",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "java.awt.geom.Point2D$Float",
+    "fields": [
+      {
+        "name": "x"
+      },
+      {
+        "name": "y"
+      }
+    ],
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": ["float", "float"]
+      },
+      {
+        "name": "getX",
+        "parameterTypes": []
+      },
+      {
+        "name": "getY",
+        "parameterTypes": []
+      }
+    ]
   }
 ]
 
