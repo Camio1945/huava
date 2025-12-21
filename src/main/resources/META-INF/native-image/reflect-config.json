@@ -80,7 +80,13 @@
   {
     "name": "java.awt.Color",
     "allPublicMethods": true,
-    "allPublicFields": true
+    "allPublicFields": true,
+    "methods": [
+      {
+        "name": "getRGB",
+        "parameterTypes": []
+      }
+    ]
   },
   {
     "name": "java.awt.BasicStroke",
@@ -96,6 +102,17 @@
     "name": "java.awt.image.IndexColorModel",
     "allPublicMethods": true,
     "allPublicFields": true
+  },
+  {
+    "name": "java.awt.Color",
+    "allPublicMethods": true,
+    "allPublicFields": true,
+    "methods": [
+      {
+        "name": "getRGB",
+        "parameterTypes": []
+      }
+    ]
   },
   {
     "name": "java.awt.image.DirectColorModel",

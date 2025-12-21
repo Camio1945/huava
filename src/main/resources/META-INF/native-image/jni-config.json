@@ -920,11 +920,57 @@
     ]
   },
   {
+    "name": "sun.java2d.loops.GraphicsPrimitive",
+    "fields": [
+      {
+        "name": "pNativePrim"
+      }
+    ]
+  },
+  {
     "name": "sun.java2d.loops.GraphicsPrimitiveMgr",
     "methods": [
       {
         "name": "initIDs",
         "parameterTypes": []
+      },
+      {
+        "name": "register",
+        "parameterTypes": [
+          "sun.java2d.loops.GraphicsPrimitive[]"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.SunGraphics2D",
+    "fields": [
+      {
+        "name": "pixel"
+      },
+      {
+        "name": "eargb"
+      },
+      {
+        "name": "transAlpha"
+      },
+      {
+        "name": "composite"
+      },
+      {
+        "name": "clipRegion"
+      },
+      {
+        "name": "transform"
+      },
+      {
+        "name": "stroke"
+      },
+      {
+        "name": "paint"
+      },
+      {
+        "name": "lcdTextContrast"
       }
     ]
   },
@@ -1020,6 +1066,281 @@
       },
       {
         "name": "ByteBinary1Bit"
+      },
+      {
+        "name": "ByteBinary2Bit"
+      },
+      {
+        "name": "ByteBinary4Bit"
+      },
+      {
+        "name": "ByteIndexed1"
+      },
+      {
+        "name": "ByteIndexed2"
+      },
+      {
+        "name": "ByteIndexed4"
+      },
+      {
+        "name": "ByteGray"
+      },
+      {
+        "name": "UshortGray"
+      },
+      {
+        "name": "IntGray"
+      },
+      {
+        "name": "UshortIndexed"
+      },
+      {
+        "name": "UshortIndexedBm"
+      },
+      {
+        "name": "ByteBgr"
+      },
+      {
+        "name": "ByteAgr"
+      },
+      {
+        "name": "Index8Gray"
+      },
+      {
+        "name": "Index12Gray"
+      },
+      {
+        "name": "Index16Gray"
+      },
+      {
+        "name": "AnyGray"
+      },
+      {
+        "name": "AnyTrans"
+      },
+      {
+        "name": "AnyIntPacked"
+      },
+      {
+        "name": "Any"
+      },
+      {
+        "name": "Ushort555Rgb"
+      },
+      {
+        "name": "Ushort565Rgb"
+      },
+      {
+        "name": "Ushort4444Argb"
+      },
+      {
+        "name": "Ushort555Rgbx"
+      },
+      {
+        "name": "Ushort565Rgbx"
+      },
+      {
+        "name": "Ushort4444ArgbPre"
+      },
+      {
+        "name": "Ushort1111Gray"
+      },
+      {
+        "name": "Ushort1111GrayPre"
+      },
+      {
+        "name": "ThreeByteBgr"
+      },
+      {
+        "name": "FourByteAbgr"
+      },
+      {
+        "name": "FourByteAbgrPre"
+      },
+      {
+        "name": "UshortGray"
+      },
+      {
+        "name": "UshortRgbx555"
+      },
+      {
+        "name": "UshortRgbx565"
+      },
+      {
+        "name": "UshortRgb555"
+      },
+      {
+        "name": "UshortRgb565"
+      },
+      {
+        "name": "UshortArgb4444"
+      },
+      {
+        "name": "UshortArgb1555"
+      },
+      {
+        "name": "UshortBgrx565"
+      },
+      {
+        "name": "UshortBgr565"
+      },
+      {
+        "name": "UshortXbgr555"
+      },
+      {
+        "name": "UshortBgrx555"
+      },
+      {
+        "name": "UshortBgr555"
+      },
+      {
+        "name": "UshortXrgb1555"
+      },
+      {
+        "name": "UshortRgbx1555"
+      },
+      {
+        "name": "UshortXbgr1555"
+      },
+      {
+        "name": "UshortBgrx1555"
+      },
+      {
+        "name": "UshortXrgb4444"
+      },
+      {
+        "name": "UshortRgbx4444"
+      },
+      {
+        "name": "UshortXbgr4444"
+      },
+      {
+        "name": "UshortBgrx4444"
+      },
+      {
+        "name": "IntRgbx"
+      },
+      {
+        "name": "IntBgrx"
+      },
+      {
+        "name": "IntXrgb"
+      },
+      {
+        "name": "IntXbgr"
+      },
+      {
+        "name": "IntRgbxPre"
+      },
+      {
+        "name": "IntBgrxPre"
+      },
+      {
+        "name": "IntXrgbPre"
+      },
+      {
+        "name": "IntXbgrPre"
+      },
+      {
+        "name": "IntArgbBm"
+      },
+      {
+        "name": "IntRgbBm"
+      },
+      {
+        "name": "IntBgrBm"
+      },
+      {
+        "name": "ThreeByteBgrBm"
+      },
+      {
+        "name": "FourByteAbgrBm"
+      },
+      {
+        "name": "FourByteAbgrPreBm"
+      },
+      {
+        "name": "Any4Byte"
+      },
+      {
+        "name": "Any3Byte"
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.CompositeType",
+    "fields": [
+      {
+        "name": "SrcNoEa"
+      },
+      {
+        "name": "SrcOverNoEa"
+      },
+      {
+        "name": "Src"
+      },
+      {
+        "name": "SrcOver"
+      },
+      {
+        "name": "DstOver"
+      },
+      {
+        "name": "SrcIn"
+      },
+      {
+        "name": "DstIn"
+      },
+      {
+        "name": "SrcOut"
+      },
+      {
+        "name": "DstOut"
+      },
+      {
+        "name": "SrcAtop"
+      },
+      {
+        "name": "DstAtop"
+      },
+      {
+        "name": "Xor"
+      },
+      {
+        "name": "HardLight"
+      },
+      {
+        "name": "SoftLight"
+      },
+      {
+        "name": "Add"
+      },
+      {
+        "name": "Multiply"
+      },
+      {
+        "name": "Screen"
+      },
+      {
+        "name": "Overlay"
+      },
+      {
+        "name": "Darken"
+      },
+      {
+        "name": "Lighten"
+      },
+      {
+        "name": "AnyAlpha"
+      },
+      {
+        "name": "AnyNoEa"
+      },
+      {
+        "name": "SrcOverNoEa"
+      },
+      {
+        "name": "NonPreComposite"
       }
     ]
   }
