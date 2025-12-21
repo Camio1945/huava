@@ -26,11 +26,15 @@
     "methods": [
       {
         "name": "loadLibrary",
-        "parameterTypes": ["java.lang.String"]
+        "parameterTypes": [
+          "java.lang.String"
+        ]
       },
       {
         "name": "load",
-        "parameterTypes": ["java.lang.String"]
+        "parameterTypes": [
+          "java.lang.String"
+        ]
       }
     ]
   },
@@ -118,96 +122,114 @@
   {
     "name": "java.awt.image.Raster",
     "fields": [
-          {
-            "name": "minX"
-          },
-          {
-            "name": "minY"
-          },
-          {
-            "name": "width"
-          },
-          {
-            "name": "height"
-          },
-          {
-            "name": "sampleModelTranslateX"
-          },
-          {
-            "name": "sampleModelTranslateY"
-          },
-          {
-            "name": "numBands"
-          },
-          {
-            "name": "numDataElements"
-          },
-          {
-            "name": "sampleModel"
-          },
-          {
-            "name": "dataBuffer"
-          }
-        ]
+      {
+        "name": "minX"
+      },
+      {
+        "name": "minY"
+      },
+      {
+        "name": "width"
+      },
+      {
+        "name": "height"
+      },
+      {
+        "name": "sampleModelTranslateX"
+      },
+      {
+        "name": "sampleModelTranslateY"
+      },
+      {
+        "name": "numBands"
+      },
+      {
+        "name": "numDataElements"
+      },
+      {
+        "name": "sampleModel"
+      },
+      {
+        "name": "dataBuffer"
+      }
+    ]
   },
   {
     "name": "java.awt.image.SampleModel",
     "fields": [
-          {
-            "name": "width"
-          },
-          {
-            "name": "height"
-          },
-          {
-            "name": "numBands"
-          },
-          {
-            "name": "dataType"
-          }
-        ],
-        "methods": [
-              {
-                "name": "getPixels",
-                "parameterTypes": [
-                  "int",
-                  "int",
-                  "int",
-                  "int",
-                  "[I",
-                  "java.awt.image.DataBuffer"
-                ]
-              },
-              {
-                "name": "setPixels",
-                "parameterTypes": [
-                  "int",
-                  "int",
-                  "int",
-                  "int",
-                  "[I",
-                  "java.awt.image.DataBuffer"
-                ]
-              }
-            ]
+      {
+        "name": "width"
+      },
+      {
+        "name": "height"
+      },
+      {
+        "name": "numBands"
+      },
+      {
+        "name": "dataType"
+      }
+    ],
+    "methods": [
+      {
+        "name": "getPixels",
+        "parameterTypes": [
+          "int",
+          "int",
+          "int",
+          "int",
+          "[I",
+          "java.awt.image.DataBuffer"
+        ]
+      },
+      {
+        "name": "setPixels",
+        "parameterTypes": [
+          "int",
+          "int",
+          "int",
+          "int",
+          "[I",
+          "java.awt.image.DataBuffer"
+        ]
+      }
+    ]
   },
   {
     "name": "java.awt.image.SinglePixelPackedSampleModel",
     "fields": [
-      { "name": "bitMasks" },
-      { "name": "bitOffsets" },
-      { "name": "bitSizes" },
-      { "name": "maxBitSize" }
+      {
+        "name": "bitMasks"
+      },
+      {
+        "name": "bitOffsets"
+      },
+      {
+        "name": "bitSizes"
+      },
+      {
+        "name": "maxBitSize"
+      }
     ]
   },
   {
     "name": "sun.awt.image.IntegerComponentRaster",
     "fields": [
-      { "name": "data" },
-      { "name": "scanlineStride" },
-      { "name": "pixelStride" },
-      { "name": "dataOffsets" },
-      { "name": "type" }
+      {
+        "name": "data"
+      },
+      {
+        "name": "scanlineStride"
+      },
+      {
+        "name": "pixelStride"
+      },
+      {
+        "name": "dataOffsets"
+      },
+      {
+        "name": "type"
+      }
     ]
   },
   {
@@ -219,38 +241,72 @@
   {
     "name": "sun.java2d.SurfaceData",
     "fields": [
-      { "name": "pData" },
-      { "name": "pRasBuf" },
-      { "name": "valid" }
+      {
+        "name": "pData"
+      },
+      {
+        "name": "pRasBuf"
+      },
+      {
+        "name": "valid"
+      }
     ]
   },
   {
     "name": "java.awt.image.IndexColorModel",
     "fields": [
-      { "name": "rgb" },
-      { "name": "transparent_index" },
-      { "name": "map_size" },
-      { "name": "allgrayopaque" },
-      { "name": "colorData" }
+      {
+        "name": "rgb"
+      },
+      {
+        "name": "transparent_index"
+      },
+      {
+        "name": "map_size"
+      },
+      {
+        "name": "allgrayopaque"
+      },
+      {
+        "name": "colorData"
+      }
     ]
   },
   {
     "name": "sun.java2d.pipe.Region",
     "fields": [
-      { "name": "endIndex" },
-      { "name": "lox" },
-      { "name": "hix" },
-      { "name": "loy" },
-      { "name": "hiy" },
-      { "name": "bands" }
+      {
+        "name": "endIndex"
+      },
+      {
+        "name": "lox"
+      },
+      {
+        "name": "hix"
+      },
+      {
+        "name": "loy"
+      },
+      {
+        "name": "hiy"
+      },
+      {
+        "name": "bands"
+      }
     ]
   },
   {
     "name": "sun.java2d.pipe.RegionIterator",
     "fields": [
-      { "name": "region" },
-      { "name": "curIndex" },
-      { "name": "numXbands" }
+      {
+        "name": "region"
+      },
+      {
+        "name": "curIndex"
+      },
+      {
+        "name": "numXbands"
+      }
     ]
   },
   {
@@ -258,12 +314,18 @@
     "methods": [
       {
         "name": "<init>",
-        "parameterTypes": [ "long" ]
+        "parameterTypes": [
+          "long"
+        ]
       }
     ],
     "fields": [
-      { "name": "pData" },
-      { "name": "pRasBuf" }
+      {
+        "name": "pData"
+      },
+      {
+        "name": "pRasBuf"
+      }
     ]
   },
   {
@@ -275,8 +337,17 @@
       },
       {
         "name": "addRecord",
-        "parameterTypes": [ "java.lang.Object", "long", "long" ]
+        "parameterTypes": [
+          "java.lang.Object",
+          "long",
+          "long"
+        ]
       }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.Blit",
+    "methods": [
     ]
   }
 ]

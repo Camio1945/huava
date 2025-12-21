@@ -101,5 +101,15 @@
     "name": "java.awt.image.DirectColorModel",
     "allPublicMethods": true,
     "allPublicFields": true
+  },
+  {
+    "name": "sun.java2d.loops.Blit",
+    "allPublicMethods": true,
+    "allPublicFields": true
+  },
+  {
+    "name": "sun.java2d.loops.GraphicsPrimitiveMgr",
+    "allPublicMethods": true,
+    "allPublicFields": true
   }
 ]
