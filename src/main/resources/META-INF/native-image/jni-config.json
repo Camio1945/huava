@@ -1017,6 +1017,9 @@
       },
       {
         "name": "Any3Byte"
+      },
+      {
+        "name": "ByteBinary1Bit"
       }
     ]
   }
