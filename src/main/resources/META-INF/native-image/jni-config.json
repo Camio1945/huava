@@ -442,6 +442,583 @@
         ]
       }
     ]
+  },
+  {
+    "name": "sun.java2d.loops.DrawLine",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.DrawRect",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.FillRect",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.DrawOval",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.FillOval",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.DrawPolygons",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.FillPolygons",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.DrawPath",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.FillPath",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.MaskBlit",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.Blit",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.BlitBg",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.ScaledBlit",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.TransformHelper",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.MaskFill",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.OpaqueBlit",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.OpaqueCopyAnyToArgb",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.XorFillRect",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.DrawGlyphList",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.DrawGlyphListAA",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.FillSpans",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.DrawGlyphListLCD",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.DrawRect",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.FillRect",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.DrawOval",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.FillOval",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.DrawPolygon",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.FillPolygon",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.DrawPath",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.FillPath",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.DrawPolygons",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.FillPolygons",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.DrawLine",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.DrawLines",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "long",
+          "sun.java2d.loops.SurfaceType",
+          "sun.java2d.loops.CompositeType",
+          "sun.java2d.loops.SurfaceType"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.GraphicsPrimitiveMgr",
+    "methods": [
+      {
+        "name": "initIDs",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.SurfaceType",
+    "fields": [
+      {
+        "name": "OpaqueColor"
+      },
+      {
+        "name": "AnyColor"
+      },
+      {
+        "name": "ByteIndexed"
+      },
+      {
+        "name": "ByteIndexedBm"
+      },
+      {
+        "name": "IntRgb"
+      },
+      {
+        "name": "IntArgb"
+      },
+      {
+        "name": "IntArgbPre"
+      },
+      {
+        "name": "IntBgr"
+      },
+      {
+        "name": "UshortRgbx565"
+      },
+      {
+        "name": "UshortRgbx555"
+      },
+      {
+        "name": "Ushort4444Argb"
+      },
+      {
+        "name": "ByteRgb"
+      },
+      {
+        "name": "ByteBgr"
+      },
+      {
+        "name": "Index8Rgb"
+      },
+      {
+        "name": "Index8Bgr"
+      },
+      {
+        "name": "Index12Rgbx565"
+      },
+      {
+        "name": "Index12Rgbx555"
+      },
+      {
+        "name": "Index16Rgbx565"
+      },
+      {
+        "name": "Index16Rgbx555"
+      },
+      {
+        "name": "Index16Rgb565"
+      },
+      {
+        "name": "Index16Rgb555"
+      },
+      {
+        "name": "Index16Argb4444"
+      },
+      {
+        "name": "Index16Argb1555"
+      },
+      {
+        "name": "Index32Rgb"
+      },
+      {
+        "name": "Index32Argb"
+      },
+      {
+        "name": "AnyByte"
+      },
+      {
+        "name": "AnyInt"
+      },
+      {
+        "name": "AnyShort"
+      },
+      {
+        "name": "Any3Byte"
+      }
+    ]
   }
 ]
 
