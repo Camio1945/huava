@@ -63,7 +63,7 @@
           <buildArgs>
             <buildArg>--enable-http</buildArg>
             <buildArg>--enable-https</buildArg>
-            <buildArg>--initialize-at-run-time=java.awt.Toolkit,java.awt.Font,java.awt.GraphicsEnvironment,java.awt.color.ICC_Profile,java.awt.HeadlessException,java.awt.image.ColorModel,java.awt.image.BufferedImage,java.awt.image.WritableRaster,java.awt.image.DataBufferInt,java.awt.image.SampleModel,java.awt.image.SinglePixelPackedSampleModel,java.awt.image.ComponentColorModel,java.awt.image.DirectColorModel,java.awt.color.ColorSpace,java.awt.color.ICC_ColorSpace,java.awt.color.ICC_Profile,java.awt.image.IndexColorModel</buildArg>
+            <buildArg>--initialize-at-run-time=java.awt.Toolkit,java.awt.Font,java.awt.GraphicsEnvironment,java.awt.color.ICC_Profile,java.awt.HeadlessException,java.awt.image.ColorModel,java.awt.image.BufferedImage,java.awt.image.WritableRaster,java.awt.image.DataBufferInt,java.awt.image.SampleModel,java.awt.image.SinglePixelPackedSampleModel,java.awt.image.ComponentColorModel,java.awt.image.DirectColorModel,java.awt.color.ColorSpace,java.awt.color.ICC_ColorSpace,java.awt.color.ICC_Profile,java.awt.image.IndexColorModel,sun.awt.image.BufImgSurfaceData,sun.awt.image.BufImgSurfaceData$ICMColorData,sun.java2d.Disposer</buildArg>
           </buildArgs>
         </configuration>
       </plugin>

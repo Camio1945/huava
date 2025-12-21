@@ -230,7 +230,8 @@
       { "name": "rgb" },
       { "name": "transparent_index" },
       { "name": "map_size" },
-      { "name": "allgrayopaque" }
+      { "name": "allgrayopaque" },
+      { "name": "colorData" }
     ]
   },
   {
@@ -263,6 +264,19 @@
     "fields": [
       { "name": "pData" },
       { "name": "pRasBuf" }
+    ]
+  },
+  {
+    "name": "sun.java2d.Disposer",
+    "methods": [
+      {
+        "name": "initIDs",
+        "parameterTypes": []
+      },
+      {
+        "name": "addRecord",
+        "parameterTypes": [ "java.lang.Object", "long", "long" ]
+      }
     ]
   }
 ]
