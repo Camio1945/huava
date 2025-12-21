@@ -1,5 +1,30 @@
 [
   {
+    "name": "java.awt.Color",
+    "methods": [
+      {
+        "name": "getRGB",
+        "parameterTypes": []
+      },
+      {
+        "name": "getRed",
+        "parameterTypes": []
+      },
+      {
+        "name": "getGreen",
+        "parameterTypes": []
+      },
+      {
+        "name": "getBlue",
+        "parameterTypes": []
+      },
+      {
+        "name": "getAlpha",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
     "name": "java.awt.GraphicsEnvironment",
     "methods": [
       {
@@ -1264,6 +1289,31 @@
       },
       {
         "name": "Any3Byte"
+      }
+    ]
+  },
+  {
+    "name": "java.awt.AlphaComposite",
+    "fields": [
+      {
+        "name": "rule"
+      },
+      {
+        "name": "extraAlpha"
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.XORComposite",
+    "fields": [
+      {
+        "name": "xorPixel"
+      },
+      {
+        "name": "xorColor"
+      },
+      {
+        "name": "alphaMask"
       }
     ]
   },
