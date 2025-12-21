@@ -248,7 +248,21 @@
     "name": "sun.java2d.pipe.RegionIterator",
     "fields": [
       { "name": "region" },
-      { "name": "curIndex" }
+      { "name": "curIndex" },
+      { "name": "numXbands" }
+    ]
+  },
+  {
+    "name": "sun.awt.image.BufImgSurfaceData$ICMColorData",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [ "long" ]
+      }
+    ],
+    "fields": [
+      { "name": "pData" },
+      { "name": "pRasBuf" }
     ]
   }
 ]
