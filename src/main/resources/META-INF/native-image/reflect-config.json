@@ -128,5 +128,30 @@
     "name": "sun.java2d.loops.GraphicsPrimitiveMgr",
     "allPublicMethods": true,
     "allPublicFields": true
+  },
+  {
+    "name": "sun.font.TrueTypeFont",
+    "allPublicMethods": true,
+    "allPublicFields": true
+  },
+  {
+    "name": "sun.font.Type1Font",
+    "allPublicMethods": true,
+    "allPublicFields": true
+  },
+  {
+    "name": "sun.font.CharToGlyphMapper",
+    "allPublicMethods": true,
+    "allPublicFields": true
+  },
+  {
+    "name": "sun.font.PhysicalStrike",
+    "allPublicMethods": true,
+    "allPublicFields": true
+  },
+  {
+    "name": "java.awt.geom.Point2D$Float",
+    "allPublicMethods": true,
+    "allPublicFields": true
   }
 ]
