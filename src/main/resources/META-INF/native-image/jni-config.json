@@ -348,6 +348,47 @@
   {
     "name": "sun.java2d.loops.Blit",
     "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": ["long", "sun.java2d.loops.SurfaceType", "sun.java2d.loops.CompositeType", "sun.java2d.loops.SurfaceType"]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.BlitBg",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": ["long", "sun.java2d.loops.SurfaceType", "sun.java2d.loops.CompositeType", "sun.java2d.loops.SurfaceType"]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.ScaledBlit",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": ["long", "sun.java2d.loops.SurfaceType", "sun.java2d.loops.CompositeType", "sun.java2d.loops.SurfaceType"]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.FillRect",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": ["long", "sun.java2d.loops.SurfaceType", "sun.java2d.loops.CompositeType", "sun.java2d.loops.SurfaceType"]
+      }
+    ]
+  },
+  {
+    "name": "sun.java2d.loops.FillSpans",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": ["long", "sun.java2d.loops.SurfaceType", "sun.java2d.loops.CompositeType", "sun.java2d.loops.SurfaceType"]
+      }
     ]
   }
 ]
+
