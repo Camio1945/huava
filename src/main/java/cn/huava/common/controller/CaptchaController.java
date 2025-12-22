@@ -30,6 +30,5 @@ public class CaptchaController {
     // Output image
     response.setContentType("image/png");
     ImageIO.write(captcha.getImage(), "png", response.getOutputStream());
-    System.out.println("Captcha: " + captcha.getCode());
   }
 }
