@@ -63,13 +63,71 @@
           <buildArgs>
             <buildArg>--enable-http</buildArg>
             <buildArg>--enable-https</buildArg>
-            <buildArg>--initialize-at-run-time=java.awt.Toolkit,java.awt.Font,java.awt.GraphicsEnvironment,java.awt.color.ICC_Profile,java.awt.HeadlessException,java.awt.image.ColorModel,java.awt.image.BufferedImage,java.awt.image.WritableRaster,java.awt.image.DataBufferInt,java.awt.image.SampleModel,java.awt.image.SinglePixelPackedSampleModel,java.awt.image.ComponentColorModel,java.awt.image.DirectColorModel,java.awt.color.ColorSpace,java.awt.color.ICC_ColorSpace,java.awt.color.ICC_Profile,java.awt.image.IndexColorModel,sun.awt.image.BufImgSurfaceData,sun.awt.image.BufImgSurfaceData$ICMColorData,sun.java2d.Disposer</buildArg>
           </buildArgs>
         </configuration>
       </plugin>
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.14</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>report</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>check</id>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <rule>
+                  <element>BUNDLE</element>
+                  <limits>
+                    <limit>
+                      <counter>INSTRUCTION</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>1.00</minimum>
+                    </limit>
+                    <limit>
+                      <counter>BRANCH</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>1.00</minimum>
+                    </limit>
+                    <limit>
+                      <counter>LINE</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>1.00</minimum>
+                    </limit>
+                    <limit>
+                      <counter>METHOD</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>1.00</minimum>
+                    </limit>
+                    <limit>
+                      <counter>CLASS</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>1.00</minimum>
+                    </limit>
+                  </limits>
+                </rule>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
