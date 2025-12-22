@@ -12,6 +12,9 @@
       },
       {
         "pattern": "javax/swing/.*"
+      },
+      {
+        "pattern": "sun./font/.*"
       }
     ]
   }

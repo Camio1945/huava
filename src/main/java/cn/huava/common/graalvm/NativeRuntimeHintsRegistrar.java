@@ -7,6 +7,7 @@ import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
+import org.springframework.aot.hint.TypeReference;
 import tools.jackson.databind.ser.std.ToStringSerializer;
 
 import java.awt.*;
@@ -28,6 +29,18 @@ public class NativeRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
   public void registerHints(@NonNull RuntimeHints hints, ClassLoader classLoader) {
     registerResources(hints);
     registerClasses(hints);
+    // Register the classes for JNI access (Native Methods)
+    // This replaces the non-existent 'onSafe' approach
+    hints.jni().registerType(TypeReference.of("sun.font.StrikeCache"),
+      MemberCategory.INVOKE_DECLARED_METHODS
+    );
+
+    hints.jni().registerType(TypeReference.of("sun.font.PhysicalStrike"),
+      MemberCategory.INVOKE_DECLARED_METHODS);
+
+    // Also register the concrete implementation that often causes issues
+    hints.jni().registerType(TypeReference.of("sun.font.FileStrike"),
+      MemberCategory.INVOKE_DECLARED_METHODS);
   }
 
   protected void registerResources(@NonNull RuntimeHints hints) {
@@ -56,22 +69,23 @@ public class NativeRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
 
   protected void addAwtClasses(Set<Class<?>> classes) {
     Set<Class<?>> awtClasses =
-        new HashSet<>(
-            Set.of(
-                GraphicsEnvironment.class,
-                Toolkit.class,
-                Font.class,
-                java.awt.image.BufferedImage.class,
-                java.awt.Color.class,
-                java.awt.BasicStroke.class,
-                java.awt.RenderingHints.class,
-                java.awt.image.ColorModel.class,
-                java.awt.image.ComponentColorModel.class,
-                java.awt.image.DirectColorModel.class,
-                java.awt.image.IndexColorModel.class,
-                java.awt.image.Raster.class,
-                java.awt.image.SampleModel.class,
-                java.awt.image.SinglePixelPackedSampleModel.class));
+      new HashSet<>(
+        Set.of(
+          GraphicsEnvironment.class,
+          Toolkit.class,
+          Font.class,
+          java.awt.image.BufferedImage.class,
+          java.awt.Color.class,
+          java.awt.BasicStroke.class,
+          java.awt.RenderingHints.class,
+          java.awt.image.ColorModel.class,
+          java.awt.image.ComponentColorModel.class,
+          java.awt.image.DirectColorModel.class,
+          java.awt.image.IndexColorModel.class,
+          java.awt.image.Raster.class,
+          java.awt.image.SampleModel.class,
+          java.awt.image.SinglePixelPackedSampleModel.class
+        ));
     try {
       awtClasses.add(Class.forName("sun.awt.X11.XToolkit"));
       awtClasses.add(Class.forName("sun.java2d.InvalidPipeException"));
@@ -81,6 +95,8 @@ public class NativeRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
       awtClasses.add(Class.forName("sun.java2d.loops.FillRect"));
       awtClasses.add(Class.forName("sun.java2d.loops.FillSpans"));
       awtClasses.add(Class.forName("sun.java2d.loops.FillParallelogram"));
+//      awtClasses.add(Class.forName("sun.font.StrikeCache"));
+//      awtClasses.add(Class.forName("sun.font.PhysicalStrike"));
     } catch (ClassNotFoundException e) {
       // do nothing
     }

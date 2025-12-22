@@ -1,0 +1,17 @@
+- I need to compile this project to a native image.
+- I want all methods work in native image. This time, let's focus on the CaptchaController.
+- Don't change the code in src/main/java/cn/huava/common/controller/CaptchaController.java.
+- Use this command to generate native image:
+  ./mvnw -Pnative clean native:compile -DskipTests
+- Use this command to kill the native image process:
+  pkill -9 huava
+- Use this command to run native image:
+  nohup ./target/huava --server.port=34567 > huava.log 2>&1 &
+- Use this command to check the url:
+  curl http://localhost:34567/captcha
+- If the huava.log shows some error about java.lang.NoClassDefFoundError, add that class to the jni-config.json file.
+- If the huava.log shows some error about java.lang.NoSuchMethodError, add that method to the jni-config.json file.
+- If the huava.log shows some error about java.lang.NoSuchFieldError, add that field to the jni-config.json file.
+- Since a class's constructor is called when a class is loaded, when adding the class in the jni-config.json file, you may need to add the constructor method of the class to the jni-config.json file too.
+- All the public static final fields in the class should be added to the jni-config.json file.
+- Do the compile -> pkill -> run -> check -> edit -> compile loop until you get the correct result.

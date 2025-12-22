@@ -1461,11 +1461,18 @@
     "methods": [
       {
         "name": "readBlock",
-        "parameterTypes": ["java.nio.ByteBuffer", "int", "int"]
+        "parameterTypes": [
+          "java.nio.ByteBuffer",
+          "int",
+          "int"
+        ]
       },
       {
         "name": "readBytes",
-        "parameterTypes": ["int", "int"]
+        "parameterTypes": [
+          "int",
+          "int"
+        ]
       }
     ]
   },
@@ -1474,7 +1481,9 @@
     "methods": [
       {
         "name": "readFile",
-        "parameterTypes": ["java.nio.ByteBuffer"]
+        "parameterTypes": [
+          "java.nio.ByteBuffer"
+        ]
       }
     ]
   },
@@ -1491,7 +1500,10 @@
     "methods": [
       {
         "name": "<init>",
-        "parameterTypes": ["float", "float"]
+        "parameterTypes": [
+          "float",
+          "float"
+        ]
       }
     ]
   },
@@ -1500,7 +1512,18 @@
     "methods": [
       {
         "name": "<init>",
-        "parameterTypes": ["float", "float", "float", "float", "float", "float", "float", "float", "float", "float"]
+        "parameterTypes": [
+          "float",
+          "float",
+          "float",
+          "float",
+          "float",
+          "float",
+          "float",
+          "float",
+          "float",
+          "float"
+        ]
       }
     ]
   },
@@ -1527,7 +1550,12 @@
       },
       {
         "name": "<init>",
-        "parameterTypes": ["float", "float", "float", "float"]
+        "parameterTypes": [
+          "float",
+          "float",
+          "float",
+          "float"
+        ]
       }
     ]
   },
@@ -1540,7 +1568,13 @@
       },
       {
         "name": "<init>",
-        "parameterTypes": ["int", "[B", "int", "[F", "int"]
+        "parameterTypes": [
+          "int",
+          "[B",
+          "int",
+          "[F",
+          "int"
+        ]
       }
     ]
   },
@@ -1549,11 +1583,16 @@
     "methods": [
       {
         "name": "charToGlyphRaw",
-        "parameterTypes": ["int"]
+        "parameterTypes": [
+          "int"
+        ]
       },
       {
         "name": "charToVariationGlyphRaw",
-        "parameterTypes": ["int", "int"]
+        "parameterTypes": [
+          "int",
+          "int"
+        ]
       },
       {
         "name": "getMapper",
@@ -1561,11 +1600,15 @@
       },
       {
         "name": "getTableBytes",
-        "parameterTypes": ["int"]
+        "parameterTypes": [
+          "int"
+        ]
       },
       {
         "name": "canDisplay",
-        "parameterTypes": ["char"]
+        "parameterTypes": [
+          "char"
+        ]
       }
     ]
   },
@@ -1583,7 +1626,9 @@
     "methods": [
       {
         "name": "getMetrics",
-        "parameterTypes": ["sun.font.Font2D"]
+        "parameterTypes": [
+          "sun.font.Font2D"
+        ]
       }
     ]
   },
@@ -1592,7 +1637,9 @@
     "methods": [
       {
         "name": "charToGlyph",
-        "parameterTypes": ["int"]
+        "parameterTypes": [
+          "int"
+        ]
       }
     ]
   },
@@ -1601,10 +1648,64 @@
     "methods": [
       {
         "name": "getGlyphMetrics",
-        "parameterTypes": ["int"]
+        "parameterTypes": [
+          "int"
+        ],
+        "returnType": "java.awt.geom.Point2D$Float"
       },
       {
         "name": "getFontMetrics",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "sun.font.FileStrike",
+    "methods": [
+      {
+        "name": "getGlyphMetrics",
+        "parameterTypes": [
+          "int"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.font.StrikeCache",
+    "methods": [
+      {
+        "name": "getInvisibleGlyphPtr",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "sun.font.DelegateStrike",
+    "methods": [
+      {
+        "name": "getGlyphMetrics",
+        "parameterTypes": [
+          "int"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.font.NativeStrike",
+    "methods": [
+      {
+        "name": "getGlyphMetrics",
+        "parameterTypes": [
+          "int"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "sun.font.SunFontManager",
+    "methods": [
+      {
+        "name": "initIDs",
         "parameterTypes": []
       }
     ]
@@ -1614,7 +1715,10 @@
     "methods": [
       {
         "name": "getPoint",
-        "parameterTypes": ["int", "java.awt.geom.Point2D$Float"]
+        "parameterTypes": [
+          "int",
+          "java.awt.geom.Point2D$Float"
+        ]
       }
     ]
   },
@@ -1640,7 +1744,10 @@
     "methods": [
       {
         "name": "<init>",
-        "parameterTypes": ["float", "float"]
+        "parameterTypes": [
+          "float",
+          "float"
+        ]
       },
       {
         "name": "getX",

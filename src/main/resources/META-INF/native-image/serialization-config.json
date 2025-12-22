@@ -9,6 +9,9 @@
     },
     {
       "name": "cn.huava.common.graalvm.NativeRuntimeHintsRegistrar"
+    },
+    {
+      "name": "sun.font.PhysicalStrike"
     }
   ]
 }
