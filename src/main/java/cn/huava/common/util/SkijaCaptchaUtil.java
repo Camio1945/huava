@@ -6,8 +6,6 @@ import io.github.humbleui.types.Rect;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.Random;
 
 /**
@@ -17,155 +15,195 @@ import java.util.Random;
  * @since 2025-12-23
  */
 public class SkijaCaptchaUtil {
-    
-    private static final String CHARACTERS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-    private static final Random RANDOM = new Random();
-    
-    public static class CaptchaResult {
-        private final String code;
-        private final BufferedImage image;
-        
-        public CaptchaResult(String code, BufferedImage image) {
-            this.code = code;
-            this.image = image;
-        }
-        
-        public String getCode() {
-            return code;
-        }
-        
-        public BufferedImage getImage() {
-            return image;
-        }
-    }
-    
-    /**
-     * Generate a captcha with specified dimensions
-     * @param width Width of the captcha image
-     * @param height Height of the captcha image
-     * @param codeLength Length of the captcha code
-     * @return CaptchaResult containing the code and image
-     */
-    public static CaptchaResult generateCaptcha(int width, int height, int codeLength) {
-        String code = generateRandomCode(codeLength);
-        
-        // Create Skija surface
-        Surface surface = Surface.makeRasterN32Premul(width, height);
-        Canvas canvas = surface.getCanvas();
-        
-        // Fill background
-        canvas.clear(0xFFFFFFFF);
-        
-        // Draw random lines
-        drawRandomLines(canvas, width, height);
-        
-        // Draw text
-        drawText(canvas, code, width, height);
-        
-        // Get the image as BufferedImage
-        Image skijaImage = surface.makeImageSnapshot();
+  private static final String CHARACTERS = "ABCDEFGHIJKLMNPQRSTUVWXYZabcdefghijklmnpqrstuvwxyz0123456789";
+  private static final Random RANDOM = new Random();
+
+  private SkijaCaptchaUtil() {
+  }
+
+  /**
+   * Generate a captcha with specified dimensions
+   *
+   * @param width      Width of the captcha image
+   * @param height     Height of the captcha image
+   * @param codeLength Length of the captcha code
+   * @return CaptchaResult containing the code and image
+   */
+  public static CaptchaResult generateCaptcha(int width, int height, int codeLength) {
+    String code = generateRandomCode(codeLength);
+
+    // Create Skija surface and image within try-with-resources
+    ImageInfo imageInfo = ImageInfo.makeN32Premul(width, height);
+    try (Surface surface = Surface.makeRaster(imageInfo)) {
+      Canvas canvas = surface.getCanvas();
+
+      // Fill background with a slight off-white color
+      canvas.clear(0xFFF5F5F5);
+
+      // Add background noise
+      addBackgroundNoise(canvas, width, height);
+
+      // Draw random lines
+      drawRandomLines(canvas, width, height);
+
+      // Draw text
+      drawText(canvas, code, width, height);
+
+      // Get the image as BufferedImage
+      try (Image skijaImage = surface.makeImageSnapshot()) {
         BufferedImage bufferedImage = skijaToBufferedImage(skijaImage, width, height);
-        
-        surface.close();
-        skijaImage.close();
-        
         return new CaptchaResult(code, bufferedImage);
+      }
     }
-    
-    private static String generateRandomCode(int length) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < length; i++) {
-            sb.append(CHARACTERS.charAt(RANDOM.nextInt(CHARACTERS.length())));
-        }
-        return sb.toString();
+  }
+
+  private static String generateRandomCode(int length) {
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < length; i++) {
+      sb.append(CHARACTERS.charAt(RANDOM.nextInt(CHARACTERS.length())));
     }
-    
-    private static void drawRandomLines(Canvas canvas, int width, int height) {
-        Paint paint = new Paint();
-        paint.setAntiAlias(true);
-        
-        for (int i = 0; i < 8; i++) {
-            paint.setColor(Color.makeRGB(RANDOM.nextInt(150), RANDOM.nextInt(150), RANDOM.nextInt(150)));
-            float startX = RANDOM.nextInt(width);
-            float startY = RANDOM.nextInt(height);
-            float endX = RANDOM.nextInt(width);
-            float endY = RANDOM.nextInt(height);
-            canvas.drawLine(startX, startY, endX, endY, paint);
-        }
-        
-        paint.close();
+    return sb.toString();
+  }
+
+  private static void addBackgroundNoise(Canvas canvas, int width, int height) {
+    try (Paint paint = new Paint()) {
+      // Add random noise dots
+      // Adjust density as needed
+      for (int i = 0; i < width * height / 10; i++) {
+        int x = RANDOM.nextInt(width);
+        int y = RANDOM.nextInt(height);
+        // Light gray dots
+        int grayValue = RANDOM.nextInt(50) + 200;
+        paint.setColor(Color.makeRGB(grayValue, grayValue, grayValue));
+        canvas.drawPoint(x, y, paint);
+      }
     }
-    
-    private static void drawText(Canvas canvas, String text, int width, int height) {
-        Paint paint = new Paint();
-        paint.setAntiAlias(true);
-        
-        // Set up font
-        Font font = new Font(Typeface.makeDefault(), height * 0.7f);
-        
+  }
+
+  private static void drawRandomLines(Canvas canvas, int width, int height) {
+    try (Paint paint = new Paint()) {
+      paint.setAntiAlias(true);
+
+      // Draw more random lines for interference
+      for (int i = 0; i < 15; i++) {
+        paint.setColor(Color.makeRGB(RANDOM.nextInt(150), RANDOM.nextInt(150), RANDOM.nextInt(150)));
+        float startX = RANDOM.nextInt(width);
+        float startY = RANDOM.nextInt(height);
+        float endX = RANDOM.nextInt(width);
+        float endY = RANDOM.nextInt(height);
+        canvas.drawLine(startX, startY, endX, endY, paint);
+      }
+
+      // Add some random circles for additional noise
+      for (int i = 0; i < 10; i++) {
+        paint.setColor(Color.makeRGB(RANDOM.nextInt(150), RANDOM.nextInt(150), RANDOM.nextInt(150)));
+        float centerX = RANDOM.nextInt(width);
+        float centerY = RANDOM.nextInt(height);
+        float radius = RANDOM.nextInt(8) + 2;
+        canvas.drawCircle(centerX, centerY, radius, paint);
+      }
+
+      // Add some random rectangles for additional noise
+      for (int i = 0; i < 8; i++) {
+        paint.setColor(Color.makeRGB(RANDOM.nextInt(150), RANDOM.nextInt(150), RANDOM.nextInt(150)));
+        float x = RANDOM.nextInt(width);
+        float y = RANDOM.nextInt(height);
+        float rectWidth = RANDOM.nextInt(20) + 5;
+        float rectHeight = RANDOM.nextInt(10) + 3;
+        canvas.drawRect(Rect.makeXYWH(x, y, rectWidth, rectHeight), paint);
+      }
+    }
+  }
+
+  private static void drawText(Canvas canvas, String text, int width, int height) {
+    try (Paint paint = new Paint()) {
+      paint.setAntiAlias(true);
+
+      // Set up font
+      try (Font font = new Font(Typeface.makeDefault(), height * 0.7f)) {
+
         // Draw each character with random rotation and position
         float charWidth = width / (float) text.length();
         for (int i = 0; i < text.length(); i++) {
-            char c = text.charAt(i);
-            String charStr = String.valueOf(c);
-            
-            // Random color for each character
-            paint.setColor(Color.makeRGB(RANDOM.nextInt(100), RANDOM.nextInt(100), RANDOM.nextInt(100)));
-            
-            // Calculate position with some randomness
-            float x = i * charWidth + (charWidth - getTextWidth(font, charStr)) / 2 + RANDOM.nextInt(5) - 2;
-            float y = height / 2f + (getTextHeight(font) / 2f) - 5 + RANDOM.nextInt(5) - 2;
-            
-            // Apply random rotation
-            canvas.save();
-            canvas.translate(x, y);
-            canvas.rotate(RANDOM.nextInt(20) - 10);
-            canvas.drawString(charStr, 0, 0, font, paint);
-            canvas.restore();
-        }
-        
-        paint.close();
-        font.close();
-    }
-    
-    private static float getTextWidth(Font font, String text) {
-        Rect bounds = font.measureText(text);
-        return bounds != null ? bounds.getWidth() : 0;
-    }
-    
-    private static float getTextHeight(Font font) {
-        FontMetrics metrics = font.getMetrics();
-        return metrics.getCapHeight();
-    }
-    
-    private static BufferedImage skijaToBufferedImage(Image image, int width, int height) {
-        // Create a surface to render the image to
-        try (Surface surface = Surface.makeRasterN32Premul(width, height)) {
-            Canvas canvas = surface.getCanvas();
-            // Draw the image to the surface
-            canvas.drawImage(image, 0, 0);
+          char c = text.charAt(i);
+          String charStr = String.valueOf(c);
 
-            // Encode the surface to PNG data
-            try (Data data = surface.makeImageSnapshot().encodeToData()) {
-                if (data != null) {
-                    // Convert the Skija data to a byte array
-                    byte[] bytes = data.getBytes();
-                    if (bytes != null) {
-                        // Read the byte array as an image using ImageIO
-                        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes)) {
-                            return ImageIO.read(inputStream);
-                        } catch (Exception e) {
-                            // If reading fails, return an empty BufferedImage
-                            System.err.println("Error reading captcha image: " + e.getMessage());
-                        }
-                    }
-                }
+          // Random color for each character
+          paint.setColor(Color.makeRGB(RANDOM.nextInt(100), RANDOM.nextInt(100), RANDOM.nextInt(100)));
+
+          // Calculate position with more randomness
+          float x = i * charWidth + (charWidth - getTextWidth(font, charStr)) / 2 + RANDOM.nextInt(10) - 5;
+          float y = height / 2f + (getTextHeight(font) / 2f) - 5 + RANDOM.nextInt(10) - 5;
+
+          // Apply more complex transformation - rotation and scaling
+          canvas.save();
+          canvas.translate(x, y);
+
+          // More extreme rotation
+          float rotation = RANDOM.nextInt(30) - 15;
+          canvas.rotate(rotation);
+
+          // Add slight scaling variation
+          // Scale between 0.8 and 1.2
+          float scaleX = 0.8f + RANDOM.nextFloat() * 0.4f;
+          float scaleY = 0.8f + RANDOM.nextFloat() * 0.4f;
+          canvas.scale(scaleX, scaleY);
+
+          // Add wave distortion effect
+          float waveOffset = (float) Math.sin(i) * 5;
+          canvas.translate(0, waveOffset);
+
+          canvas.drawString(charStr, 0, 0, font, paint);
+          canvas.restore();
+        }
+      }
+    }
+  }
+
+  private static BufferedImage skijaToBufferedImage(Image image, int width, int height) {
+    // Create a surface to render the image to
+    ImageInfo imageInfo = ImageInfo.makeN32Premul(width, height);
+    try (Surface surface = Surface.makeRaster(imageInfo)) {
+      Canvas canvas = surface.getCanvas();
+      // Draw the image to the surface
+      canvas.drawImage(image, 0, 0);
+
+      // Encode the surface to PNG data
+      try (Image snapshot = surface.makeImageSnapshot()) {
+        // Try using the encoder static method - this is the correct approach for Skija 0.116.5
+        Data data = EncoderPNG.encode(snapshot);
+        if (data != null) {
+          // Convert the Skija data to a byte array
+          byte[] bytes = data.getBytes();
+          if (bytes != null) {
+            // Read the byte array as an image using ImageIO
+            try (ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes)) {
+              return ImageIO.read(inputStream);
+            } catch (Exception e) {
+              // If reading fails, return an empty BufferedImage
+              System.err.println("Error reading captcha image: " + e.getMessage());
             }
-        } catch (Exception e) {
-            System.err.println("Error converting Skija image to BufferedImage: " + e.getMessage());
+          }
         }
-
-        // Fallback: return empty image if conversion fails
-        return new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+      }
+    } catch (Exception e) {
+      System.err.println("Error converting Skija image to BufferedImage: " + e.getMessage());
     }
+
+    // Fallback: return empty image if conversion fails
+    return new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+  }
+
+  private static float getTextWidth(Font font, String text) {
+    Rect bounds = font.measureText(text);
+    return bounds != null ? bounds.getWidth() : 0;
+  }
+
+  private static float getTextHeight(Font font) {
+    FontMetrics metrics = font.getMetrics();
+    return metrics.getCapHeight();
+  }
+
+  public record CaptchaResult(String code, BufferedImage image) {
+  }
 }

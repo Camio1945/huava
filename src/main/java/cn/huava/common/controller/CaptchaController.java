@@ -24,10 +24,10 @@ public class CaptchaController {
     SkijaCaptchaUtil.CaptchaResult captcha = SkijaCaptchaUtil.generateCaptcha(160, 60, 5);
 
     // Save code to session
-    request.getSession().setAttribute("captcha", captcha.getCode());
+    request.getSession().setAttribute("captcha", captcha.code());
 
     // Output image
     response.setContentType("image/png");
-    ImageIO.write(captcha.getImage(), "png", response.getOutputStream());
+    ImageIO.write(captcha.image(), "png", response.getOutputStream());
   }
 }
