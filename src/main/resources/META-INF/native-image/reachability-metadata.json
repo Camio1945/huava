@@ -62,69 +62,6 @@
       ]
     },
     {
-      "type": "cn.huava.common.graalvm.NativeRuntimeHintsRegistrar"
-    },
-    {
-      "type": "cn.huava.common.graalvm.RuntimeHintsRegistrarConfig",
-      "methods": [
-        {
-          "name": "myBatisBeanFactoryInitializationAotProcessor",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
-      "type": "cn.huava.common.graalvm.RuntimeHintsRegistrarConfig$$SpringCGLIB$$0",
-      "fields": [
-        {
-          "name": "$$beanFactory"
-        },
-        {
-          "name": "CGLIB$CALLBACK_FILTER"
-        },
-        {
-          "name": "CGLIB$FACTORY_DATA"
-        }
-      ],
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": []
-        },
-        {
-          "name": "CGLIB$SET_STATIC_CALLBACKS",
-          "parameterTypes": [
-            "org.springframework.cglib.proxy.Callback[]"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "cn.huava.common.graalvm.RuntimeHintsRegistrarConfig$$SpringCGLIB$$FastClass$$0",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "java.lang.Class"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "cn.huava.common.graalvm.RuntimeHintsRegistrarConfig$$SpringCGLIB$$FastClass$$1",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "java.lang.Class"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "cn.huava.common.graalvm.RuntimeHintsRegistrarConfig$MyBatisBeanFactoryInitializationAotProcessor"
-    },
-    {
       "type": "cn.hutool.v7.extra.spring.SpringUtil",
       "methods": [
         {
@@ -159,6 +96,756 @@
     },
     {
       "type": "int[]"
+    },
+    {
+      "type": "io.github.humbleui.skija.AnimationFrameInfo",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "int",
+            "int",
+            "boolean",
+            "int",
+            "boolean",
+            "int",
+            "int",
+            "io.github.humbleui.types.IRect"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.humbleui.skija.Color4f",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "float",
+            "float",
+            "float",
+            "float"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.humbleui.skija.Drawable",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "_onDraw",
+          "parameterTypes": [
+            "long"
+          ]
+        },
+        {
+          "name": "onGetBounds",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "io.github.humbleui.skija.FontFamilyName",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "java.lang.String",
+            "java.lang.String"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.humbleui.skija.FontFeature",
+      "jniAccessible": true,
+      "fields": [
+        {
+          "name": "_end"
+        },
+        {
+          "name": "_start"
+        },
+        {
+          "name": "_tag"
+        },
+        {
+          "name": "_value"
+        }
+      ],
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "java.lang.String",
+            "int"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.humbleui.skija.FontMetrics",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "float",
+            "float",
+            "float",
+            "float",
+            "float",
+            "float",
+            "float",
+            "float",
+            "float",
+            "float",
+            "float",
+            "java.lang.Float",
+            "java.lang.Float",
+            "java.lang.Float",
+            "java.lang.Float"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.humbleui.skija.FontMgr",
+      "jniAccessible": true
+    },
+    {
+      "type": "io.github.humbleui.skija.FontVariation",
+      "jniAccessible": true,
+      "fields": [
+        {
+          "name": "_tag"
+        },
+        {
+          "name": "_value"
+        }
+      ],
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "int",
+            "float"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.humbleui.skija.FontVariationAxis",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "int",
+            "float",
+            "float",
+            "float",
+            "boolean"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.humbleui.skija.ImageInfo",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "int",
+            "int",
+            "int",
+            "int",
+            "long"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.humbleui.skija.PaintFilterCanvas",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "onFilter",
+          "parameterTypes": [
+            "long"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.humbleui.skija.Path",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.humbleui.skija.PathSegment",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "float",
+            "float",
+            "float",
+            "float",
+            "float",
+            "float",
+            "float",
+            "float",
+            "boolean"
+          ]
+        },
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "float",
+            "float",
+            "float",
+            "float",
+            "float",
+            "float",
+            "float",
+            "boolean"
+          ]
+        },
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "float",
+            "float",
+            "float",
+            "float",
+            "float",
+            "float",
+            "boolean"
+          ]
+        },
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "float",
+            "float",
+            "float",
+            "float",
+            "boolean",
+            "boolean"
+          ]
+        },
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "int",
+            "float",
+            "float",
+            "boolean"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.humbleui.skija.RSXform",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "float",
+            "float",
+            "float",
+            "float"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.humbleui.skija.SurfaceProps",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "boolean",
+            "int"
+          ]
+        },
+        {
+          "name": "_getFlags",
+          "parameterTypes": []
+        },
+        {
+          "name": "_getPixelGeometryOrdinal",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "io.github.humbleui.skija.impl.Native",
+      "jniAccessible": true,
+      "fields": [
+        {
+          "name": "_ptr"
+        }
+      ]
+    },
+    {
+      "type": "io.github.humbleui.skija.paragraph.DecorationStyle",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "boolean",
+            "boolean",
+            "boolean",
+            "boolean",
+            "int",
+            "int",
+            "float"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.humbleui.skija.paragraph.LineMetrics",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "long",
+            "long",
+            "long",
+            "boolean",
+            "double",
+            "double",
+            "double",
+            "double",
+            "double",
+            "double",
+            "double",
+            "long"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.humbleui.skija.paragraph.Shadow",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "int",
+            "float",
+            "float",
+            "double"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.humbleui.skija.paragraph.TextBox",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "float",
+            "float",
+            "float",
+            "float",
+            "int"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.humbleui.skija.shaper.BidiRun",
+      "jniAccessible": true,
+      "fields": [
+        {
+          "name": "_end"
+        },
+        {
+          "name": "_level"
+        }
+      ]
+    },
+    {
+      "type": "io.github.humbleui.skija.shaper.FontMgrRunIterator",
+      "jniAccessible": true
+    },
+    {
+      "type": "io.github.humbleui.skija.shaper.FontRun",
+      "jniAccessible": true,
+      "fields": [
+        {
+          "name": "_end"
+        }
+      ],
+      "methods": [
+        {
+          "name": "_getFontPtr",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "io.github.humbleui.skija.shaper.HbIcuScriptRunIterator",
+      "jniAccessible": true
+    },
+    {
+      "type": "io.github.humbleui.skija.shaper.IcuBidiRunIterator",
+      "jniAccessible": true
+    },
+    {
+      "type": "io.github.humbleui.skija.shaper.LanguageRun",
+      "jniAccessible": true,
+      "fields": [
+        {
+          "name": "_end"
+        },
+        {
+          "name": "_language"
+        }
+      ]
+    },
+    {
+      "type": "io.github.humbleui.skija.shaper.RunHandler",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "beginLine",
+          "parameterTypes": []
+        },
+        {
+          "name": "commitLine",
+          "parameterTypes": []
+        },
+        {
+          "name": "commitRun",
+          "parameterTypes": [
+            "io.github.humbleui.skija.shaper.RunInfo",
+            "short[]",
+            "io.github.humbleui.types.Point[]",
+            "int[]"
+          ]
+        },
+        {
+          "name": "commitRunInfo",
+          "parameterTypes": []
+        },
+        {
+          "name": "runInfo",
+          "parameterTypes": [
+            "io.github.humbleui.skija.shaper.RunInfo"
+          ]
+        },
+        {
+          "name": "runOffset",
+          "parameterTypes": [
+            "io.github.humbleui.skija.shaper.RunInfo"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.humbleui.skija.shaper.RunInfo",
+      "jniAccessible": true,
+      "fields": [
+        {
+          "name": "_fontPtr"
+        }
+      ],
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long",
+            "int",
+            "float",
+            "float",
+            "long",
+            "int",
+            "int"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.humbleui.skija.shaper.ScriptRun",
+      "jniAccessible": true,
+      "fields": [
+        {
+          "name": "_end"
+        },
+        {
+          "name": "_scriptTag"
+        }
+      ]
+    },
+    {
+      "type": "io.github.humbleui.skija.shaper.ShapingOptions",
+      "jniAccessible": true,
+      "fields": [
+        {
+          "name": "_approximatePunctuation"
+        },
+        {
+          "name": "_approximateSpaces"
+        },
+        {
+          "name": "_features"
+        },
+        {
+          "name": "_fontMgr"
+        },
+        {
+          "name": "_leftToRight"
+        }
+      ]
+    },
+    {
+      "type": "io.github.humbleui.skija.shaper.TextBlobBuilderRunHandler",
+      "jniAccessible": true
+    },
+    {
+      "type": "io.github.humbleui.skija.shaper.TextLineRunHandler",
+      "jniAccessible": true
+    },
+    {
+      "type": "io.github.humbleui.skija.skottie.LogLevel",
+      "jniAccessible": true,
+      "fields": [
+        {
+          "name": "ERROR"
+        },
+        {
+          "name": "WARNING"
+        }
+      ]
+    },
+    {
+      "type": "io.github.humbleui.skija.skottie.Logger",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "log",
+          "parameterTypes": [
+            "io.github.humbleui.skija.skottie.LogLevel",
+            "java.lang.String",
+            "java.lang.String"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.humbleui.skija.svg.SVGLength",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "float",
+            "int"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.humbleui.skija.svg.SVGPreserveAspectRatio",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "int",
+            "int"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.humbleui.types.IPoint",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "int",
+            "int"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.humbleui.types.IRect",
+      "jniAccessible": true,
+      "fields": [
+        {
+          "name": "_bottom"
+        },
+        {
+          "name": "_left"
+        },
+        {
+          "name": "_right"
+        },
+        {
+          "name": "_top"
+        }
+      ],
+      "methods": [
+        {
+          "name": "makeLTRB",
+          "parameterTypes": [
+            "int",
+            "int",
+            "int",
+            "int"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.humbleui.types.Point",
+      "jniAccessible": true,
+      "fields": [
+        {
+          "name": "_x"
+        },
+        {
+          "name": "_y"
+        }
+      ],
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "float",
+            "float"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.humbleui.types.RRect",
+      "jniAccessible": true,
+      "fields": [
+        {
+          "name": "_radii"
+        }
+      ],
+      "methods": [
+        {
+          "name": "makeComplexLTRB",
+          "parameterTypes": [
+            "float",
+            "float",
+            "float",
+            "float",
+            "float[]"
+          ]
+        },
+        {
+          "name": "makeLTRB",
+          "parameterTypes": [
+            "float",
+            "float",
+            "float",
+            "float",
+            "float"
+          ]
+        },
+        {
+          "name": "makeLTRB",
+          "parameterTypes": [
+            "float",
+            "float",
+            "float",
+            "float",
+            "float",
+            "float"
+          ]
+        },
+        {
+          "name": "makeLTRB",
+          "parameterTypes": [
+            "float",
+            "float",
+            "float",
+            "float",
+            "float",
+            "float",
+            "float",
+            "float"
+          ]
+        },
+        {
+          "name": "makeNinePatchLTRB",
+          "parameterTypes": [
+            "float",
+            "float",
+            "float",
+            "float",
+            "float",
+            "float",
+            "float",
+            "float"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.humbleui.types.Rect",
+      "jniAccessible": true,
+      "fields": [
+        {
+          "name": "_bottom"
+        },
+        {
+          "name": "_left"
+        },
+        {
+          "name": "_right"
+        },
+        {
+          "name": "_top"
+        }
+      ],
+      "methods": [
+        {
+          "name": "makeLTRB",
+          "parameterTypes": [
+            "float",
+            "float",
+            "float",
+            "float"
+          ]
+        }
+      ]
     },
     {
       "type": "io.micrometer.context.ContextSnapshot"
@@ -260,156 +947,12 @@
       "type": "jakarta.xml.ws.WebServiceRef"
     },
     {
-      "type": "java.awt.AlphaComposite",
-      "jniAccessible": true,
-      "fields": [
-        {
-          "name": "extraAlpha"
-        },
-        {
-          "name": "rule"
-        }
-      ]
-    },
-    {
-      "type": "java.awt.Color",
-      "jniAccessible": true,
-      "methods": [
-        {
-          "name": "getRGB",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
       "type": "java.awt.GraphicsEnvironment",
       "jniAccessible": true,
       "methods": [
         {
           "name": "isHeadless",
           "parameterTypes": []
-        }
-      ]
-    },
-    {
-      "type": "java.awt.geom.AffineTransform",
-      "jniAccessible": true,
-      "fields": [
-        {
-          "name": "m00"
-        },
-        {
-          "name": "m01"
-        },
-        {
-          "name": "m02"
-        },
-        {
-          "name": "m10"
-        },
-        {
-          "name": "m11"
-        },
-        {
-          "name": "m12"
-        }
-      ]
-    },
-    {
-      "type": "java.awt.geom.GeneralPath",
-      "jniAccessible": true,
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": []
-        },
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "int",
-            "byte[]",
-            "int",
-            "float[]",
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "java.awt.geom.Path2D",
-      "jniAccessible": true,
-      "fields": [
-        {
-          "name": "numTypes"
-        },
-        {
-          "name": "pointTypes"
-        },
-        {
-          "name": "windingRule"
-        }
-      ]
-    },
-    {
-      "type": "java.awt.geom.Path2D$Float",
-      "jniAccessible": true,
-      "fields": [
-        {
-          "name": "floatCoords"
-        }
-      ]
-    },
-    {
-      "type": "java.awt.geom.Point2D$Float",
-      "jniAccessible": true,
-      "fields": [
-        {
-          "name": "x"
-        },
-        {
-          "name": "y"
-        }
-      ],
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "float",
-            "float"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "java.awt.geom.Rectangle2D$Float",
-      "jniAccessible": true,
-      "fields": [
-        {
-          "name": "height"
-        },
-        {
-          "name": "width"
-        },
-        {
-          "name": "x"
-        },
-        {
-          "name": "y"
-        }
-      ],
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": []
-        },
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "float",
-            "float",
-            "float",
-            "float"
-          ]
         }
       ]
     },
@@ -487,27 +1030,6 @@
         {
           "name": "getRGBdefault",
           "parameterTypes": []
-        }
-      ]
-    },
-    {
-      "type": "java.awt.image.IndexColorModel",
-      "jniAccessible": true,
-      "fields": [
-        {
-          "name": "allgrayopaque"
-        },
-        {
-          "name": "colorData"
-        },
-        {
-          "name": "map_size"
-        },
-        {
-          "name": "rgb"
-        },
-        {
-          "name": "transparent_index"
         }
       ]
     },
@@ -617,6 +1139,24 @@
       ]
     },
     {
+      "type": "java.io.OutputStream",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "flush",
+          "parameterTypes": []
+        },
+        {
+          "name": "write",
+          "parameterTypes": [
+            "byte[]",
+            "int",
+            "int"
+          ]
+        }
+      ]
+    },
+    {
       "type": "java.io.Serializable"
     },
     {
@@ -655,6 +1195,18 @@
       "type": "java.lang.Comparable[]"
     },
     {
+      "type": "java.lang.Float",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "float"
+          ]
+        }
+      ]
+    },
+    {
       "type": "java.lang.Module"
     },
     {
@@ -664,7 +1216,12 @@
       "type": "java.lang.Object[]"
     },
     {
-      "type": "java.lang.String"
+      "type": "java.lang.RuntimeException",
+      "jniAccessible": true
+    },
+    {
+      "type": "java.lang.String",
+      "jniAccessible": true
     },
     {
       "type": "java.lang.String[]"
@@ -686,6 +1243,16 @@
     },
     {
       "type": "java.lang.Thread$Builder"
+    },
+    {
+      "type": "java.lang.Throwable",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "printStackTrace",
+          "parameterTypes": []
+        }
+      ]
     },
     {
       "type": "java.lang.WrongThreadException"
@@ -752,13 +1319,45 @@
       "type": "java.sql.Date"
     },
     {
+      "type": "java.sql.DriverManager"
+    },
+    {
       "type": "java.sql.Timestamp"
     },
     {
       "type": "java.text.ListFormat"
     },
     {
+      "type": "java.util.ArrayList"
+    },
+    {
+      "type": "java.util.Enumeration"
+    },
+    {
+      "type": "java.util.HashSet"
+    },
+    {
+      "type": "java.util.Iterator",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "hasNext",
+          "parameterTypes": []
+        },
+        {
+          "name": "next",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "java.util.List"
+    },
+    {
       "type": "java.util.SequencedCollection"
+    },
+    {
+      "type": "java.util.Set"
     },
     {
       "type": "java.util.concurrent.Callable"
@@ -768,6 +1367,16 @@
     },
     {
       "type": "java.util.concurrent.ThreadFactory"
+    },
+    {
+      "type": "java.util.function.BooleanSupplier",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "getAsBoolean",
+          "parameterTypes": []
+        }
+      ]
     },
     {
       "type": "java.util.logging.LogManager"
@@ -834,6 +1443,19 @@
     },
     {
       "type": "org.apache.catalina.core.ApplicationContextFacade"
+    },
+    {
+      "type": "org.apache.catalina.loader.JdbcLeakPrevention",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "clearJdbcDriverRegistrations",
+          "parameterTypes": []
+        }
+      ]
     },
     {
       "type": "org.apache.catalina.startup.Tomcat"
@@ -1031,9 +1653,6 @@
       ]
     },
     {
-      "type": "org.springframework.aot.generate.Generated"
-    },
-    {
       "type": "org.springframework.aot.hint.annotation.Reflective"
     },
     {
@@ -1077,9 +1696,6 @@
     },
     {
       "type": "org.springframework.beans.factory.aot.BeanRegistrationAotProcessor"
-    },
-    {
-      "type": "org.springframework.beans.factory.aot.BeanRegistrationExcludeFilter"
     },
     {
       "type": "org.springframework.beans.factory.config.BeanFactoryPostProcessor"
@@ -3008,9 +3624,6 @@
       "type": "org.springframework.context.annotation.Configuration"
     },
     {
-      "type": "org.springframework.context.annotation.ConfigurationClassEnhancer$EnhancedConfiguration"
-    },
-    {
       "type": "org.springframework.context.annotation.ConfigurationClassPostProcessor",
       "methods": [
         {
@@ -3531,32 +4144,6 @@
       "type": "reactor.core.publisher.Flux"
     },
     {
-      "type": "sun.awt.SunHints",
-      "jniAccessible": true,
-      "fields": [
-        {
-          "name": "INTVAL_STROKE_PURE"
-        }
-      ]
-    },
-    {
-      "type": "sun.awt.image.BufImgSurfaceData$ICMColorData",
-      "jniAccessible": true,
-      "fields": [
-        {
-          "name": "pData"
-        }
-      ],
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "long"
-          ]
-        }
-      ]
-    },
-    {
       "type": "sun.awt.image.ByteComponentRaster",
       "jniAccessible": true,
       "fields": [
@@ -3578,214 +4165,6 @@
       ]
     },
     {
-      "type": "sun.awt.image.IntegerComponentRaster",
-      "jniAccessible": true,
-      "fields": [
-        {
-          "name": "data"
-        },
-        {
-          "name": "dataOffsets"
-        },
-        {
-          "name": "pixelStride"
-        },
-        {
-          "name": "scanlineStride"
-        },
-        {
-          "name": "type"
-        }
-      ]
-    },
-    {
-      "type": "sun.font.CharToGlyphMapper",
-      "jniAccessible": true,
-      "methods": [
-        {
-          "name": "charToGlyph",
-          "parameterTypes": [
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "sun.font.Font2D",
-      "jniAccessible": true,
-      "methods": [
-        {
-          "name": "canDisplay",
-          "parameterTypes": [
-            "char"
-          ]
-        },
-        {
-          "name": "charToGlyphRaw",
-          "parameterTypes": [
-            "int"
-          ]
-        },
-        {
-          "name": "charToVariationGlyphRaw",
-          "parameterTypes": [
-            "int",
-            "int"
-          ]
-        },
-        {
-          "name": "getMapper",
-          "parameterTypes": []
-        },
-        {
-          "name": "getTableBytes",
-          "parameterTypes": [
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "sun.font.FontStrike",
-      "jniAccessible": true,
-      "methods": [
-        {
-          "name": "getGlyphMetrics",
-          "parameterTypes": [
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "sun.font.FontUtilities",
-      "jniAccessible": true,
-      "methods": [
-        {
-          "name": "debugFonts",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
-      "type": "sun.font.FreetypeFontScaler",
-      "jniAccessible": true,
-      "methods": [
-        {
-          "name": "invalidateScaler",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
-      "type": "sun.font.GlyphList",
-      "jniAccessible": true,
-      "fields": [
-        {
-          "name": "gposx"
-        },
-        {
-          "name": "gposy"
-        },
-        {
-          "name": "images"
-        },
-        {
-          "name": "lcdRGBOrder"
-        },
-        {
-          "name": "lcdSubPixPos"
-        },
-        {
-          "name": "len"
-        },
-        {
-          "name": "positions"
-        },
-        {
-          "name": "usePositions"
-        }
-      ]
-    },
-    {
-      "type": "sun.font.PhysicalStrike",
-      "jniAccessible": true,
-      "fields": [
-        {
-          "name": "pScalerContext"
-        }
-      ],
-      "methods": [
-        {
-          "name": "adjustPoint",
-          "parameterTypes": [
-            "java.awt.geom.Point2D$Float"
-          ]
-        },
-        {
-          "name": "getGlyphPoint",
-          "parameterTypes": [
-            "int",
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "sun.font.StrikeMetrics",
-      "jniAccessible": true,
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "float",
-            "float",
-            "float",
-            "float",
-            "float",
-            "float",
-            "float",
-            "float",
-            "float",
-            "float"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "sun.font.TrueTypeFont",
-      "jniAccessible": true,
-      "methods": [
-        {
-          "name": "readBlock",
-          "parameterTypes": [
-            "java.nio.ByteBuffer",
-            "int",
-            "int"
-          ]
-        },
-        {
-          "name": "readBytes",
-          "parameterTypes": [
-            "int",
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "sun.font.Type1Font",
-      "jniAccessible": true,
-      "methods": [
-        {
-          "name": "readFile",
-          "parameterTypes": [
-            "java.nio.ByteBuffer"
-          ]
-        }
-      ]
-    },
-    {
       "type": "sun.java2d.Disposer",
       "jniAccessible": true,
       "methods": [
@@ -3796,527 +4175,6 @@
             "long",
             "long"
           ]
-        }
-      ]
-    },
-    {
-      "type": "sun.java2d.InvalidPipeException",
-      "jniAccessible": true
-    },
-    {
-      "type": "sun.java2d.NullSurfaceData",
-      "jniAccessible": true
-    },
-    {
-      "type": "sun.java2d.SunGraphics2D",
-      "jniAccessible": true,
-      "fields": [
-        {
-          "name": "clipRegion"
-        },
-        {
-          "name": "composite"
-        },
-        {
-          "name": "eargb"
-        },
-        {
-          "name": "lcdTextContrast"
-        },
-        {
-          "name": "pixel"
-        },
-        {
-          "name": "strokeHint"
-        }
-      ]
-    },
-    {
-      "type": "sun.java2d.SurfaceData",
-      "jniAccessible": true,
-      "fields": [
-        {
-          "name": "pData"
-        },
-        {
-          "name": "valid"
-        }
-      ]
-    },
-    {
-      "type": "sun.java2d.loops.Blit",
-      "jniAccessible": true,
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "sun.java2d.loops.SurfaceType",
-            "sun.java2d.loops.CompositeType",
-            "sun.java2d.loops.SurfaceType"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "sun.java2d.loops.BlitBg",
-      "jniAccessible": true,
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "sun.java2d.loops.SurfaceType",
-            "sun.java2d.loops.CompositeType",
-            "sun.java2d.loops.SurfaceType"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "sun.java2d.loops.CompositeType",
-      "jniAccessible": true,
-      "fields": [
-        {
-          "name": "AnyAlpha"
-        },
-        {
-          "name": "Src"
-        },
-        {
-          "name": "SrcNoEa"
-        },
-        {
-          "name": "SrcOver"
-        },
-        {
-          "name": "SrcOverNoEa"
-        },
-        {
-          "name": "Xor"
-        }
-      ]
-    },
-    {
-      "type": "sun.java2d.loops.DrawGlyphList",
-      "jniAccessible": true,
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "sun.java2d.loops.SurfaceType",
-            "sun.java2d.loops.CompositeType",
-            "sun.java2d.loops.SurfaceType"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "sun.java2d.loops.DrawGlyphListAA",
-      "jniAccessible": true,
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "sun.java2d.loops.SurfaceType",
-            "sun.java2d.loops.CompositeType",
-            "sun.java2d.loops.SurfaceType"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "sun.java2d.loops.DrawGlyphListLCD",
-      "jniAccessible": true,
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "sun.java2d.loops.SurfaceType",
-            "sun.java2d.loops.CompositeType",
-            "sun.java2d.loops.SurfaceType"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "sun.java2d.loops.DrawLine",
-      "jniAccessible": true,
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "sun.java2d.loops.SurfaceType",
-            "sun.java2d.loops.CompositeType",
-            "sun.java2d.loops.SurfaceType"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "sun.java2d.loops.DrawParallelogram",
-      "jniAccessible": true,
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "sun.java2d.loops.SurfaceType",
-            "sun.java2d.loops.CompositeType",
-            "sun.java2d.loops.SurfaceType"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "sun.java2d.loops.DrawPath",
-      "jniAccessible": true,
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "sun.java2d.loops.SurfaceType",
-            "sun.java2d.loops.CompositeType",
-            "sun.java2d.loops.SurfaceType"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "sun.java2d.loops.DrawPolygons",
-      "jniAccessible": true,
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "sun.java2d.loops.SurfaceType",
-            "sun.java2d.loops.CompositeType",
-            "sun.java2d.loops.SurfaceType"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "sun.java2d.loops.DrawRect",
-      "jniAccessible": true,
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "sun.java2d.loops.SurfaceType",
-            "sun.java2d.loops.CompositeType",
-            "sun.java2d.loops.SurfaceType"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "sun.java2d.loops.FillParallelogram",
-      "jniAccessible": true,
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "sun.java2d.loops.SurfaceType",
-            "sun.java2d.loops.CompositeType",
-            "sun.java2d.loops.SurfaceType"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "sun.java2d.loops.FillPath",
-      "jniAccessible": true,
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "sun.java2d.loops.SurfaceType",
-            "sun.java2d.loops.CompositeType",
-            "sun.java2d.loops.SurfaceType"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "sun.java2d.loops.FillRect",
-      "jniAccessible": true,
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "sun.java2d.loops.SurfaceType",
-            "sun.java2d.loops.CompositeType",
-            "sun.java2d.loops.SurfaceType"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "sun.java2d.loops.FillSpans",
-      "jniAccessible": true,
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "sun.java2d.loops.SurfaceType",
-            "sun.java2d.loops.CompositeType",
-            "sun.java2d.loops.SurfaceType"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "sun.java2d.loops.GraphicsPrimitive",
-      "jniAccessible": true,
-      "fields": [
-        {
-          "name": "pNativePrim"
-        }
-      ]
-    },
-    {
-      "type": "sun.java2d.loops.GraphicsPrimitiveMgr",
-      "jniAccessible": true,
-      "methods": [
-        {
-          "name": "register",
-          "parameterTypes": [
-            "sun.java2d.loops.GraphicsPrimitive[]"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "sun.java2d.loops.GraphicsPrimitive[]"
-    },
-    {
-      "type": "sun.java2d.loops.MaskBlit",
-      "jniAccessible": true,
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "sun.java2d.loops.SurfaceType",
-            "sun.java2d.loops.CompositeType",
-            "sun.java2d.loops.SurfaceType"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "sun.java2d.loops.MaskFill",
-      "jniAccessible": true,
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "sun.java2d.loops.SurfaceType",
-            "sun.java2d.loops.CompositeType",
-            "sun.java2d.loops.SurfaceType"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "sun.java2d.loops.ScaledBlit",
-      "jniAccessible": true,
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "sun.java2d.loops.SurfaceType",
-            "sun.java2d.loops.CompositeType",
-            "sun.java2d.loops.SurfaceType"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "sun.java2d.loops.SurfaceType",
-      "jniAccessible": true,
-      "fields": [
-        {
-          "name": "Any3Byte"
-        },
-        {
-          "name": "Any4Byte"
-        },
-        {
-          "name": "AnyByte"
-        },
-        {
-          "name": "AnyColor"
-        },
-        {
-          "name": "AnyInt"
-        },
-        {
-          "name": "AnyShort"
-        },
-        {
-          "name": "ByteBinary1Bit"
-        },
-        {
-          "name": "ByteBinary2Bit"
-        },
-        {
-          "name": "ByteBinary4Bit"
-        },
-        {
-          "name": "ByteGray"
-        },
-        {
-          "name": "ByteIndexed"
-        },
-        {
-          "name": "ByteIndexedBm"
-        },
-        {
-          "name": "FourByteAbgr"
-        },
-        {
-          "name": "FourByteAbgrPre"
-        },
-        {
-          "name": "Index12Gray"
-        },
-        {
-          "name": "Index8Gray"
-        },
-        {
-          "name": "IntArgb"
-        },
-        {
-          "name": "IntArgbBm"
-        },
-        {
-          "name": "IntArgbPre"
-        },
-        {
-          "name": "IntBgr"
-        },
-        {
-          "name": "IntRgb"
-        },
-        {
-          "name": "IntRgbx"
-        },
-        {
-          "name": "OpaqueColor"
-        },
-        {
-          "name": "ThreeByteBgr"
-        },
-        {
-          "name": "Ushort4444Argb"
-        },
-        {
-          "name": "Ushort555Rgb"
-        },
-        {
-          "name": "Ushort555Rgbx"
-        },
-        {
-          "name": "Ushort565Rgb"
-        },
-        {
-          "name": "UshortGray"
-        },
-        {
-          "name": "UshortIndexed"
-        }
-      ]
-    },
-    {
-      "type": "sun.java2d.loops.TransformHelper",
-      "jniAccessible": true,
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "long",
-            "sun.java2d.loops.SurfaceType",
-            "sun.java2d.loops.CompositeType",
-            "sun.java2d.loops.SurfaceType"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "sun.java2d.loops.XORComposite",
-      "jniAccessible": true,
-      "fields": [
-        {
-          "name": "alphaMask"
-        },
-        {
-          "name": "xorColor"
-        },
-        {
-          "name": "xorPixel"
-        }
-      ]
-    },
-    {
-      "type": "sun.java2d.marlin.DMarlinRenderingEngine",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
-      "type": "sun.java2d.pipe.Region",
-      "jniAccessible": true,
-      "fields": [
-        {
-          "name": "bands"
-        },
-        {
-          "name": "endIndex"
-        },
-        {
-          "name": "hix"
-        },
-        {
-          "name": "hiy"
-        },
-        {
-          "name": "lox"
-        },
-        {
-          "name": "loy"
-        }
-      ]
-    },
-    {
-      "type": "sun.java2d.pipe.RegionIterator",
-      "jniAccessible": true,
-      "fields": [
-        {
-          "name": "curIndex"
-        },
-        {
-          "name": "numXbands"
-        },
-        {
-          "name": "region"
         }
       ]
     },
@@ -4522,13 +4380,13 @@
       "glob": "META-INF/services/ch.qos.logback.classic.spi.Configurator"
     },
     {
-      "glob": "META-INF/services/java.net.spi.InetAddressResolverProvider"
-    },
-    {
       "glob": "META-INF/services/java.net.spi.URLStreamHandlerProvider"
     },
     {
       "glob": "META-INF/services/java.nio.channels.spi.SelectorProvider"
+    },
+    {
+      "glob": "META-INF/services/java.sql.Driver"
     },
     {
       "glob": "META-INF/services/java.time.zone.ZoneRulesProvider"
@@ -4615,12 +4473,6 @@
       "glob": "cn/huava/common/controller/CaptchaController.class"
     },
     {
-      "glob": "cn/huava/common/graalvm/RuntimeHintsRegistrarConfig$MyBatisBeanFactoryInitializationAotProcessor.class"
-    },
-    {
-      "glob": "cn/huava/common/graalvm/RuntimeHintsRegistrarConfig.class"
-    },
-    {
       "glob": "commons-logging.properties"
     },
     {
@@ -4649,6 +4501,15 @@
     },
     {
       "glob": "git.properties"
+    },
+    {
+      "glob": "io/github/humbleui/skija/impl/Library.class"
+    },
+    {
+      "glob": "io/github/humbleui/skija/linux/x64/libskija.so"
+    },
+    {
+      "glob": "io/github/humbleui/skija/linux/x64/skija.version"
     },
     {
       "glob": "jakarta/servlet/LocalStrings.properties"
@@ -4730,6 +4591,9 @@
     },
     {
       "glob": "org/apache/catalina/deploy/LocalStrings.properties"
+    },
+    {
+      "glob": "org/apache/catalina/loader/JdbcLeakPrevention.class"
     },
     {
       "glob": "org/apache/catalina/loader/LocalStrings.properties"

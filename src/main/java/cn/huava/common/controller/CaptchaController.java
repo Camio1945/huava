@@ -1,7 +1,6 @@
 package cn.huava.common.controller;
 
-import cn.hutool.v7.swing.captcha.CaptchaUtil;
-import cn.hutool.v7.swing.captcha.LineCaptcha;
+import cn.huava.common.util.SkijaCaptchaUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
@@ -21,8 +20,8 @@ public class CaptchaController {
 
   @GetMapping("/captcha")
   public void captcha(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // width, height, codeCount, lineCount
-    LineCaptcha captcha = CaptchaUtil.ofLineCaptcha(160, 60, 5, 80);
+    // width, height, codeCount
+    SkijaCaptchaUtil.CaptchaResult captcha = SkijaCaptchaUtil.generateCaptcha(160, 60, 5);
 
     // Save code to session
     request.getSession().setAttribute("captcha", captcha.getCode());
