@@ -1,7 +1,6 @@
 package cn.huava.common.controller;
 
-import cn.hutool.v7.swing.captcha.CaptchaUtil;
-import cn.hutool.v7.swing.captcha.LineCaptcha;
+import cn.huava.common.util.SkijaCaptchaUtil;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -14,11 +13,9 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.imageio.ImageIO;
-import java.awt.image.RenderedImage;
 import java.io.IOException;
 
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -47,24 +44,19 @@ class CaptchaControllerTest {
 
   @Test
   void captchaGeneratesImageAndSetsSessionAttribute() throws IOException {
-    try (MockedStatic<CaptchaUtil> mockedCaptchaUtil = mockStatic(CaptchaUtil.class);
-         MockedStatic<ImageIO> mockedImageIO = mockStatic(ImageIO.class)) {
+    byte[] fakeImage = new byte[10];
+    String fakeCode = "TEST";
+    SkijaCaptchaUtil.CaptchaResult captchaResult = new SkijaCaptchaUtil.CaptchaResult(fakeCode, fakeImage);
 
-      LineCaptcha mockLineCaptcha = mock(LineCaptcha.class);
-      when(mockLineCaptcha.getCode()).thenReturn("ABCDE");
-      when(mockLineCaptcha.getImage()).thenReturn(mock(java.awt.image.BufferedImage.class)); // Return a mocked BufferedImage
-
-      mockedCaptchaUtil
-        .when(() -> CaptchaUtil.ofLineCaptcha(anyInt(), anyInt(), anyInt(), anyInt()))
-        .thenReturn(mockLineCaptcha);
+    try (MockedStatic<SkijaCaptchaUtil> mockedSkija = mockStatic(SkijaCaptchaUtil.class)) {
+      mockedSkija.when(() -> SkijaCaptchaUtil.generateCaptcha(anyInt(), anyInt(), anyInt()))
+        .thenReturn(captchaResult);
 
       captchaController.captcha(request, response);
 
+      verify(session).setAttribute("captcha", fakeCode);
       verify(response).setContentType("image/png");
-      verify(session).setAttribute(eq("captcha"), eq("ABCDE"));
-      mockedImageIO.verify(
-        () -> ImageIO.write(any(RenderedImage.class), eq("png"), eq(servletOutputStream)));
-      mockedCaptchaUtil.verify(() -> CaptchaUtil.ofLineCaptcha(160, 60, 5, 80));
+      verify(response.getOutputStream()).write(fakeImage);
     }
   }
 }

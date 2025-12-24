@@ -6,7 +6,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import javax.imageio.ImageIO;
 import java.io.IOException;
 
 /**
@@ -28,6 +27,6 @@ public class CaptchaController {
 
     // Output image
     response.setContentType("image/png");
-    ImageIO.write(captcha.image(), "png", response.getOutputStream());
+    response.getOutputStream().write(captcha.image());
   }
 }

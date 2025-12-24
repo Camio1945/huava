@@ -2,10 +2,6 @@ package cn.huava.common.util;
 
 import io.github.humbleui.skija.*;
 import io.github.humbleui.types.Rect;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.util.Random;
 
 /**
@@ -49,10 +45,10 @@ public class SkijaCaptchaUtil {
       // Draw text
       drawText(canvas, code, width, height);
 
-      // Get the image as BufferedImage
-      try (Image skijaImage = surface.makeImageSnapshot()) {
-        BufferedImage bufferedImage = skijaToBufferedImage(skijaImage, width, height);
-        return new CaptchaResult(code, bufferedImage);
+      // Get the image as byte array
+      try (Image image = surface.makeImageSnapshot();
+           Data data = image.encodeToData(EncodedImageFormat.PNG)) {
+        return new CaptchaResult(code, data.getBytes());
       }
     }
   }
@@ -120,7 +116,9 @@ public class SkijaCaptchaUtil {
       paint.setAntiAlias(true);
 
       // Set up font
-      try (Font font = new Font(Typeface.makeDefault(), height * 0.7f)) {
+      try (FontMgr fontMgr = FontMgr.getDefault();
+           Typeface typeface = fontMgr.matchFamilyStyle("sans-serif", FontStyle.NORMAL);
+           Font font = new Font(typeface, height * 0.7f)) {
 
         // Draw each character with random rotation and position
         float charWidth = width / (float) text.length();
@@ -160,40 +158,6 @@ public class SkijaCaptchaUtil {
     }
   }
 
-  private static BufferedImage skijaToBufferedImage(Image image, int width, int height) {
-    // Create a surface to render the image to
-    ImageInfo imageInfo = ImageInfo.makeN32Premul(width, height);
-    try (Surface surface = Surface.makeRaster(imageInfo)) {
-      Canvas canvas = surface.getCanvas();
-      // Draw the image to the surface
-      canvas.drawImage(image, 0, 0);
-
-      // Encode the surface to PNG data
-      try (Image snapshot = surface.makeImageSnapshot()) {
-        // Try using the encoder static method - this is the correct approach for Skija 0.116.5
-        Data data = EncoderPNG.encode(snapshot);
-        if (data != null) {
-          // Convert the Skija data to a byte array
-          byte[] bytes = data.getBytes();
-          if (bytes != null) {
-            // Read the byte array as an image using ImageIO
-            try (ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes)) {
-              return ImageIO.read(inputStream);
-            } catch (Exception e) {
-              // If reading fails, return an empty BufferedImage
-              System.err.println("Error reading captcha image: " + e.getMessage());
-            }
-          }
-        }
-      }
-    } catch (Exception e) {
-      System.err.println("Error converting Skija image to BufferedImage: " + e.getMessage());
-    }
-
-    // Fallback: return empty image if conversion fails
-    return new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-  }
-
   private static float getTextWidth(Font font, String text) {
     Rect bounds = font.measureText(text);
     return bounds != null ? bounds.getWidth() : 0;
@@ -204,6 +168,6 @@ public class SkijaCaptchaUtil {
     return metrics.getCapHeight();
   }
 
-  public record CaptchaResult(String code, BufferedImage image) {
+  public record CaptchaResult(String code, byte[] image) {
   }
 }

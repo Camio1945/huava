@@ -148,6 +148,24 @@
       ]
     },
     {
+      "type": "io.github.humbleui.skija.FontArguments",
+      "jniAccessible": true,
+      "fields": [
+        {
+          "name": "_collectionIndex"
+        },
+        {
+          "name": "_paletteIndex"
+        },
+        {
+          "name": "_paletteOverrides"
+        },
+        {
+          "name": "_variations"
+        }
+      ]
+    },
+    {
       "type": "io.github.humbleui.skija.FontFamilyName",
       "jniAccessible": true,
       "methods": [
@@ -218,6 +236,18 @@
       "jniAccessible": true
     },
     {
+      "type": "io.github.humbleui.skija.FontPaletteOverride",
+      "jniAccessible": true,
+      "fields": [
+        {
+          "name": "_color"
+        },
+        {
+          "name": "_index"
+        }
+      ]
+    },
+    {
       "type": "io.github.humbleui.skija.FontVariation",
       "jniAccessible": true,
       "fields": [
@@ -255,6 +285,18 @@
       ]
     },
     {
+      "type": "io.github.humbleui.skija.Image",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "long"
+          ]
+        }
+      ]
+    },
+    {
       "type": "io.github.humbleui.skija.ImageInfo",
       "jniAccessible": true,
       "methods": [
@@ -266,6 +308,20 @@
             "int",
             "int",
             "long"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.humbleui.skija.ImageWithFilterResult",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "io.github.humbleui.skija.Image",
+            "io.github.humbleui.types.IRect",
+            "io.github.humbleui.types.IPoint"
           ]
         }
       ]
@@ -374,6 +430,36 @@
             "float",
             "float",
             "float"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.humbleui.skija.RuntimeEffectChildInfo",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "java.lang.String",
+            "int",
+            "int"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "io.github.humbleui.skija.RuntimeEffectUniformInfo",
+      "jniAccessible": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "java.lang.String",
+            "int",
+            "int",
+            "int",
+            "int"
           ]
         }
       ]
@@ -947,183 +1033,6 @@
       "type": "jakarta.xml.ws.WebServiceRef"
     },
     {
-      "type": "java.awt.GraphicsEnvironment",
-      "jniAccessible": true,
-      "methods": [
-        {
-          "name": "isHeadless",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
-      "type": "java.awt.image.BufferedImage",
-      "jniAccessible": true,
-      "fields": [
-        {
-          "name": "colorModel"
-        },
-        {
-          "name": "imageType"
-        },
-        {
-          "name": "raster"
-        }
-      ],
-      "methods": [
-        {
-          "name": "getRGB",
-          "parameterTypes": [
-            "int",
-            "int",
-            "int",
-            "int",
-            "int[]",
-            "int",
-            "int"
-          ]
-        },
-        {
-          "name": "setRGB",
-          "parameterTypes": [
-            "int",
-            "int",
-            "int",
-            "int",
-            "int[]",
-            "int",
-            "int"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "java.awt.image.ColorModel",
-      "jniAccessible": true,
-      "fields": [
-        {
-          "name": "colorSpace"
-        },
-        {
-          "name": "colorSpaceType"
-        },
-        {
-          "name": "isAlphaPremultiplied"
-        },
-        {
-          "name": "is_sRGB"
-        },
-        {
-          "name": "nBits"
-        },
-        {
-          "name": "numComponents"
-        },
-        {
-          "name": "supportsAlpha"
-        },
-        {
-          "name": "transparency"
-        }
-      ],
-      "methods": [
-        {
-          "name": "getRGBdefault",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
-      "type": "java.awt.image.Raster",
-      "jniAccessible": true,
-      "fields": [
-        {
-          "name": "dataBuffer"
-        },
-        {
-          "name": "height"
-        },
-        {
-          "name": "minX"
-        },
-        {
-          "name": "minY"
-        },
-        {
-          "name": "numBands"
-        },
-        {
-          "name": "numDataElements"
-        },
-        {
-          "name": "sampleModel"
-        },
-        {
-          "name": "sampleModelTranslateX"
-        },
-        {
-          "name": "sampleModelTranslateY"
-        },
-        {
-          "name": "width"
-        }
-      ]
-    },
-    {
-      "type": "java.awt.image.SampleModel",
-      "jniAccessible": true,
-      "fields": [
-        {
-          "name": "height"
-        },
-        {
-          "name": "width"
-        }
-      ],
-      "methods": [
-        {
-          "name": "getPixels",
-          "parameterTypes": [
-            "int",
-            "int",
-            "int",
-            "int",
-            "int[]",
-            "java.awt.image.DataBuffer"
-          ]
-        },
-        {
-          "name": "setPixels",
-          "parameterTypes": [
-            "int",
-            "int",
-            "int",
-            "int",
-            "int[]",
-            "java.awt.image.DataBuffer"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "java.awt.image.SinglePixelPackedSampleModel",
-      "jniAccessible": true,
-      "fields": [
-        {
-          "name": "bitMasks"
-        },
-        {
-          "name": "bitOffsets"
-        },
-        {
-          "name": "bitSizes"
-        },
-        {
-          "name": "maxBitSize"
-        }
-      ]
-    },
-    {
       "type": "java.beans.Introspector"
     },
     {
@@ -1225,18 +1134,6 @@
     },
     {
       "type": "java.lang.String[]"
-    },
-    {
-      "type": "java.lang.System",
-      "jniAccessible": true,
-      "methods": [
-        {
-          "name": "load",
-          "parameterTypes": [
-            "java.lang.String"
-          ]
-        }
-      ]
     },
     {
       "type": "java.lang.Thread"
@@ -1389,12 +1286,6 @@
           "parameterTypes": []
         }
       ]
-    },
-    {
-      "type": "javax.imageio.spi.ImageReaderSpi"
-    },
-    {
-      "type": "javax.imageio.spi.ImageWriterSpi"
     },
     {
       "type": "javax.money.MonetaryAmount"
@@ -1651,6 +1542,9 @@
           "parameterTypes": []
         }
       ]
+    },
+    {
+      "type": "org.springframework.aot.generate.Generated"
     },
     {
       "type": "org.springframework.aot.hint.annotation.Reflective"
@@ -4144,41 +4038,6 @@
       "type": "reactor.core.publisher.Flux"
     },
     {
-      "type": "sun.awt.image.ByteComponentRaster",
-      "jniAccessible": true,
-      "fields": [
-        {
-          "name": "data"
-        },
-        {
-          "name": "dataOffsets"
-        },
-        {
-          "name": "pixelStride"
-        },
-        {
-          "name": "scanlineStride"
-        },
-        {
-          "name": "type"
-        }
-      ]
-    },
-    {
-      "type": "sun.java2d.Disposer",
-      "jniAccessible": true,
-      "methods": [
-        {
-          "name": "addRecord",
-          "parameterTypes": [
-            "java.lang.Object",
-            "long",
-            "long"
-          ]
-        }
-      ]
-    },
-    {
       "type": "sun.management.VMManagementImpl",
       "jniAccessible": true,
       "fields": [
@@ -4393,21 +4252,6 @@
     },
     {
       "glob": "META-INF/services/java.util.spi.ResourceBundleControlProvider"
-    },
-    {
-      "glob": "META-INF/services/javax.imageio.spi.ImageInputStreamSpi"
-    },
-    {
-      "glob": "META-INF/services/javax.imageio.spi.ImageOutputStreamSpi"
-    },
-    {
-      "glob": "META-INF/services/javax.imageio.spi.ImageReaderSpi"
-    },
-    {
-      "glob": "META-INF/services/javax.imageio.spi.ImageTranscoderSpi"
-    },
-    {
-      "glob": "META-INF/services/javax.imageio.spi.ImageWriterSpi"
     },
     {
       "glob": "META-INF/services/org.apache.commons.logging.LogFactory"
@@ -5094,14 +4938,6 @@
       "glob": "static/index.html"
     },
     {
-      "module": "java.desktop",
-      "glob": "sun/awt/resources/awt_en.properties"
-    },
-    {
-      "module": "java.desktop",
-      "glob": "sun/awt/resources/awt_en_US.properties"
-    },
-    {
       "bundle": "jakarta.servlet.LocalStrings"
     },
     {
@@ -5196,9 +5032,6 @@
     },
     {
       "bundle": "org.apache.tomcat.websocket.server.LocalStrings"
-    },
-    {
-      "bundle": "sun.awt.resources.awt"
     }
   ]
 }
