@@ -2,6 +2,8 @@ package cn.huava.common.util;
 
 import io.github.humbleui.skija.*;
 import io.github.humbleui.types.Rect;
+import jakarta.annotation.Nonnull;
+
 import java.util.Random;
 
 /**
@@ -25,7 +27,7 @@ public class SkijaCaptchaUtil {
    * @param codeLength Length of the captcha code
    * @return CaptchaResult containing the code and image
    */
-  public static CaptchaResult generateCaptcha(int width, int height, int codeLength) {
+  public static @Nonnull CaptchaResult generateCaptcha(int width, int height, int codeLength) {
     String code = generateRandomCode(codeLength);
 
     // Create Skija surface and image within try-with-resources
@@ -47,8 +49,11 @@ public class SkijaCaptchaUtil {
 
       // Get the image as byte array
       try (Image image = surface.makeImageSnapshot();
-           Data data = image.encodeToData(EncodedImageFormat.PNG)) {
-        return new CaptchaResult(code, data.getBytes());
+           Data data = EncoderPNG.encode(image)) {
+        if (data != null) {
+          return new CaptchaResult(code, data.getBytes());
+        }
+        return null;
       }
     }
   }

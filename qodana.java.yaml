@@ -1,0 +1,102 @@
+baseProfile: "Project Default"
+name: "qodana.java"
+
+groups:
+  - groupId: IncludedCategories # Qodana can run any inspection, but these categories are monitored by Qodana team
+    groups:
+      - "category:Java"
+      - "category:Kotlin"
+      - "category:JVM languages"
+      - "category:Spring"
+      - "category:CDI (Contexts and Dependency Injection)"
+      - "category:Bean Validation"
+      - "category:Reactive Streams"
+      - "category:RegExp"
+      - "category:General"
+      - "category:TOML"
+      - "JSInspections"
+      - "category:RBS"
+      - "category:Security"
+
+  - groupId: Excluded
+    groups:
+      - "ALL"
+      - "!IncludedCategories"
+      - "category:Java/Java language level migration aids" # Migration aids - only on explicit request, due to possible spam
+      - "category:JavaScript and TypeScript/ES2015 migration aids" # Migration aids - only on explicit request, due to possible spam
+      - "category:C_C++/Compiler Issues" # Sanity inspections in CLion
+      - "category:Ktor/General" # Not relevant for Qodana analysis
+      - "GLOBAL" # Qodana doesn't run global inspections by default, due to significant time consumption
+      - "severity:INFORMATION" # Qodana doesn't run "invisible" and "technical" in IDE inspections
+      - "severity:TEXT ATTRIBUTES" # Qodana don't run "invisible" and "technical" in IDE inspections
+      - "ExcludedInspections"
+      - "!category:FlexInspect" # FlexInspect enabled by default (even global)
+      - "!AndroidInspections"
+
+  - groupId: ExcludedInspections # list of inspections disabled by specific reason
+    inspections:
+      #JVM
+      - Annotator # substituted by JavaAnnotator in sanity
+      - KotlinAnnotator # works in "sanity" inspections
+      - JavaAnnotator # works in "sanity" inspections
+      - SyntaxError # should work on sanity level
+      - RedundantSuppression # not a problem actually
+      - Since15 #Detects wrong language level. Should work on sanity.
+      - JavadocBlankLines # Questionable. Spam on mockito, RxJava and other projects.
+      - JSUnresolvedLibraryURL #Not usefull for CI/CD
+      - ReassignedToPlainText # Doesn't make sense on CI/CD
+      - DifferentKotlinGradleVersion # All problem cases covered in "sanity" inspections
+
+      #Security
+      - HttpUrlsUsage # Spam
+
+  - groupId: CoverageInspections # list of Qodana-only inspections, responsible for coverage computation
+    inspections:
+      - JvmCoverageInspection
+
+  - groupId: MetricsInspections # list of inspections responsible for calculating code quality metrics
+    inspections:
+      - JvmLinesOfCodeInspection
+      - CyclomaticComplexityInspection
+
+  - groupId: DependencyAnalysis # list of Qodana-only inspections, responsible for license audit
+    inspections:
+      - CheckDependencyLicenses
+
+inspections:
+  - group: Excluded
+    enabled: false
+  - group: ALL
+    ignore:
+      - "vendor/**"
+      - "build/**"
+      - "buildSrc/**"
+      - "builds/**"
+      - "dist/**"
+      - "docs/**"
+      - "tools/**"
+      - ".qodana/**"
+      - "**/node_modules/**"
+      - "**.test.ts"
+      - "scope#$gitignore" # $gitignore scope available only in qodana execution
+      - "scope#file:buildSrc/*"
+      - "**.md" # Provides lot's of false positives on embedded code examples
+  - group: "category:JavaScript and TypeScript"
+    ignore:
+      - "**/resources/**"
+  - inspection: JavadocReference
+    severity: WARNING # It has default ERROR severity. It's understandable for unresolved references in javadocs for editor but not on CI.
+  - inspection: KtorOpenAPIUpdate
+    enabled: true # This inspection is long running and designed for Qodana
+  - group: CoverageInspections
+    enabled: true # Explicitly enable all coverage inspections by default
+  - group: MetricsInspections
+    enabled: false
+  - group: DependencyAnalysis
+    enabled: true # Enable License Audit by default
+  - inspection: PyPep8Inspection
+    severity: WEAK WARNING # It has default INFORMATION severity because it makes a lot of noise during coding. For CI makes sense to enable it
+    enabled: true # Explicitly enable, because it is disabled by default INFORMATION severity.
+  - inspection: NullableProblems
+    options:
+      IGNORE_EXTERNAL_SUPER_NOTNULL: true
