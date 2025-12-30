@@ -53,7 +53,7 @@ public class SkijaCaptchaUtil {
         if (data != null) {
           return new CaptchaResult(code, data.getBytes());
         }
-        return null;
+        throw new IllegalStateException("Failed to encode image");
       }
     }
   }
