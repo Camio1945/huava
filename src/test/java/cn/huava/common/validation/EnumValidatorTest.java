@@ -19,8 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class EnumValidatorTest {
   private EnumValidator validator;
 
-  @Mock
-  private ConstraintValidatorContext context;
+  @Mock private ConstraintValidatorContext context;
 
   @BeforeEach
   void setUp() {
@@ -32,20 +31,6 @@ class EnumValidatorTest {
     // Test that initialize method doesn't throw an exception
     ValidEnum annotation = createValidEnumAnnotation();
     assertDoesNotThrow(() -> validator.initialize(annotation));
-  }
-
-  @Test
-  void testIsValid() {
-    // First initialize the validator with the annotation
-    ValidEnum annotation = createValidEnumAnnotation();
-    validator.initialize(annotation);
-
-    // Test that isValid method works correctly
-    assertTrue(validator.isValid(null, context)); // null should return true
-    assertTrue(validator.isValid("M", context)); // valid enum value should return true
-    assertTrue(validator.isValid("F", context)); // valid enum value should return true
-    assertTrue(validator.isValid("U", context)); // valid enum value should return true
-    assertFalse(validator.isValid("X", context)); // invalid enum value should return false
   }
 
   // Helper method to create a mock annotation for testing
@@ -76,5 +61,19 @@ class EnumValidatorTest {
         return ValidEnum.class;
       }
     };
+  }
+
+  @Test
+  void testIsValid() {
+    // First initialize the validator with the annotation
+    ValidEnum annotation = createValidEnumAnnotation();
+    validator.initialize(annotation);
+
+    // Test that isValid method works correctly
+    assertTrue(validator.isValid(null, context)); // null should return true
+    assertTrue(validator.isValid("M", context)); // valid enum value should return true
+    assertTrue(validator.isValid("F", context)); // valid enum value should return true
+    assertTrue(validator.isValid("U", context)); // valid enum value should return true
+    assertFalse(validator.isValid("X", context)); // invalid enum value should return false
   }
 }

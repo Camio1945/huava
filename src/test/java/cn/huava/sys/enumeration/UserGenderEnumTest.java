@@ -17,19 +17,19 @@ class UserGenderEnumTest {
     assertEquals("M", UserGenderEnum.M.name());
     assertEquals("F", UserGenderEnum.F.name());
     assertEquals("U", UserGenderEnum.U.name());
-    
+
     // Test that values are accessible
     assertNotNull(UserGenderEnum.M);
     assertNotNull(UserGenderEnum.F);
     assertNotNull(UserGenderEnum.U);
-    
+
     // Test values() method
     UserGenderEnum[] values = UserGenderEnum.values();
     assertEquals(3, values.length);
     assertTrue(java.util.Arrays.asList(values).contains(UserGenderEnum.M));
     assertTrue(java.util.Arrays.asList(values).contains(UserGenderEnum.F));
     assertTrue(java.util.Arrays.asList(values).contains(UserGenderEnum.U));
-    
+
     // Test valueOf() method
     assertEquals(UserGenderEnum.M, UserGenderEnum.valueOf("M"));
     assertEquals(UserGenderEnum.F, UserGenderEnum.valueOf("F"));

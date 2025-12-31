@@ -2,8 +2,6 @@ package cn.huava.sys.pojo.po;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import cn.huava.common.validation.Create;
-import cn.huava.common.validation.Update;
 import cn.huava.sys.enumeration.UserGenderEnum;
 import java.util.Date;
 import org.junit.jupiter.api.BeforeEach;
@@ -181,7 +179,7 @@ class UserPoTest {
     // Test that validation annotations work with groups
     user.setUsername("testuser");
     user.setPassword("password123");
-    
+
     // Verify fields are set correctly for Create group validation
     assertEquals("testuser", user.getUsername());
     assertEquals("password123", user.getPassword());

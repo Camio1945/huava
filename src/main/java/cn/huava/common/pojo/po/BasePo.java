@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
-import lombok.Data;
 import org.springframework.lang.NonNull;
 
 /**
@@ -19,8 +18,7 @@ public class BasePo implements Serializable {
   @Serial private static final long serialVersionUID = 1L;
 
   /** Primary key */
-  @TableId
-  private Long id;
+  @TableId private Long id;
 
   /** Creation time */
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -31,6 +29,31 @@ public class BasePo implements Serializable {
 
   /** Deletion info: 0-not deleted, other values-deletion time */
   private Long deleteInfo;
+
+  public static <T> void beforeCreate(@NonNull T entity) {
+    if (entity instanceof BasePo basePo) {
+      Date date = new Date();
+      basePo.setId(null);
+      basePo.setCreateTime(date);
+      basePo.setUpdateTime(date);
+      basePo.setDeleteInfo(0L);
+    }
+  }
+
+  public static <T> void beforeUpdate(@NonNull T entity) {
+    if (entity instanceof BasePo basePo) {
+      basePo.setUpdateTime(new Date());
+    }
+  }
+
+  public static <T> void beforeDelete(@NonNull T entity) {
+    if (entity instanceof BasePo basePo) {
+      Date now = new Date();
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+      String timeStr = sdf.format(now);
+      basePo.setDeleteInfo(Long.parseLong(timeStr));
+    }
+  }
 
   public Long getId() {
     return id;
@@ -75,30 +98,5 @@ public class BasePo implements Serializable {
   @Override
   public int hashCode() {
     return Objects.hash(id);
-  }
-
-  public static <T> void beforeCreate(@NonNull T entity) {
-    if (entity instanceof BasePo basePo) {
-      Date date = new Date();
-      basePo.setId(null);
-      basePo.setCreateTime(date);
-      basePo.setUpdateTime(date);
-      basePo.setDeleteInfo(0L);
-    }
-  }
-
-  public static <T> void beforeUpdate(@NonNull T entity) {
-    if (entity instanceof BasePo basePo) {
-      basePo.setUpdateTime(new Date());
-    }
-  }
-
-  public static <T> void beforeDelete(@NonNull T entity) {
-    if (entity instanceof BasePo basePo) {
-      Date now = new Date();
-      SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-      String timeStr = sdf.format(now);
-      basePo.setDeleteInfo(Long.parseLong(timeStr));
-    }
   }
 }

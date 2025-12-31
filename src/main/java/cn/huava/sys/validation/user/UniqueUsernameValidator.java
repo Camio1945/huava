@@ -1,6 +1,5 @@
 package cn.huava.sys.validation.user;
 
-import cn.huava.common.validation.BaseValidator;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

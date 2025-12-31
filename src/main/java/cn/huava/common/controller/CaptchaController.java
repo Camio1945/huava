@@ -3,17 +3,16 @@ package cn.huava.common.controller;
 import cn.huava.common.util.SkijaCaptchaUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import java.io.IOException;
 
 /**
  * Captcha controller
  *
  * @author Camio1945
  * @since 2025-12-20
- **/
+ */
 @Controller
 public class CaptchaController {
 

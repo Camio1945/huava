@@ -20,8 +20,7 @@ class BeforeDeleteUserValidatorTest {
   private BeforeDeleteUserValidator validator;
   private UserPo user;
 
-  @Mock
-  private ConstraintValidatorContext context;
+  @Mock private ConstraintValidatorContext context;
 
   @BeforeEach
   void setUp() {

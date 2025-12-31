@@ -23,7 +23,8 @@ class SkijaCaptchaUtilTest {
     assertNotNull(result);
     assertNotNull(result.code());
     assertEquals(4, result.code().length());
-    assertTrue(result.code().matches("[A-Za-z0-9]+")); // Should contain only alphanumeric characters
+    assertTrue(
+        result.code().matches("[A-Za-z0-9]+")); // Should contain only alphanumeric characters
     assertNotNull(result.image());
     assertTrue(result.image().length > 0);
 
@@ -40,12 +41,12 @@ class SkijaCaptchaUtilTest {
   @Test
   void testCaptchaResultRecord() {
     // Test the CaptchaResult record creation
-    byte[] imageBytes = new byte[]{1, 2, 3};
+    byte[] imageBytes = new byte[] {1, 2, 3};
     SkijaCaptchaUtil.CaptchaResult result = new SkijaCaptchaUtil.CaptchaResult("ABCD", imageBytes);
 
     // Test accessors
     assertEquals("ABCD", result.code());
-    assertArrayEquals(new byte[]{1, 2, 3}, result.image());
+    assertArrayEquals(new byte[] {1, 2, 3}, result.image());
 
     // Test toString method
     String toStringResult = result.toString();
@@ -65,7 +66,8 @@ class SkijaCaptchaUtilTest {
     assertFalse(result.equals(result3));
 
     // Test same code but different image
-    SkijaCaptchaUtil.CaptchaResult result4 = new SkijaCaptchaUtil.CaptchaResult("ABCD", new byte[]{4, 5, 6});
+    SkijaCaptchaUtil.CaptchaResult result4 =
+        new SkijaCaptchaUtil.CaptchaResult("ABCD", new byte[] {4, 5, 6});
     assertFalse(result.equals(result4));
 
     // Test same image but different code
@@ -101,43 +103,60 @@ class SkijaCaptchaUtilTest {
   @Test
   void testReflectionAccessToPrivateMethods() throws Exception {
     // Test access to generateRandomCode method via reflection
-    Method generateRandomCodeMethod = SkijaCaptchaUtil.class.getDeclaredMethod("generateRandomCode", int.class);
+    Method generateRandomCodeMethod =
+        SkijaCaptchaUtil.class.getDeclaredMethod("generateRandomCode", int.class);
     generateRandomCodeMethod.setAccessible(true);
     String randomCode = (String) generateRandomCodeMethod.invoke(null, 5);
     assertNotNull(randomCode);
     assertEquals(5, randomCode.length());
 
     // Test access to addBackgroundNoise method via reflection
-    Method addBackgroundNoiseMethod = SkijaCaptchaUtil.class.getDeclaredMethod("addBackgroundNoise",
-        Class.forName("io.github.humbleui.skija.Canvas"), int.class, int.class);
+    Method addBackgroundNoiseMethod =
+        SkijaCaptchaUtil.class.getDeclaredMethod(
+            "addBackgroundNoise",
+            Class.forName("io.github.humbleui.skija.Canvas"),
+            int.class,
+            int.class);
     addBackgroundNoiseMethod.setAccessible(true);
 
     // Test access to drawRandomLines method via reflection
-    Method drawRandomLinesMethod = SkijaCaptchaUtil.class.getDeclaredMethod("drawRandomLines",
-        Class.forName("io.github.humbleui.skija.Canvas"), int.class, int.class);
+    Method drawRandomLinesMethod =
+        SkijaCaptchaUtil.class.getDeclaredMethod(
+            "drawRandomLines",
+            Class.forName("io.github.humbleui.skija.Canvas"),
+            int.class,
+            int.class);
     drawRandomLinesMethod.setAccessible(true);
 
     // Test access to drawText method via reflection
-    Method drawTextMethod = SkijaCaptchaUtil.class.getDeclaredMethod("drawText",
-        Class.forName("io.github.humbleui.skija.Canvas"), String.class, int.class, int.class);
+    Method drawTextMethod =
+        SkijaCaptchaUtil.class.getDeclaredMethod(
+            "drawText",
+            Class.forName("io.github.humbleui.skija.Canvas"),
+            String.class,
+            int.class,
+            int.class);
     drawTextMethod.setAccessible(true);
 
     // Test access to getTextWidth method via reflection
-    Method getTextWidthMethod = SkijaCaptchaUtil.class.getDeclaredMethod("getTextWidth",
-        Class.forName("io.github.humbleui.skija.Font"), String.class);
+    Method getTextWidthMethod =
+        SkijaCaptchaUtil.class.getDeclaredMethod(
+            "getTextWidth", Class.forName("io.github.humbleui.skija.Font"), String.class);
     getTextWidthMethod.setAccessible(true);
 
     // Test access to getTextHeight method via reflection
-    Method getTextHeightMethod = SkijaCaptchaUtil.class.getDeclaredMethod("getTextHeight",
-        Class.forName("io.github.humbleui.skija.Font"));
+    Method getTextHeightMethod =
+        SkijaCaptchaUtil.class.getDeclaredMethod(
+            "getTextHeight", Class.forName("io.github.humbleui.skija.Font"));
     getTextHeightMethod.setAccessible(true);
   }
 
   @Test
   void testGetTextWidthWithNullBounds() throws Exception {
     // Test the getTextWidth method when bounds is null
-    Method getTextWidthMethod = SkijaCaptchaUtil.class.getDeclaredMethod("getTextWidth",
-        Class.forName("io.github.humbleui.skija.Font"), String.class);
+    Method getTextWidthMethod =
+        SkijaCaptchaUtil.class.getDeclaredMethod(
+            "getTextWidth", Class.forName("io.github.humbleui.skija.Font"), String.class);
     getTextWidthMethod.setAccessible(true);
 
     // Since we can't easily create a Font object without native dependencies,
