@@ -1,0 +1,1 @@
+summarize the rules of all the key points of the papers in docs/source_codes/ZhengYe folder for me, in English, and put them in docs/ai_task/4.result.md file, each rule with code examples if needed, and group the rules.

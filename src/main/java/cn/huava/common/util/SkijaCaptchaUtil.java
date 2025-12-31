@@ -4,6 +4,7 @@ import io.github.humbleui.skija.*;
 import io.github.humbleui.types.Rect;
 import jakarta.annotation.Nonnull;
 
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -48,12 +49,8 @@ public class SkijaCaptchaUtil {
       drawText(canvas, code, width, height);
 
       // Get the image as byte array
-      try (Image image = surface.makeImageSnapshot();
-           Data data = EncoderPNG.encode(image)) {
-        if (data != null) {
-          return new CaptchaResult(code, data.getBytes());
-        }
-        throw new IllegalStateException("Failed to encode image");
+      try (Image image = surface.makeImageSnapshot(); Data data = EncoderPNG.encode(image)) {
+        return new CaptchaResult(code, Objects.requireNonNull(data).getBytes());
       }
     }
   }
@@ -121,9 +118,7 @@ public class SkijaCaptchaUtil {
       paint.setAntiAlias(true);
 
       // Set up font
-      try (FontMgr fontMgr = FontMgr.getDefault();
-           Typeface typeface = fontMgr.matchFamilyStyle("sans-serif", FontStyle.NORMAL);
-           Font font = new Font(typeface, height * 0.7f)) {
+      try (FontMgr fontMgr = FontMgr.getDefault(); Typeface typeface = fontMgr.matchFamilyStyle("sans-serif", FontStyle.NORMAL); Font font = new Font(typeface, height * 0.7f)) {
 
         // Draw each character with random rotation and position
         float charWidth = width / (float) text.length();
@@ -165,7 +160,7 @@ public class SkijaCaptchaUtil {
 
   private static float getTextWidth(Font font, String text) {
     Rect bounds = font.measureText(text);
-    return bounds != null ? bounds.getWidth() : 0;
+    return bounds.getWidth();
   }
 
   private static float getTextHeight(Font font) {
