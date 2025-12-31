@@ -29,15 +29,15 @@ class BasePoTest {
   @Test
   void testCreateTimeField() {
     Date testDate = new Date();
-    testEntity.setCreateTime(testDate);
-    assertEquals(testDate, testEntity.getCreateTime());
+    testEntity.setCreatedAt(testDate);
+    assertEquals(testDate, testEntity.getCreatedAt());
   }
 
   @Test
   void testUpdateTimeField() {
     Date testDate = new Date();
-    testEntity.setUpdateTime(testDate);
-    assertEquals(testDate, testEntity.getUpdateTime());
+    testEntity.setUpdatedAt(testDate);
+    assertEquals(testDate, testEntity.getUpdatedAt());
   }
 
   @Test
@@ -55,20 +55,20 @@ class BasePoTest {
     // Verify ID is set to null
     assertNull(testEntity.getId());
     // Verify create and update times are set
-    assertNotNull(testEntity.getCreateTime());
-    assertNotNull(testEntity.getUpdateTime());
+    assertNotNull(testEntity.getCreatedAt());
+    assertNotNull(testEntity.getUpdatedAt());
     // Verify deleteInfo is set to 0
     assertEquals(0L, testEntity.getDeleteInfo());
   }
 
   @Test
   void testBeforeUpdate() {
-    testEntity.setUpdateTime(new Date(1000)); // Set to a specific time
+    testEntity.setUpdatedAt(new Date(1000)); // Set to a specific time
     Date beforeDate = new Date();
     BasePo.beforeUpdate(testEntity);
 
     // Verify update time is changed
-    assertNotEquals(1000, testEntity.getUpdateTime().getTime());
+    assertNotEquals(1000, testEntity.getUpdatedAt().getTime());
   }
 
   @Test
