@@ -26,9 +26,7 @@ import lombok.Data;
  */
 @Data
 @TableName("sys_user")
-@UniqueUsername(
-    message = "Username already exists",
-    groups = {Create.class, Update.class})
+@UniqueUsername(groups = {Create.class, Update.class})
 @BeforeDeleteUser(groups = {Delete.class})
 @BeforeUpdateUser(groups = {Update.class})
 public class UserPo extends BasePo {
