@@ -7,11 +7,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**
- * Before delete user constraint
- *
- * @author Camio1945
- */
+///
+/// # Before delete user constraint
+///
+/// @author Camio1945
 @Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = BeforeDeleteUserValidator.class)

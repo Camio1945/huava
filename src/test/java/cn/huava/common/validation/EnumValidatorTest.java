@@ -10,11 +10,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-/**
- * Test class for EnumValidator to ensure 100% coverage
- *
- * @author Camio1945
- */
+///
+/// # Test class for EnumValidator to ensure 100% coverage
+///
+/// @author Camio1945
 @ExtendWith(MockitoExtension.class)
 class EnumValidatorTest {
   private EnumValidator validator;

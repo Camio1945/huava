@@ -1,11 +1,11 @@
 package cn.huava.common.constant;
 
-/**
- * 关于 @SuppressWarnings("java:S1214"): <br>
- * 当接口只包含常量定义而不包含其他成员时，这个规则就会触发警告。但是当前那只是一个常量类，不需要有其他成员，因此这个警告可以忽略。
- *
- * @author Camio1945
- */
+///
+/// # About @SuppressWarnings("java:S1214"): <br>
+/// When an interface only contains constant definitions without other members, this rule triggers a warning.
+/// However, this is just a constant class that doesn't need other members, so this warning can be ignored.
+///
+/// @author Camio1945
 @SuppressWarnings("java:S1214")
 public interface CommonConstant {
   /** 一秒有多少毫秒 */

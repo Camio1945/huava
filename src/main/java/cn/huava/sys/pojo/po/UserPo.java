@@ -19,11 +19,10 @@ import java.io.Serial;
 import java.util.Date;
 import lombok.Data;
 
-/**
- * User
- *
- * @author Camio1945
- */
+///
+/// # User
+///
+/// @author Camio1945
 @Data
 @TableName("sys_user")
 @UniqueUsername(groups = {Create.class, Update.class})

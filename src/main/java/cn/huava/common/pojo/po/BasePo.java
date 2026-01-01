@@ -9,11 +9,10 @@ import java.util.Date;
 import lombok.Data;
 import org.jspecify.annotations.NonNull;
 
-/**
- * Base PO class
- *
- * @author Camio1945
- */
+///
+/// # Base PO class
+///
+/// @author Camio1945
 @Data
 public class BasePo implements Serializable {
   @Serial private static final long serialVersionUID = 1L;

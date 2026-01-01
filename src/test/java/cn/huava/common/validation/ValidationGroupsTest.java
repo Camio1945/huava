@@ -4,11 +4,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-/**
- * Test class for validation groups to ensure 100% coverage
- *
- * @author Camio1945
- */
+///
+/// # Test class for validation groups to ensure 100% coverage
+///
+/// @author Camio1945
 class ValidationGroupsTest {
 
   @Test

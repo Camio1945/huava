@@ -6,12 +6,11 @@ import jakarta.annotation.Nonnull;
 import java.util.Objects;
 import java.util.Random;
 
-/**
- * Captcha utility using Skija for image generation
- *
- * @author Camio1945
- * @since 2025-12-23
- */
+///
+/// # Captcha utility using Skija for image generation
+///
+/// @author Camio1945
+/// @since 2025-12-23
 public class SkijaCaptchaUtil {
   private static final String CHARACTERS =
       "ABCDEFGHIJKLMNPQRSTUVWXYZabcdefghijklmnpqrstuvwxyz0123456789";

@@ -7,12 +7,11 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.NonNull;
 
-/**
- * Base Service to provide common CRUD operations. <br>
- * Generics: T - Entity type, M - MyBatis Mapper type <br>
- *
- * @author Camio1945
- */
+///
+/// # Base Service to provide common CRUD operations. <br>
+/// Generics: T - Entity type, M - MyBatis Mapper type <br>
+///
+/// @author Camio1945
 public abstract class BaseService<M extends BaseMapper<T>, T> extends ServiceImpl<M, T> {
 
   /**

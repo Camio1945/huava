@@ -7,11 +7,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**
- * 枚举类型校验器注解，与 {@link EnumValidator} 配合使用
- *
- * @author Camio1945
- */
+///
+/// # Enum type validator annotation, used together with {@link EnumValidator}
+///
+/// @author Camio1945
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = EnumValidator.class)

@@ -6,11 +6,10 @@ import java.util.Date;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-/**
- * Test class for BasePo entity to ensure 100% coverage
- *
- * @author Camio1945
- */
+///
+/// # Test class for BasePo entity to ensure 100% coverage
+///
+/// @author Camio1945
 class BasePoTest {
   private TestBasePo testEntity;
 

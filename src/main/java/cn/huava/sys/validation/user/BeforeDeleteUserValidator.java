@@ -3,11 +3,10 @@ package cn.huava.sys.validation.user;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-/**
- * Before delete user validator
- *
- * @author Camio1945
- */
+///
+/// # Before delete user validator
+///
+/// @author Camio1945
 public class BeforeDeleteUserValidator implements ConstraintValidator<BeforeDeleteUser, Object> {
   @Override
   public boolean isValid(Object value, ConstraintValidatorContext context) {

@@ -7,11 +7,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import org.junit.jupiter.api.Test;
 
-/**
- * Test class for SkijaCaptchaUtil to ensure 100% code coverage
- *
- * @author Camio1945
- */
+///
+/// # Test class for SkijaCaptchaUtil to ensure 100% code coverage
+///
+/// @author Camio1945
 class SkijaCaptchaUtilTest {
 
   @Test

@@ -7,12 +7,11 @@ import java.io.IOException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-/**
- * Captcha controller
- *
- * @author Camio1945
- * @since 2025-12-20
- */
+///
+/// # Captcha controller
+///
+/// @author Camio1945
+/// @since 2025-12-20
 @Controller
 public class CaptchaController {
 

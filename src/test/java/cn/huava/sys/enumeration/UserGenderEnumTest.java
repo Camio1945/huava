@@ -4,11 +4,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-/**
- * Test class for UserGenderEnum to ensure 100% coverage
- *
- * @author Camio1945
- */
+///
+/// # Test class for UserGenderEnum to ensure 100% coverage
+///
+/// @author Camio1945
 class UserGenderEnumTest {
 
   @Test

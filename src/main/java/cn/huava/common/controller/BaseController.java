@@ -13,12 +13,11 @@ import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * Base controller that provides CRUD operations (excluding pagination queries)<br>
- * Generics: T - Entity type, M - MyBatis Mapper type, S - Service type <br>
- *
- * @author Camio1945
- */
+///
+/// # Base controller that provides CRUD operations (excluding pagination queries)<br>
+/// Generics: T - Entity type, M - MyBatis Mapper type, S - Service type <br>
+///
+/// @author Camio1945
 @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 public abstract class BaseController<S extends BaseService<M, T>, M extends BaseMapper<T>, T> {
 

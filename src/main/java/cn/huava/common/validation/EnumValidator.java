@@ -3,11 +3,10 @@ package cn.huava.common.validation;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-/**
- * 枚举类型校验器，与 {@link ValidEnum} 注解配合使用
- *
- * @author Camio1945
- */
+///
+/// # Enum type validator, used together with {@link ValidEnum} annotation
+///
+/// @author Camio1945
 public class EnumValidator implements ConstraintValidator<ValidEnum, String> {
   private ValidEnum annotation;
 

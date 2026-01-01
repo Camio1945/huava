@@ -1,10 +1,9 @@
 package cn.huava.sys.enumeration;
 
-/**
- * 用户性别
- *
- * @author Camio1945
- */
+///
+/// # User gender
+///
+/// @author Camio1945
 public enum UserGenderEnum {
   /** Male 男 */
   M,
