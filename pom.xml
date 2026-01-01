@@ -43,35 +43,41 @@
       <artifactId>spring-boot-starter-validation</artifactId>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/com.baomidou/mybatis-plus-boot-starter -->
     <dependency>
       <groupId>com.baomidou</groupId>
       <artifactId>mybatis-plus-boot-starter</artifactId>
       <version>3.5.15</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <version>${lombok.version}</version>
       <scope>provided</scope>
     </dependency>
+
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
       <scope>test</scope>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/cn.hutool.v7/hutool-all -->
     <dependency>
       <groupId>cn.hutool.v7</groupId>
       <artifactId>hutool-all</artifactId>
       <version>7.0.0-M3</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/io.github.humbleui/skija-linux-x64 -->
     <dependency>
       <groupId>io.github.humbleui</groupId>
       <artifactId>skija-linux-x64</artifactId>
