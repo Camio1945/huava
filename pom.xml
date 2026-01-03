@@ -43,10 +43,10 @@
       <artifactId>spring-boot-starter-validation</artifactId>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/com.baomidou/mybatis-plus-boot-starter -->
+    <!-- https://mvnrepository.com/artifact/com.baomidou/mybatis-plus-spring-boot4-starter -->
     <dependency>
       <groupId>com.baomidou</groupId>
-      <artifactId>mybatis-plus-boot-starter</artifactId>
+      <artifactId>mybatis-plus-spring-boot4-starter</artifactId>
       <version>3.5.15</version>
     </dependency>
 
