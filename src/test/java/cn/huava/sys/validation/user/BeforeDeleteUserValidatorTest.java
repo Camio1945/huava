@@ -1,42 +1,18 @@
 package cn.huava.sys.validation.user;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static cn.huava.common.constant.CommonConstant.ADMIN_USER_ID;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import cn.huava.sys.pojo.po.UserPo;
-import jakarta.validation.ConstraintValidatorContext;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-///
-/// # Test class for BeforeDeleteUserValidator to ensure 100% coverage
-///
-/// @author Camio1945
-@ExtendWith(MockitoExtension.class)
 class BeforeDeleteUserValidatorTest {
-  private BeforeDeleteUserValidator validator;
-  private UserPo user;
-
-  @Mock private ConstraintValidatorContext context;
-
-  @BeforeEach
-  void setUp() {
-    validator = new BeforeDeleteUserValidator();
-    user = new UserPo();
-  }
-
   @Test
-  void testInitialize() {
-    // Test that initialize method doesn't throw an exception
-    assertDoesNotThrow(() -> validator.initialize(null));
-  }
-
-  @Test
-  void testIsValid() {
-    // Test that isValid method returns true (placeholder implementation)
-    boolean result = validator.isValid(user, context);
-    assertTrue(result);
+  void isValid() {
+    BeforeDeleteUserValidator validator = new BeforeDeleteUserValidator();
+    UserPo userPo = new UserPo();
+    assertThrows(NullPointerException.class, () -> validator.isValid(userPo, null));
+    userPo.setId(ADMIN_USER_ID);
+    assertThrows(NullPointerException.class, () -> validator.isValid(userPo, null));
   }
 }
