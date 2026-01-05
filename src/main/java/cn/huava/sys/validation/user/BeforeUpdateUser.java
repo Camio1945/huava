@@ -1,21 +1,21 @@
 package cn.huava.sys.validation.user;
 
-import jakarta.validation.Constraint;
-import jakarta.validation.Payload;
+import jakarta.validation.*;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-///
-/// # Before update user constraint
-///
-/// @author Camio1945
-@Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE})
-@Retention(RetentionPolicy.RUNTIME)
+/**
+ * 更新用户前的校验器注解，与 {@link BeforeUpdateUserValidator} 配合使用
+ *
+ * @author Camio1945
+ */
 @Constraint(validatedBy = BeforeUpdateUserValidator.class)
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
 public @interface BeforeUpdateUser {
-  String message() default "Before update user validation failed";
+  String message() default "";
 
   Class<?>[] groups() default {};
 

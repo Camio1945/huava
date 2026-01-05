@@ -1,0 +1,16 @@
+# org.redisson.config.SingleServerConfig
+singleServerConfig:
+  address: "redis://localhost:6379"
+  username: huava
+  password: eFS0H6_0_pkVm__o
+  database: 8
+  connectionPoolSize: 64
+  connectionMinimumIdleSize: 10
+  idleConnectionTimeout: 10000
+  connectTimeout: 10000
+  timeout: 3000
+  retryAttempts: 3
+  retryInterval: 1500
+threads: 16
+nettyThreads: 32
+

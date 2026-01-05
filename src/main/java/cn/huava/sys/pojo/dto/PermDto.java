@@ -5,7 +5,6 @@ import java.util.List;
 import lombok.Data;
 
 /**
- * 权限
  * @author Camio1945
  */
 @Data

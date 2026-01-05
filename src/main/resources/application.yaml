@@ -11,7 +11,7 @@ spring:
     time-zone: GMT+8
   redis:
     redisson:
-      file: classpath:redisson-config.yml
+      file: classpath:redisson-config.yaml
   cache:
     type: redis
     redis:

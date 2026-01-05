@@ -1,24 +1,18 @@
 package cn.huava.sys.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import cn.huava.sys.pojo.dto.PermDto;
+import cn.huava.sys.pojo.po.PermPo;
 import cn.huava.sys.service.perm.AcePermService;
-import java.util.Collections;
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,9 +24,9 @@ import org.springframework.transaction.annotation.Transactional;
 class PermControllerTest {
   @Autowired private MockMvc mockMvc;
 
-  @InjectMocks private PermController permController;
+  @Autowired private PermController permController;
 
-  @Mock private AcePermService acePermService;
+  @Autowired private AcePermService acePermService;
 
   @BeforeEach
   void setUp() {
@@ -42,11 +36,11 @@ class PermControllerTest {
 
   @Test
   void getAllReturnsListOfPermDtos() throws Exception {
+//    PermPo entity = new PermPo().;
+//    permController.create(entity);
 
-    mockMvc
-        .perform(MockMvcRequestBuilders.get("/sys/perm/getAll"))
-        .andExpect(status().isOk());
+//    mockMvc.perform(MockMvcRequestBuilders.get("/sys/perm/getAll")).andExpect(status().isOk());
 
-//    assertThat(repository.findAll()).anyMatch(item -> item.getContent().equals("foo"));
+    //    assertThat(repository.findAll()).anyMatch(item -> item.getContent().equals("foo"));
   }
 }

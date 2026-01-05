@@ -4,14 +4,10 @@ import static cn.huava.common.constant.CommonConstant.MAX_PASSWORD_LENGTH;
 import static cn.huava.common.constant.CommonConstant.MIN_PASSWORD_LENGTH;
 
 import cn.huava.common.pojo.po.BasePo;
-import cn.huava.common.validation.Create;
-import cn.huava.common.validation.Delete;
-import cn.huava.common.validation.Update;
-import cn.huava.common.validation.ValidEnum;
+import cn.huava.common.validation.*;
 import cn.huava.sys.enumeration.UserGenderEnum;
-import cn.huava.sys.validation.user.BeforeDeleteUser;
-import cn.huava.sys.validation.user.BeforeUpdateUser;
-import cn.huava.sys.validation.user.UniqueUsername;
+import cn.huava.common.validation.ValidEnum;
+import cn.huava.sys.validation.user.*;
 import com.baomidou.mybatisplus.annotation.TableName;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -19,89 +15,87 @@ import java.io.Serial;
 import java.util.Date;
 import lombok.Data;
 
-///
-/// # User
-///
-/// @author Camio1945
+/**
+ * 用户
+ *
+ * @author Camio1945
+ */
 @Data
 @TableName("sys_user")
-@UniqueUsername(groups = {Create.class, Update.class})
+@UniqueUsername(
+    message = "用户名已存在",
+    groups = {Create.class, Update.class})
 @BeforeDeleteUser(groups = {Delete.class})
 @BeforeUpdateUser(groups = {Update.class})
 public class UserPo extends BasePo {
   @Serial private static final long serialVersionUID = 1L;
 
-  /** Username */
+  /** 用户名 */
   @NotBlank(
-      message = "Username cannot be empty",
+      message = "用户名不能为空",
       groups = {Create.class, Update.class})
   @Size(
       min = 3,
       max = 30,
-      message = "Username length should be 3 ~ 30 characters",
+      message = "用户名长度应该为 3 ~ 30 个字符",
       groups = {Create.class, Update.class})
   private String username;
 
-  /** Password */
+  /** 密码 */
   @NotBlank(
-      message = "Password cannot be empty",
+      message = "密码不能为空",
       groups = {Create.class})
   @Size(
       min = MIN_PASSWORD_LENGTH,
       max = MAX_PASSWORD_LENGTH,
-      message =
-          "Password length should be "
-              + MIN_PASSWORD_LENGTH
-              + " ~ "
-              + MAX_PASSWORD_LENGTH
-              + " characters",
+      message = "密码长度应该为 " + MIN_PASSWORD_LENGTH + " ~ " + MAX_PASSWORD_LENGTH + " 个字符",
       groups = {Create.class})
   private String password;
 
-  /** Real name */
+  /** 真实姓名 */
   @Size(
       max = 30,
-      message = "Real name length cannot exceed 30 characters",
+      message = "姓名长度不能大于 30 个字符",
       groups = {Create.class, Update.class})
   private String realName;
 
-  /** Phone number */
+  /** 手机号 */
   @Size(
       max = 20,
-      message = "Phone number length cannot exceed 20 characters",
+      message = "手机号长度不能大于 20 个字符",
       groups = {Create.class, Update.class})
   private String phoneNumber;
 
-  /** User gender: M-Male, F-Female, U-Unknown */
+  /** 用户性别：M-男，F-女，U-未知 */
   @Size(
       max = 1,
-      message = "Gender length cannot exceed 1 character",
+      message = "性别长度不能大于 1 个字符",
       groups = {Create.class, Update.class})
   @ValidEnum(
       enumClass = UserGenderEnum.class,
-      message = "Gender options can only be: M, F, U",
+      message = "性别的可选值只能为：M、F、U",
       groups = {Create.class, Update.class})
   private String gender;
 
-  /** Avatar path */
+  /** 头像路径 */
   @Size(
       max = 200,
-      message = "Avatar path length cannot exceed 200 characters",
+      message = "头像路径长度不能大于 200 个字符",
       groups = {Create.class, Update.class})
   private String avatar;
 
-  /** Is enabled */
+  /** 是否启用 */
   private Boolean isEnabled;
 
-  /** Disabled reason */
+  /** 禁用原因 */
   private String disabledReason;
 
-  /** Last login IP */
+  /** 最后登录IP */
   private String lastLoginIp;
 
-  /** Last login date */
+  /** 最后登录时间 */
   private Date lastLoginDate;
 
-  /** Remark */
+  /** 备注 */
   private String remark;
 }

@@ -17,7 +17,6 @@ class BaseValidatorTest {
 
   @BeforeEach
   void setUp() {
-    validator = new BaseValidator();
   }
 
   @Test

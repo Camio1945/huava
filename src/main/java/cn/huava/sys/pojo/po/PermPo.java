@@ -3,8 +3,8 @@ package cn.huava.sys.pojo.po;
 import cn.huava.common.pojo.po.BasePo;
 import cn.huava.common.validation.Create;
 import cn.huava.common.validation.Update;
-import cn.huava.common.validation.ValidEnum;
 import cn.huava.sys.enumeration.PermTypeEnum;
+import cn.huava.common.validation.ValidEnum;
 import com.baomidou.mybatisplus.annotation.TableName;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -19,7 +19,7 @@ import lombok.Data;
 @TableName("sys_perm")
 public class PermPo extends BasePo {
 
-  /** 上级权限 ID */
+  /** 上级权限ID */
   private Long pid;
 
   /** 权限类型: D=目录(Directory)，M=菜单(Menu)，E=元素(Element) */
@@ -44,7 +44,7 @@ public class PermPo extends BasePo {
       groups = {Create.class, Update.class})
   private Integer sort;
 
-  /** 接口 URI */
+  /** 接口URI */
   private String uri;
 
   /** 路由地址 */
