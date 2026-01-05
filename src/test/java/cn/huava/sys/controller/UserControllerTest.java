@@ -50,18 +50,6 @@ public class UserControllerTest extends WithSpringBootTestAnnotation {
   private static UserExtPo createdObj = null;
   @Autowired MockMvc mockMvcAutowired;
 
-  public static void testAllExceptLogout() throws Exception {
-    create();
-    getById();
-    page();
-    isUsernameExists();
-    loginAndMySelfByCreatedUser();
-    update();
-    updatePassword();
-    deleteById();
-    refreshToken();
-  }
-
   @Test
   @SneakyThrows
   void mySelf() {
@@ -78,7 +66,9 @@ public class UserControllerTest extends WithSpringBootTestAnnotation {
    * Test the create user api. <br>
    * 测试添加用户接口。
    */
-  private static void create() throws Exception {
+  @Test
+  @SneakyThrows
+  void create() {
     createParamObj = new UserExtPo();
     createParamObj
         .setUsername(IdUtil.nanoId(10))
@@ -96,7 +86,9 @@ public class UserControllerTest extends WithSpringBootTestAnnotation {
     createdId = Long.parseLong(createdIdStr);
   }
 
-  private static void getById() throws Exception {
+  @Test
+  @SneakyThrows
+  void getById() {
     createdObj = getById(createdId);
     assertNotNull(createdObj);
     assertEquals(createdObj.getId(), createdId);
@@ -107,7 +99,9 @@ public class UserControllerTest extends WithSpringBootTestAnnotation {
     assertEquals(createParamObj.getIsEnabled(), createdObj.getIsEnabled());
   }
 
-  private static void page() throws Exception {
+  @Test
+  @SneakyThrows
+  void page() {
     String username = createdObj.getUsername();
     RequestBuilder req =
         initReq().get("/sys/user/page?current=1&size=1&username=" + username).build();
@@ -119,7 +113,9 @@ public class UserControllerTest extends WithSpringBootTestAnnotation {
     assertEquals(createdId, pageDto.getList().getFirst().getId());
   }
 
-  private static void isUsernameExists() throws Exception {
+  @Test
+  @SneakyThrows
+  void isUsernameExists() {
     // 当传入 id 和 用户名 时，相当于查询 username = '传入的用户名' AND id != '传入的 id'，因此应该返回 false
     String username = createdObj.getUsername();
     String url = "/sys/user/isUsernameExists?id=" + createdId + "&username=" + username;
@@ -135,7 +131,9 @@ public class UserControllerTest extends WithSpringBootTestAnnotation {
   }
 
   /** 使用新创建的用户登录 */
-  private static void loginAndMySelfByCreatedUser() throws Exception {
+  @Test
+  @SneakyThrows
+  void loginAndMySelfByCreatedUser() {
     RequestBuilder req = buildLoginReq(createParamObj.getUsername(), createParamObj.getPassword());
     MvcResult res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
     String resJsonStr = res.getResponse().getContentAsString();
@@ -155,14 +153,16 @@ public class UserControllerTest extends WithSpringBootTestAnnotation {
     accessToken = preservedAccessToken;
   }
 
-  private static void update() throws Exception {
+  void update() {
     // 修改用户，同时修改密码
     updateWithNewPassword();
     // 修改用户，但是不修改密码，以测试不同的代码分支
     updateWithOldPassword();
   }
 
-  private static void updatePassword() throws Exception {
+  @Test
+  @SneakyThrows
+  void updatePassword() {
     UpdatePasswordQo updatePasswordQo = new UpdatePasswordQo();
     updatePasswordQo.setOldPassword(PASSWORD);
     String newPassword = PASSWORD + "new";
@@ -187,7 +187,9 @@ public class UserControllerTest extends WithSpringBootTestAnnotation {
     mockMvc.perform(req).andExpect(status().isOk());
   }
 
-  private static void deleteById() throws Exception {
+  @Test
+  @SneakyThrows
+  void deleteById() {
     UserExtPo userExtPo = new UserExtPo();
     userExtPo.setId(createdId);
     RequestBuilder req = initReq().delete("/sys/user/delete").contentJson(userExtPo).build();
@@ -196,7 +198,9 @@ public class UserControllerTest extends WithSpringBootTestAnnotation {
     mockMvc.perform(req).andExpect(status().isNotFound());
   }
 
-  private static void refreshToken() throws Exception {
+  @Test
+  @SneakyThrows
+  void refreshToken() {
     RequestBuilder req =
         initReq().post("/sys/user/refreshToken").contentTypeText().content(refreshToken).build();
     MvcResult res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
@@ -204,14 +208,15 @@ public class UserControllerTest extends WithSpringBootTestAnnotation {
     assertTrue(Fn.isNotBlank(accessToken));
   }
 
-  private static UserExtPo getById(@NonNull Long id) throws Exception {
+  @SneakyThrows
+  UserExtPo getById(@NonNull Long id) {
     RequestBuilder req = initReq().get("/sys/user/get/" + id).build();
     MvcResult res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
     String resJsonStr = res.getResponse().getContentAsString();
     return JSONUtil.toBean(resJsonStr, UserExtPo.class);
   }
 
-  private static RequestBuilder buildLoginReq(@NonNull String username, @NonNull String password) {
+  RequestBuilder buildLoginReq(@NonNull String username, @NonNull String password) {
     LoginQo loginQo = new LoginQo();
     loginQo.setUsername(username);
     loginQo.setPassword(password);
@@ -225,7 +230,9 @@ public class UserControllerTest extends WithSpringBootTestAnnotation {
         .build();
   }
 
-  private static void updateWithNewPassword() throws Exception {
+  @Test
+  @SneakyThrows
+  void updateWithNewPassword() {
     UserExtPo updateParamObj = new UserExtPo();
     updateParamObj.setId(createdId);
     updateParamObj
@@ -248,7 +255,9 @@ public class UserControllerTest extends WithSpringBootTestAnnotation {
     assertEquals(updateParamObj.getIsEnabled(), updatedObj.getIsEnabled());
   }
 
-  private static void updateWithOldPassword() throws Exception {
+  @Test
+  @SneakyThrows
+  void updateWithOldPassword() {
     UserExtPo updateParamObj = new UserExtPo();
     updateParamObj.setId(createdId);
     updateParamObj
