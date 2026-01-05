@@ -1,7 +1,7 @@
-when the first time calling src/main/java/cn/huava/sys/cache/UserCache.java#getById(1), the old version will store the key(cache:user:id::1) in redis with value:
+when the first time calling src/main/java/cn/huava/sys/cache/UserCache.java#getById(1), the old version (springboot3) will store the key `cache:user:id::1` in redis with value:
 {"@class":"cn.huava.sys.pojo.po.UserExtPo","id":1,"createdBy":1,"createdAt":["java.util.Date","2024-08-17 00:58:25"],"updatedBy":1,"updatedAt":["java.util.Date","2024-08-17 00:58:25"],"deleteInfo":0,"username":"admin","password":"$2a$10$KfJSqi4zVpOk0O3uRRtQnufyJWeUhicDmOfPfsqFgbpJ6x8/..i52","realName":"超管","phoneNumber":"15888888888","gender":"U","avatar":"/20240825/b242a9554556227ab242a9554556227a.jpg","isEnabled":true,"disabledReason":null,"lastLoginIp":"127.0.0.1","lastLoginDate":null,"remark":"超级管理员","roleIds":null}
 
-but now it just is:
+but now the value is:
 {"avatar":"/20240825/b242a9554556227ab242a9554556227a.jpg","createdAt":"2024-08-17 08:58:25","createdBy":1,"deleteInfo":0,"disabledReason":null,"gender":"U","id":1,"isEnabled":true,"lastLoginDate":null,"lastLoginIp":"127.0.0.1","password":"$2a$10$KfJSqi4zVpOk0O3uRRtQnufyJWeUhicDmOfPfsqFgbpJ6x8/..i52","phoneNumber":"15888888888","realName":"超管","remark":"超级管理员","roleIds":null,"updatedAt":"2024-08-17 08:58:25","updatedBy":1,"username":"admin"}
 
 which will cause this error when call src/main/java/cn/huava/sys/cache/UserCache.java#getById(1) again:
@@ -15,4 +15,4 @@ java.lang.ClassCastException: class java.util.LinkedHashMap cannot be cast to cl
 	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359) ~[spring-aop-7.0.2.jar:7.0.2]
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:715) ~[spring-aop-7.0.2.jar:7.0.2]
 
-	fix it
+Please fix the problem, run `mvn -Dtest=cn.huava.sys.controller.UserControllerTest#mySelf test` to verify the result, if the test fails, then the problem is not fixed.
