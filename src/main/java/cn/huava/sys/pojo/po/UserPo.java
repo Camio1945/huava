@@ -90,7 +90,7 @@ public class UserPo extends BasePo {
   /** 禁用原因 */
   private String disabledReason;
 
-  /** 最后登录IP */
+  /** 最后登录 IP */
   private String lastLoginIp;
 
   /** 最后登录时间 */

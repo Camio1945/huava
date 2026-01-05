@@ -1,0 +1,68 @@
+{
+  "types": [
+  ],
+  "proxies": [
+  ],
+  "lambdaCapturingTypes": [
+    {
+      "name": "cn.huava.sys.cache.UserRoleCache"
+    },
+    {
+      "name": "cn.huava.sys.cache.RoleCache"
+    },
+    {
+      "name": "cn.huava.sys.cache.UserCache"
+    },
+    {
+      "name": "cn.huava.sys.validation.user.RoleIdsValidator"
+    },
+    {
+      "name": "cn.huava.sys.service.userrole.AceUserRoleService"
+    },
+    {
+      "name": "cn.huava.sys.service.perm.GetAllPermService"
+    },
+    {
+      "name": "cn.huava.sys.service.refreshtoken.AceRefreshTokenService"
+    },
+    {
+      "name": "cn.huava.sys.service.role.AceRoleService"
+    },
+    {
+      "name": "cn.huava.sys.service.role.RolePageService"
+    },
+    {
+      "name": "cn.huava.sys.service.user.LoginService"
+    },
+    {
+      "name": "cn.huava.sys.service.user.UserPageService"
+    },
+    {
+      "name": "cn.huava.sys.service.user.AceUserService"
+    },
+    {
+      "name": "cn.huava.sys.service.user.GetUserInfoService"
+    },
+    {
+      "name": "cn.huava.common.graalvm.RuntimeHintsRegistrarConfig"
+    },
+    {
+      "name": "cn.huava.common.graalvm.SerializationConfigGenerator"
+    },
+    {
+      "name": "cn.huava.common.graalvm.NativeRuntimeHintsRegistrar"
+    },
+    {
+      "name": "cn.huava.common.util.RedisUtil"
+    },
+    {
+      "name": "cn.huava.common.config.SecurityConfig"
+    },
+    {
+      "name": "cn.huava.common.filter.UriAuthFilter"
+    },
+    {
+      "name": "cn.huava.common.service.captcha.RefreshCaptchaService"
+    }
+  ]
+}

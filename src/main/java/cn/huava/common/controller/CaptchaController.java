@@ -1,5 +1,7 @@
 package cn.huava.common.controller;
 
+import static cn.huava.common.constant.CommonConstant.CAPTCHA_CODE_SESSION_KEY;
+
 import cn.huava.common.util.SkijaCaptchaUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,7 +23,7 @@ public class CaptchaController {
     SkijaCaptchaUtil.CaptchaResult captcha = SkijaCaptchaUtil.generateCaptcha(160, 60, 5);
 
     // Save code to session
-    request.getSession().setAttribute("captcha", captcha.code());
+    request.getSession().setAttribute(CAPTCHA_CODE_SESSION_KEY, captcha.code());
 
     // Output image
     response.setContentType("image/png");

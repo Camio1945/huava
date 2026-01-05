@@ -3,11 +3,11 @@ package cn.huava.sys.controller;
 import static cn.huava.common.constant.CommonConstant.AUTHORIZATION_HEADER;
 import static cn.huava.common.constant.CommonConstant.BEARER_PREFIX;
 
-import lombok.NonNull;
 import cn.hutool.v7.json.JSONUtil;
+import lombok.NonNull;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.AbstractMockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 /**
@@ -18,19 +18,12 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
  */
 public class ApiTestUtil {
 
-  /** set in {@link ApiTest#tempTestControllerTest()} */
   public static MockMvc mockMvc;
 
-  /** set in {@link CaptchaControllerTest#captcha} */
   public static MockHttpSession session = new MockHttpSession();
 
-  /**
-   * set in {@link UserControllerTest#login} and {@link UserControllerTest#refreshToken()} and
-   * {@link UserControllerTest#tokenExpired()}
-   */
   public static String accessToken;
 
-  /** set in {@link UserControllerTest#login} */
   public static String refreshToken;
 
   public static ReqBuilder initReq() {
@@ -43,7 +36,7 @@ public class ApiTestUtil {
     private String contentType;
     private String acceptType;
     private String content;
-    private MockHttpServletRequestBuilder req;
+    private AbstractMockHttpServletRequestBuilder<?> req;
 
     // =================== 第 1 步，调用以下几个方法之一 =====================
 
@@ -81,9 +74,9 @@ public class ApiTestUtil {
      *       initReq().multipart("/common/attachment/upload").build();
      * </pre>
      *
-     * @param urlTemplate
-     * @param uriVariables
-     * @return
+     * @param urlTemplate url
+     * @param uriVariables 参数
+     * @return MockMultipartHttpServletRequestBuilder
      */
     public ReqBuilder multipart(@NonNull String urlTemplate, Object... uriVariables) {
       req = MockMvcRequestBuilders.multipart(urlTemplate, uriVariables);
@@ -137,7 +130,7 @@ public class ApiTestUtil {
     }
 
     // =================== 第 7 步，执行构建 ==========
-    public MockHttpServletRequestBuilder build() {
+    public AbstractMockHttpServletRequestBuilder<?> build() {
       if (this.session == null) {
         req.session(ApiTestUtil.session);
       }

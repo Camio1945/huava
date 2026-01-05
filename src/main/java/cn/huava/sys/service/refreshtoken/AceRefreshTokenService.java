@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 public class AceRefreshTokenService extends BaseService<RefreshTokenMapper, RefreshTokenPo> {
   public void saveRefreshToken(@NonNull Long sysUserId, @NonNull String refreshToken) {
     RefreshTokenPo po = new RefreshTokenPo().setRefreshToken(refreshToken).setSysUserId(sysUserId);
+    po.setCreatedBy(sysUserId).setUpdatedBy(sysUserId);
     BasePo.beforeCreate(po);
     save(po);
   }
