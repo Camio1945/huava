@@ -1,9 +1,11 @@
 package cn.huava.common.constant;
 
+/// # Common constants
 ///
-/// # About @SuppressWarnings("java:S1214"): <br>
-/// When an interface only contains constant definitions without other members, this rule triggers a warning.
-/// However, this is just a constant class that doesn't need other members, so this warning can be ignored.
+/// About @SuppressWarnings("java:S1214"):
+/// This rule raises an issue when an interface consists only of constant definitions without other
+/// members. However, this is just a constant class that doesn't need other members, so this warning
+/// can be ignored.
 ///
 /// @author Camio1945
 @SuppressWarnings("java:S1214")

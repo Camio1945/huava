@@ -136,7 +136,12 @@
         <version>0.8.14</version>
         <configuration>
           <excludes>
+            <!--  -->
             <exclude>cn/huava/HuavaApplication.class</exclude>
+            <!-- Lqw is an empty class, no need and can not be tested -->
+            <exclude>com/baomidou/mybatisplus/core/conditions/query/Lqw.class</exclude>
+            <!-- Pure constant interface has no need to test -->
+            <exclude>cn/huava/common/constant/CommonConstant.class</exclude>
           </excludes>
         </configuration>
         <executions>
