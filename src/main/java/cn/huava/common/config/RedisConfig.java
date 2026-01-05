@@ -6,11 +6,15 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurer;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.interceptor.CacheResolver;
+import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.*;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.serializer.*;
 import org.springframework.data.redis.serializer.RedisSerializationContext.SerializationPair;
 import org.springframework.lang.Nullable;
@@ -27,6 +31,7 @@ import tools.jackson.databind.ObjectMapper;
 @RequiredArgsConstructor
 public class RedisConfig implements CachingConfigurer {
   private final ObjectMapper objectMapper;
+  private final RedisConnectionFactory redisConnectionFactory;
 
   @Value("${spring.cache.redis.time-to-live}")
   private long redisTimeToLive;
@@ -39,6 +44,27 @@ public class RedisConfig implements CachingConfigurer {
         .disableCachingNullValues()
         .serializeValuesWith(
             SerializationPair.fromSerializer(new GenericJacksonJsonRedisSerializer(objectMapper)));
+  }
+
+  @Bean
+  @Override
+  public CacheManager cacheManager() {
+    return RedisCacheManager
+        .RedisCacheManagerBuilder
+        .fromConnectionFactory(redisConnectionFactory)
+        .cacheDefaults(cacheConfiguration())
+        .build();
+  }
+
+  // The following methods are required by CachingConfigurer interface
+  @Override
+  public CacheResolver cacheResolver() {
+    return null;
+  }
+
+  @Override
+  public KeyGenerator keyGenerator() {
+    return null;
   }
 }
 
