@@ -2,15 +2,11 @@ package cn.huava.sys.controller;
 
 import static cn.huava.common.constant.CommonConstant.CAPTCHA_CODE_SESSION_KEY;
 import static cn.huava.sys.controller.ApiTestUtil.*;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import cn.huava.common.WithSpringBootTestAnnotation;
 import cn.huava.common.pojo.dto.PageDto;
 import cn.huava.common.util.Fn;
-import cn.huava.common.util.RedisUtil;
 import cn.huava.sys.enumeration.UserGenderEnum;
 import cn.huava.sys.pojo.dto.*;
 import cn.huava.sys.pojo.po.UserExtPo;
@@ -22,35 +18,29 @@ import cn.hutool.v7.core.reflect.TypeReference;
 import cn.hutool.v7.json.JSONUtil;
 import java.util.*;
 import lombok.NonNull;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 
 /**
- * Test the apis in {@link UserController}.
+ * Test the apis in {@link UserController}. <br>
+ * 测试 {@link UserController} 中的接口。<br>
+ * java:S2187 要求测试类中必须有 @Test 标注的方法，否则就认为这不是一个测试类。但当前类是被人调用的，其实是测试类。
  *
  * @author Camio1945
  */
-@Slf4j
-@AutoConfigureMockMvc
-@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-public class UserControllerTest extends WithSpringBootTestAnnotation {
+@SuppressWarnings("java:S2187")
+public class UserControllerTestBak {
+
   private static final String USERNAME = "admin";
   private static final String PASSWORD = "123456";
   private static Long createdId = null;
   private static UserExtPo createParamObj = null;
   private static UserExtPo createdObj = null;
-  @Autowired MockMvc mockMvcAutowired;
 
   public static void testAllExceptLogout() throws Exception {
+    login();
+    mySelf();
     create();
     getById();
     page();
@@ -62,9 +52,27 @@ public class UserControllerTest extends WithSpringBootTestAnnotation {
     refreshToken();
   }
 
-  @Test
-  @SneakyThrows
-  void mySelf() {
+  /**
+   * Test the login api. <br>
+   * 测试登录接口。
+   */
+  private static void login() throws Exception {
+    LoginQo loginQo = new LoginQo();
+    loginQo.setUsername(USERNAME);
+    loginQo.setPassword(PASSWORD);
+    loginQo.setCaptchaCode((String) session.getAttribute(CAPTCHA_CODE_SESSION_KEY));
+    loginQo.setIsCaptchaDisabledForTesting(false);
+    RequestBuilder req =
+        initReq().post("/sys/user/login").needToken(false).contentJson(loginQo).build();
+    MvcResult res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
+    String resJsonStr = res.getResponse().getContentAsString();
+    UserJwtDto userJwtDto = JSONUtil.toBean(resJsonStr, UserJwtDto.class);
+    assertFalse(userJwtDto.getRefreshToken().isEmpty());
+    accessToken = userJwtDto.getAccessToken();
+    ApiTestUtil.refreshToken = userJwtDto.getRefreshToken();
+  }
+
+  private static void mySelf() throws Exception {
     RequestBuilder req = initReq().get("/sys/user/mySelf").build();
     MvcResult res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
     String resJsonStr = res.getResponse().getContentAsString();
@@ -268,43 +276,5 @@ public class UserControllerTest extends WithSpringBootTestAnnotation {
     assertEquals(updateParamObj.getPhoneNumber(), updatedObj.getPhoneNumber());
     assertEquals(updateParamObj.getGender(), updatedObj.getGender());
     assertEquals(updateParamObj.getIsEnabled(), updatedObj.getIsEnabled());
-  }
-
-  @BeforeEach
-  void beforeEach() {
-    if (ApiTestUtil.mockMvc == null) {
-      ApiTestUtil.mockMvc = mockMvcAutowired;
-      RedisUtil.flushNonProductionDb();
-      login();
-    }
-  }
-
-  /**
-   * Test the login api. <br>
-   * 测试登录接口。
-   */
-  @SneakyThrows
-  @Test
-  synchronized void login() {
-    // 一次测试只登录一次
-    if (accessToken != null) {
-      return;
-    }
-    MvcResult res =
-        mockMvc.perform(get("/captcha").session(session)).andExpect(status().isOk()).andReturn();
-    assertThat(res.getResponse().getContentAsByteArray()).hasSizeGreaterThan(0);
-    LoginQo loginQo = new LoginQo();
-    loginQo.setUsername(USERNAME);
-    loginQo.setPassword(PASSWORD);
-    loginQo.setCaptchaCode((String) session.getAttribute(CAPTCHA_CODE_SESSION_KEY));
-    loginQo.setIsCaptchaDisabledForTesting(false);
-    RequestBuilder req =
-        initReq().post("/sys/user/login").needToken(false).contentJson(loginQo).build();
-    res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
-    String resJsonStr = res.getResponse().getContentAsString();
-    UserJwtDto userJwtDto = JSONUtil.toBean(resJsonStr, UserJwtDto.class);
-    assertFalse(userJwtDto.getRefreshToken().isEmpty());
-    accessToken = userJwtDto.getAccessToken();
-    refreshToken = userJwtDto.getRefreshToken();
   }
 }

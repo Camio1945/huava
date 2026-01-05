@@ -1,1 +1,12 @@
-summarize the rules of all the key points of the papers in docs/source_codes/ZhengYe folder for me, in English, and put them in docs/ai_task/4.result.md file, each rule with code examples if needed, and group the rules.
+Fix this error:
+2026-01-05T18:27:39.561+08:00 ERROR 139758 --- [huava] [           main] c.h.c.c.handler.GlobalExceptionHandler   : API /sys/user/mySelf encountered server error
+
+java.lang.ClassCastException: class java.util.LinkedHashMap cannot be cast to class cn.huava.sys.pojo.po.UserExtPo (java.util.LinkedHashMap is in module java.base of loader 'bootstrap'; cn.huava.sys.pojo.po.UserExtPo is in unnamed module of loader 'app')
+	at cn.huava.sys.cache.UserCache$$SpringCGLIB$$0.getById(<generated>) ~[classes/:na]
+	at cn.huava.common.util.LoginUtil.getLoginUser(LoginUtil.java:26) ~[classes/:na]
+	at cn.huava.common.util.Fn.getLoginUser(Fn.java:71) ~[classes/:na]
+	at cn.huava.sys.service.user.GetUserInfoService.getUserInfoDto(GetUserInfoService.java:39) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359) ~[spring-aop-7.0.2.jar:7.0.2]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:715) ~[spring-aop-7.0.2.jar:7.0.2]
