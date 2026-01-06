@@ -24,7 +24,6 @@ import java.util.*;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +41,7 @@ import org.springframework.test.web.servlet.RequestBuilder;
 @Slf4j
 @AutoConfigureMockMvc
 @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-public class UserControllerTest extends WithSpringBootTestAnnotation {
+class UserControllerTest extends WithSpringBootTestAnnotation {
   private static final String USERNAME = "admin";
   private static final String PASSWORD = "123456";
   private static Long createdId = null;
@@ -52,8 +51,8 @@ public class UserControllerTest extends WithSpringBootTestAnnotation {
 
   @Test
   @SneakyThrows
-  void mySelf() {
-    RequestBuilder req = initReq().get("/sys/user/mySelf").build();
+  void should_get_info_of_myself() {
+    RequestBuilder req = initReq().get("/sys/user/myself").build();
     MvcResult res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
     String resJsonStr = res.getResponse().getContentAsString();
     UserInfoDto userInfoDto = JSONUtil.toBean(resJsonStr, UserInfoDto.class);
@@ -143,7 +142,7 @@ public class UserControllerTest extends WithSpringBootTestAnnotation {
     String preservedAccessToken = accessToken;
     accessToken = userJwtDto.getAccessToken();
 
-    req = initReq().get("/sys/user/mySelf").build();
+    req = initReq().get("/sys/user/myself").build();
     res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
     resJsonStr = res.getResponse().getContentAsString();
     UserInfoDto userInfoDto = JSONUtil.toBean(resJsonStr, UserInfoDto.class);

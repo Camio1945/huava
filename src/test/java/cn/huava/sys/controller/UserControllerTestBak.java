@@ -40,7 +40,7 @@ public class UserControllerTestBak {
 
   public static void testAllExceptLogout() throws Exception {
     login();
-    mySelf();
+    myself();
     create();
     getById();
     page();
@@ -72,8 +72,8 @@ public class UserControllerTestBak {
     ApiTestUtil.refreshToken = userJwtDto.getRefreshToken();
   }
 
-  private static void mySelf() throws Exception {
-    RequestBuilder req = initReq().get("/sys/user/mySelf").build();
+  private static void myself() throws Exception {
+    RequestBuilder req = initReq().get("/sys/user/myself").build();
     MvcResult res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
     String resJsonStr = res.getResponse().getContentAsString();
     UserInfoDto userInfoDto = JSONUtil.toBean(resJsonStr, UserInfoDto.class);
@@ -153,7 +153,7 @@ public class UserControllerTestBak {
     String preservedAccessToken = accessToken;
     accessToken = userJwtDto.getAccessToken();
 
-    req = initReq().get("/sys/user/mySelf").build();
+    req = initReq().get("/sys/user/myself").build();
     res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
     resJsonStr = res.getResponse().getContentAsString();
     UserInfoDto userInfoDto = JSONUtil.toBean(resJsonStr, UserInfoDto.class);

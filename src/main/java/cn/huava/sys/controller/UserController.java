@@ -48,8 +48,8 @@ public class UserController extends BaseController<AceUserService, UserMapper, U
     return ResponseEntity.ok(service.login(req, loginQo));
   }
 
-  @GetMapping("/mySelf")
-  public ResponseEntity<UserInfoDto> mySelf() {
+  @GetMapping("/myself")
+  public ResponseEntity<UserInfoDto> myself() {
     UserInfoDto userInfoDto = service.getUserInfoDto();
     return ResponseEntity.ok(userInfoDto);
   }
