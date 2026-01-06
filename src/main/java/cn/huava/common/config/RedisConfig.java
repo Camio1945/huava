@@ -8,18 +8,15 @@ import java.util.TimeZone;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CachingConfigurer;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.cache.interceptor.CacheResolver;
-import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.*;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.serializer.*;
 import org.springframework.data.redis.serializer.RedisSerializationContext.SerializationPair;
-import org.springframework.lang.Nullable;
 import tools.jackson.databind.DefaultTyping;
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.json.JsonMapper;
@@ -36,14 +33,12 @@ import tools.jackson.databind.jsontype.PolymorphicTypeValidator;
 @EnableCaching
 @RequiredArgsConstructor
 public class RedisConfig implements CachingConfigurer {
-  private final RedisConnectionFactory redisConnectionFactory;
 
   @Value("${spring.cache.redis.time-to-live}")
   private long redisTimeToLive;
 
   @Bean
   public RedisCacheConfiguration cacheConfiguration() {
-
     return RedisCacheConfiguration.defaultCacheConfig()
         .entryTtl(new RandomOffsetTtlFunction(Duration.ofMinutes(redisTimeToLive)))
         .disableCachingNullValues()
@@ -67,17 +62,6 @@ public class RedisConfig implements CachingConfigurer {
         .defaultTimeZone(TimeZone.getTimeZone("GMT+8"))
         .activateDefaultTyping(ptv, DefaultTyping.NON_FINAL, JsonTypeInfo.As.WRAPPER_ARRAY)
         .build();
-  }
-
-  // The following methods are required by CachingConfigurer interface
-  @Override
-  public CacheResolver cacheResolver() {
-    return null;
-  }
-
-  @Override
-  public KeyGenerator keyGenerator() {
-    return null;
   }
 }
 
