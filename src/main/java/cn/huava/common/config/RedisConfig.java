@@ -1,12 +1,14 @@
 package cn.huava.common.config;
 
 import cn.huava.common.util.RedisUtil;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.util.TimeZone;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurer;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.CacheResolver;
@@ -18,7 +20,11 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.serializer.*;
 import org.springframework.data.redis.serializer.RedisSerializationContext.SerializationPair;
 import org.springframework.lang.Nullable;
+import tools.jackson.databind.DefaultTyping;
 import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
+import tools.jackson.databind.jsontype.PolymorphicTypeValidator;
 
 /**
  * Redis 配置
@@ -30,29 +36,36 @@ import tools.jackson.databind.ObjectMapper;
 @EnableCaching
 @RequiredArgsConstructor
 public class RedisConfig implements CachingConfigurer {
-  private final ObjectMapper objectMapper;
   private final RedisConnectionFactory redisConnectionFactory;
 
   @Value("${spring.cache.redis.time-to-live}")
   private long redisTimeToLive;
 
-
   @Bean
   public RedisCacheConfiguration cacheConfiguration() {
+
     return RedisCacheConfiguration.defaultCacheConfig()
         .entryTtl(new RandomOffsetTtlFunction(Duration.ofMinutes(redisTimeToLive)))
         .disableCachingNullValues()
         .serializeValuesWith(
-            SerializationPair.fromSerializer(new GenericJacksonJsonRedisSerializer(objectMapper)));
+            SerializationPair.fromSerializer(
+                new GenericJacksonJsonRedisSerializer(getObjectMapper())));
   }
 
-  @Bean
-  @Override
-  public CacheManager cacheManager() {
-    return RedisCacheManager
-        .RedisCacheManagerBuilder
-        .fromConnectionFactory(redisConnectionFactory)
-        .cacheDefaults(cacheConfiguration())
+  private static ObjectMapper getObjectMapper() {
+    PolymorphicTypeValidator ptv =
+        BasicPolymorphicTypeValidator.builder()
+            // Allow all POJOs that extend BasePo
+            .allowIfSubType(cn.huava.common.pojo.po.BasePo.class)
+            // Trust Dates
+            .allowIfBaseType(java.util.Date.class)
+            // Trust Lists
+            .allowIfBaseType(java.util.ArrayList.class)
+            .build();
+    return JsonMapper.builder()
+        .defaultDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))
+        .defaultTimeZone(TimeZone.getTimeZone("GMT+8"))
+        .activateDefaultTyping(ptv, DefaultTyping.NON_FINAL, JsonTypeInfo.As.WRAPPER_ARRAY)
         .build();
   }
 
