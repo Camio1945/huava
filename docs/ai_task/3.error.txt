@@ -16,3 +16,5 @@ java.lang.ClassCastException: class java.util.LinkedHashMap cannot be cast to cl
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:715) ~[spring-aop-7.0.2.jar:7.0.2]
 
 Please fix the problem, run `mvn -Dtest=cn.huava.sys.controller.UserControllerTest#mySelf test` to verify the result, if the test fails, then the problem is not fixed.
+Don't downgrade java version.
+Don't downgrade springboot version.
