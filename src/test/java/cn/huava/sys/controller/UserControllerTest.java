@@ -271,6 +271,9 @@ class UserControllerTest extends WithSpringBootTestAnnotation {
   @Test
   @SneakyThrows
   void should_refresh_token() {
+    accessToken = null;
+    refreshToken = null;
+    login();
     RequestBuilder req =
         initReq().post("/sys/user/refreshToken").contentTypeText().content(refreshToken).build();
     MvcResult res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
