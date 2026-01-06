@@ -1,6 +1,6 @@
 package cn.huava.sys.controller;
 
-import static cn.huava.common.constant.CommonConstant.CAPTCHA_CODE_SESSION_KEY;
+import static cn.huava.common.constant.CommonConstant.*;
 import static cn.huava.sys.controller.ApiTestUtil.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -9,7 +9,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import cn.huava.common.WithSpringBootTestAnnotation;
 import cn.huava.common.pojo.dto.PageDto;
-import cn.huava.common.util.Fn;
 import cn.huava.common.util.RedisUtil;
 import cn.huava.sys.enumeration.UserGenderEnum;
 import cn.huava.sys.pojo.dto.*;
@@ -21,17 +20,19 @@ import cn.hutool.v7.core.math.NumberUtil;
 import cn.hutool.v7.core.reflect.TypeReference;
 import cn.hutool.v7.json.JSONUtil;
 import java.util.*;
-import lombok.NonNull;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Test the apis in {@link UserController}.
@@ -40,13 +41,12 @@ import org.springframework.test.web.servlet.RequestBuilder;
  */
 @Slf4j
 @AutoConfigureMockMvc
+@Rollback
+@Transactional
 @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 class UserControllerTest extends WithSpringBootTestAnnotation {
-  private static final String USERNAME = "admin";
-  private static final String PASSWORD = "123456";
-  private static Long createdId = null;
-  private static UserExtPo createParamObj = null;
-  private static UserExtPo createdObj = null;
+  private static final String ADMIN_USERNAME = "admin";
+  private static final String ADMIN_PASSWORD = "123456";
   @Autowired MockMvc mockMvcAutowired;
 
   @Test
@@ -57,7 +57,7 @@ class UserControllerTest extends WithSpringBootTestAnnotation {
     String resJsonStr = res.getResponse().getContentAsString();
     UserInfoDto userInfoDto = JSONUtil.toBean(resJsonStr, UserInfoDto.class);
     assertNotNull(userInfoDto);
-    assertEquals(USERNAME, userInfoDto.getUsername());
+    assertEquals(ADMIN_USERNAME, userInfoDto.getUsername());
     assertFalse(userInfoDto.getMenu().isEmpty());
   }
 
@@ -67,8 +67,14 @@ class UserControllerTest extends WithSpringBootTestAnnotation {
    */
   @Test
   @SneakyThrows
-  void create() {
-    createParamObj = new UserExtPo();
+  void should_create_user() {
+    UserExtPo createdUser = createUser();
+    assertThat(createdUser.getId()).isNotNull();
+  }
+
+  @SneakyThrows
+  private static @NonNull UserExtPo createUser() {
+    UserExtPo createParamObj = new UserExtPo();
     createParamObj
         .setUsername(IdUtil.nanoId(10))
         .setPassword("12345678")
@@ -76,135 +82,22 @@ class UserControllerTest extends WithSpringBootTestAnnotation {
         .setPhoneNumber("18510336674")
         .setGender(UserGenderEnum.U.name())
         .setIsEnabled(true);
-    createParamObj.setRoleIds(List.of(1L));
+    createParamObj.setRoleIds(List.of(ADMIN_ROLE_ID));
     RequestBuilder req = initReq().post("/sys/user/create").contentJson(createParamObj).build();
     MvcResult res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
     String createdIdStr = res.getResponse().getContentAsString();
-    assertNotNull(createdIdStr);
-    assertTrue(NumberUtil.isLong(createdIdStr));
-    createdId = Long.parseLong(createdIdStr);
+    assertThat(createdIdStr).isNotBlank();
+    assertThat(NumberUtil.isLong(createdIdStr)).isTrue();
+    createParamObj.setId(Long.parseLong(createdIdStr));
+    return createParamObj;
   }
 
   @Test
   @SneakyThrows
-  void getById() {
-    createdObj = getById(createdId);
-    assertNotNull(createdObj);
-    assertEquals(createdObj.getId(), createdId);
-    assertEquals(createParamObj.getUsername(), createdObj.getUsername());
-    assertEquals(createParamObj.getRealName(), createdObj.getRealName());
-    assertEquals(createParamObj.getPhoneNumber(), createdObj.getPhoneNumber());
-    assertEquals(createParamObj.getGender(), createdObj.getGender());
-    assertEquals(createParamObj.getIsEnabled(), createdObj.getIsEnabled());
-  }
-
-  @Test
-  @SneakyThrows
-  void page() {
-    String username = createdObj.getUsername();
-    RequestBuilder req =
-        initReq().get("/sys/user/page?current=1&size=1&username=" + username).build();
-    MvcResult res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
-    String resJsonStr = res.getResponse().getContentAsString();
-    TypeReference<PageDto<UserDto>> type = new TypeReference<>() {};
-    PageDto<UserDto> pageDto = JSONUtil.toBean(resJsonStr, type);
-    assertEquals(1, pageDto.getCount());
-    assertEquals(createdId, pageDto.getList().getFirst().getId());
-  }
-
-  @Test
-  @SneakyThrows
-  void isUsernameExists() {
-    // 当传入 id 和 用户名 时，相当于查询 username = '传入的用户名' AND id != '传入的 id'，因此应该返回 false
-    String username = createdObj.getUsername();
-    String url = "/sys/user/isUsernameExists?id=" + createdId + "&username=" + username;
-    RequestBuilder req = initReq().get(url).build();
-    MvcResult res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
-    String resJsonStr = res.getResponse().getContentAsString();
-    assertEquals("false", resJsonStr);
-    // 当只传入用户名时，相当于查询 username = '传入的用户名'，因此应该返回 true
-    req = initReq().get("/sys/user/isUsernameExists?username=" + username).build();
-    res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
-    resJsonStr = res.getResponse().getContentAsString();
-    assertEquals("true", resJsonStr);
-  }
-
-  /** 使用新创建的用户登录 */
-  @Test
-  @SneakyThrows
-  void loginAndMySelfByCreatedUser() {
-    RequestBuilder req = buildLoginReq(createParamObj.getUsername(), createParamObj.getPassword());
-    MvcResult res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
-    String resJsonStr = res.getResponse().getContentAsString();
-    UserJwtDto userJwtDto = JSONUtil.toBean(resJsonStr, UserJwtDto.class);
-    assertFalse(userJwtDto.getAccessToken().isEmpty());
-    assertFalse(userJwtDto.getRefreshToken().isEmpty());
-    String preservedAccessToken = accessToken;
-    accessToken = userJwtDto.getAccessToken();
-
-    req = initReq().get("/sys/user/myself").build();
-    res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
-    resJsonStr = res.getResponse().getContentAsString();
-    UserInfoDto userInfoDto = JSONUtil.toBean(resJsonStr, UserInfoDto.class);
-    assertNotNull(userInfoDto);
-    assertEquals(createParamObj.getUsername(), userInfoDto.getUsername());
-    assertFalse(userInfoDto.getMenu().isEmpty());
-    accessToken = preservedAccessToken;
-  }
-
-  void update() {
-    // 修改用户，同时修改密码
-    updateWithNewPassword();
-    // 修改用户，但是不修改密码，以测试不同的代码分支
-    updateWithOldPassword();
-  }
-
-  @Test
-  @SneakyThrows
-  void updatePassword() {
-    UpdatePasswordQo updatePasswordQo = new UpdatePasswordQo();
-    updatePasswordQo.setOldPassword(PASSWORD);
-    String newPassword = PASSWORD + "new";
-    updatePasswordQo.setNewPassword(newPassword);
-    RequestBuilder req =
-        initReq().patch("/sys/user/updatePassword").contentJson(updatePasswordQo).build();
-    mockMvc.perform(req).andExpect(status().isOk());
-
-    // 用旧密码不能登录
-    req = buildLoginReq(USERNAME, PASSWORD);
-    mockMvc.perform(req).andExpect(status().isBadRequest());
-
-    // 用新密码可以登录
-    req = buildLoginReq(USERNAME, newPassword);
-    mockMvc.perform(req).andExpect(status().isOk());
-
-    // 把密码再改回来
-    updatePasswordQo = new UpdatePasswordQo();
-    updatePasswordQo.setOldPassword(newPassword);
-    updatePasswordQo.setNewPassword(PASSWORD);
-    req = initReq().patch("/sys/user/updatePassword").contentJson(updatePasswordQo).build();
-    mockMvc.perform(req).andExpect(status().isOk());
-  }
-
-  @Test
-  @SneakyThrows
-  void deleteById() {
-    UserExtPo userExtPo = new UserExtPo();
-    userExtPo.setId(createdId);
-    RequestBuilder req = initReq().delete("/sys/user/delete").contentJson(userExtPo).build();
-    mockMvc.perform(req).andExpect(status().isOk());
-    req = initReq().get("/sys/user/get/" + createdId).build();
-    mockMvc.perform(req).andExpect(status().isNotFound());
-  }
-
-  @Test
-  @SneakyThrows
-  void refreshToken() {
-    RequestBuilder req =
-        initReq().post("/sys/user/refreshToken").contentTypeText().content(refreshToken).build();
-    MvcResult res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
-    accessToken = res.getResponse().getContentAsString();
-    assertTrue(Fn.isNotBlank(accessToken));
+  void should_get_admin_user() {
+    UserExtPo user = getById(ADMIN_USER_ID);
+    assertThat(user).isNotNull();
+    assertThat(user.getId()).isEqualTo(ADMIN_USER_ID);
   }
 
   @SneakyThrows
@@ -215,9 +108,143 @@ class UserControllerTest extends WithSpringBootTestAnnotation {
     return JSONUtil.toBean(resJsonStr, UserExtPo.class);
   }
 
-  RequestBuilder buildLoginReq(@NonNull String username, @NonNull String password) {
+  @Test
+  @SneakyThrows
+  void should_query_page() {
+    RequestBuilder req =
+        initReq().get("/sys/user/page?current=1&size=1&username=" + ADMIN_USERNAME).build();
+    MvcResult res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
+    String resJsonStr = res.getResponse().getContentAsString();
+    TypeReference<PageDto<UserDto>> type = new TypeReference<>() {};
+    PageDto<UserDto> pageDto = JSONUtil.toBean(resJsonStr, type);
+    assertThat(pageDto.getCount()).isEqualTo(1);
+    assertThat(pageDto.getList().getFirst().getId()).isEqualTo(ADMIN_USER_ID);
+  }
+
+  @Test
+  @SneakyThrows
+  void should_username_exists() {
+    // 当只传入用户名时，相当于查询 username = '传入的用户名'，因此应该返回 true
+    RequestBuilder req =
+        initReq().get("/sys/user/isUsernameExists?username=" + ADMIN_USERNAME).build();
+    MvcResult res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
+    String resJsonStr = res.getResponse().getContentAsString();
+    assertThat(resJsonStr).isEqualTo("true");
+  }
+
+  @Test
+  @SneakyThrows
+  void should_username_not_exists() {
+    // 当传入 neId 和 用户名 时，相当于查询 username = '传入的用户名' AND id != '传入的 id'，因此应该返回 false
+    String url = "/sys/user/isUsernameExists?neId=" + ADMIN_USER_ID + "&username=" + ADMIN_USERNAME;
+    RequestBuilder req = initReq().get(url).build();
+    MvcResult res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
+    String resJsonStr = res.getResponse().getContentAsString();
+    assertThat(resJsonStr).isEqualTo("false");
+  }
+
+  @Test
+  @SneakyThrows
+  void should_update_with_new_password() {
+    UserExtPo updateParamObj = createUser();
+    updateParamObj
+        .setUsername(IdUtil.nanoId(10))
+        .setPassword("123456789")
+        .setRealName("测试用户2")
+        .setPhoneNumber("18510336677")
+        .setGender(UserGenderEnum.M.name());
+    updateParamObj.setRoleIds(List.of(ADMIN_ROLE_ID));
+    RequestBuilder req = initReq().put("/sys/user/update").contentJson(updateParamObj).build();
+    mockMvc.perform(req).andExpect(status().isOk());
+    UserExtPo updatedObj = getById(updateParamObj.getId());
+    assertThat(updatedObj).isNotNull();
+    assertThat(updatedObj.getId()).isEqualTo(updateParamObj.getId());
+    assertThat(updatedObj.getUsername()).isEqualTo(updateParamObj.getUsername());
+    // 密码应该被加密
+    assertThat(updatedObj.getPassword()).isNotEqualTo(updateParamObj.getPassword());
+    assertThat(updatedObj.getRealName()).isEqualTo(updateParamObj.getRealName());
+    assertThat(updatedObj.getPhoneNumber()).isEqualTo(updateParamObj.getPhoneNumber());
+    assertThat(updatedObj.getGender()).isEqualTo(updateParamObj.getGender());
+    assertThat(updatedObj.getIsEnabled()).isEqualTo(updateParamObj.getIsEnabled());
+    // 可以使用新密码登录
+    UserJwtDto userJwtDto =
+        loginByUsernameAndPassword(updateParamObj.getUsername(), updateParamObj.getPassword());
+    assertThat(userJwtDto).isNotNull();
+  }
+
+  private static UserJwtDto loginByUsernameAndPassword(String username, String password)
+      throws Exception {
+    MvcResult res =
+        mockMvc.perform(get("/captcha").session(session)).andExpect(status().isOk()).andReturn();
+    assertThat(res.getResponse().getContentAsByteArray()).hasSizeGreaterThan(0);
     LoginQo loginQo = new LoginQo();
     loginQo.setUsername(username);
+    loginQo.setPassword(password);
+    loginQo.setCaptchaCode((String) session.getAttribute(CAPTCHA_CODE_SESSION_KEY));
+    loginQo.setIsCaptchaDisabledForTesting(false);
+    RequestBuilder req =
+        initReq().post("/sys/user/login").needToken(false).contentJson(loginQo).build();
+    res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
+    String resJsonStr = res.getResponse().getContentAsString();
+    return JSONUtil.toBean(resJsonStr, UserJwtDto.class);
+  }
+
+  @Test
+  @SneakyThrows
+  void should_update_with_old_password() {
+    UserExtPo updateParamObj = createUser();
+    updateParamObj
+        .setUsername(IdUtil.nanoId(10))
+        .setRealName("测试用户2")
+        .setPhoneNumber("18510336677")
+        .setGender(UserGenderEnum.M.name());
+    updateParamObj.setRoleIds(List.of(1L));
+    RequestBuilder req = initReq().put("/sys/user/update").contentJson(updateParamObj).build();
+    mockMvc.perform(req).andExpect(status().isOk());
+    UserExtPo updatedObj = getById(updateParamObj.getId());
+    assertThat(updatedObj).isNotNull();
+    assertThat(updatedObj.getId()).isEqualTo(updateParamObj.getId());
+    assertThat(updatedObj.getUsername()).isEqualTo(updateParamObj.getUsername());
+    assertThat(updatedObj.getRealName()).isEqualTo(updateParamObj.getRealName());
+    assertThat(updatedObj.getPhoneNumber()).isEqualTo(updateParamObj.getPhoneNumber());
+    assertThat(updatedObj.getGender()).isEqualTo(updateParamObj.getGender());
+    assertThat(updatedObj.getIsEnabled()).isEqualTo(updateParamObj.getIsEnabled());
+    // 可以使用旧密码登录
+    UserJwtDto userJwtDto =
+        loginByUsernameAndPassword(updateParamObj.getUsername(), updateParamObj.getPassword());
+    assertThat(userJwtDto).isNotNull();
+  }
+
+  @Test
+  @SneakyThrows
+  void should_update_password() {
+    UpdatePasswordQo updatePasswordQo = new UpdatePasswordQo();
+    updatePasswordQo.setOldPassword(ADMIN_PASSWORD);
+    String newPassword = ADMIN_PASSWORD + "new";
+    updatePasswordQo.setNewPassword(newPassword);
+    RequestBuilder req =
+        initReq().patch("/sys/user/updatePassword").contentJson(updatePasswordQo).build();
+    mockMvc.perform(req).andExpect(status().isOk());
+
+    // 用旧密码不能登录
+    req = buildLoginReq(ADMIN_PASSWORD);
+    mockMvc.perform(req).andExpect(status().isBadRequest());
+
+    // 用新密码可以登录
+    req = buildLoginReq(newPassword);
+    mockMvc.perform(req).andExpect(status().isOk());
+
+    // 把密码再改回来
+    updatePasswordQo = new UpdatePasswordQo();
+    updatePasswordQo.setOldPassword(newPassword);
+    updatePasswordQo.setNewPassword(ADMIN_PASSWORD);
+    req = initReq().patch("/sys/user/updatePassword").contentJson(updatePasswordQo).build();
+    mockMvc.perform(req).andExpect(status().isOk());
+  }
+
+  private static RequestBuilder buildLoginReq(@NonNull String password) {
+    LoginQo loginQo = new LoginQo();
+    loginQo.setUsername(ADMIN_USERNAME);
     loginQo.setPassword(password);
     // 由于第一次登录以后已经把 session 中的验证码清空了，因此这一次不传验证码了
     loginQo.setIsCaptchaDisabledForTesting(true);
@@ -231,51 +258,24 @@ class UserControllerTest extends WithSpringBootTestAnnotation {
 
   @Test
   @SneakyThrows
-  void updateWithNewPassword() {
-    UserExtPo updateParamObj = new UserExtPo();
-    updateParamObj.setId(createdId);
-    updateParamObj
-        .setUsername(IdUtil.nanoId(10))
-        .setPassword("123456789")
-        .setRealName("测试用户2")
-        .setPhoneNumber("18510336677")
-        .setGender(UserGenderEnum.M.name())
-        .setIsEnabled(false);
-    updateParamObj.setRoleIds(List.of(1L));
-    RequestBuilder req = initReq().put("/sys/user/update").contentJson(updateParamObj).build();
+  void should_delete_by_id() {
+    UserExtPo createdUser = createUser();
+    UserExtPo userExtPo = new UserExtPo();
+    userExtPo.setId(createdUser.getId());
+    RequestBuilder req = initReq().delete("/sys/user/delete").contentJson(userExtPo).build();
     mockMvc.perform(req).andExpect(status().isOk());
-    UserExtPo updatedObj = getById(updateParamObj.getId());
-    assertNotNull(updatedObj);
-    assertEquals(updatedObj.getId(), createdId);
-    assertEquals(updateParamObj.getUsername(), updatedObj.getUsername());
-    assertEquals(updateParamObj.getRealName(), updatedObj.getRealName());
-    assertEquals(updateParamObj.getPhoneNumber(), updatedObj.getPhoneNumber());
-    assertEquals(updateParamObj.getGender(), updatedObj.getGender());
-    assertEquals(updateParamObj.getIsEnabled(), updatedObj.getIsEnabled());
+    req = initReq().get("/sys/user/get/" + createdUser.getId()).build();
+    mockMvc.perform(req).andExpect(status().isNotFound());
   }
 
   @Test
   @SneakyThrows
-  void updateWithOldPassword() {
-    UserExtPo updateParamObj = new UserExtPo();
-    updateParamObj.setId(createdId);
-    updateParamObj
-        .setUsername(IdUtil.nanoId(10))
-        .setRealName("测试用户2")
-        .setPhoneNumber("18510336677")
-        .setGender(UserGenderEnum.M.name())
-        .setIsEnabled(false);
-    updateParamObj.setRoleIds(List.of(1L));
-    RequestBuilder req = initReq().put("/sys/user/update").contentJson(updateParamObj).build();
-    mockMvc.perform(req).andExpect(status().isOk());
-    UserExtPo updatedObj = getById(updateParamObj.getId());
-    assertNotNull(updatedObj);
-    assertEquals(updatedObj.getId(), createdId);
-    assertEquals(updateParamObj.getUsername(), updatedObj.getUsername());
-    assertEquals(updateParamObj.getRealName(), updatedObj.getRealName());
-    assertEquals(updateParamObj.getPhoneNumber(), updatedObj.getPhoneNumber());
-    assertEquals(updateParamObj.getGender(), updatedObj.getGender());
-    assertEquals(updateParamObj.getIsEnabled(), updatedObj.getIsEnabled());
+  void should_refresh_token() {
+    RequestBuilder req =
+        initReq().post("/sys/user/refreshToken").contentTypeText().content(refreshToken).build();
+    MvcResult res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
+    accessToken = res.getResponse().getContentAsString();
+    assertThat(accessToken).isNotBlank();
   }
 
   @BeforeEach
@@ -298,19 +298,7 @@ class UserControllerTest extends WithSpringBootTestAnnotation {
     if (accessToken != null) {
       return;
     }
-    MvcResult res =
-        mockMvc.perform(get("/captcha").session(session)).andExpect(status().isOk()).andReturn();
-    assertThat(res.getResponse().getContentAsByteArray()).hasSizeGreaterThan(0);
-    LoginQo loginQo = new LoginQo();
-    loginQo.setUsername(USERNAME);
-    loginQo.setPassword(PASSWORD);
-    loginQo.setCaptchaCode((String) session.getAttribute(CAPTCHA_CODE_SESSION_KEY));
-    loginQo.setIsCaptchaDisabledForTesting(false);
-    RequestBuilder req =
-        initReq().post("/sys/user/login").needToken(false).contentJson(loginQo).build();
-    res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
-    String resJsonStr = res.getResponse().getContentAsString();
-    UserJwtDto userJwtDto = JSONUtil.toBean(resJsonStr, UserJwtDto.class);
+    UserJwtDto userJwtDto = loginByUsernameAndPassword(ADMIN_USERNAME, ADMIN_PASSWORD);
     assertFalse(userJwtDto.getRefreshToken().isEmpty());
     accessToken = userJwtDto.getAccessToken();
     refreshToken = userJwtDto.getRefreshToken();

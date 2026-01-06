@@ -40,7 +40,7 @@ class MainTest extends WithSpringBootTestAnnotation {
   @Test
   @Order(3) // 必须在第 3 位执行，方法里面执行了登录操作，后续的方法才有权限执行
   void userControllerTest() throws Exception {
-//    UserControllerTest.testAllExceptLogout();
+    //    UserControllerTest.testAllExceptLogout();
   }
 
   @Test
@@ -78,5 +78,14 @@ class MainTest extends WithSpringBootTestAnnotation {
   @Order(Integer.MAX_VALUE) // 必须在最后执行，因为会退出登录
   void logout() throws Exception {
     AuthTest.testAll();
+  }
+
+  public static void main(String[] args) {
+    try {
+      Long id = Long.parseLong("2008374986561216512");
+      System.out.println(id);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 }

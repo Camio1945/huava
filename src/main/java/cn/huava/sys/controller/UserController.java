@@ -67,8 +67,8 @@ public class UserController extends BaseController<AceUserService, UserMapper, U
   }
 
   @GetMapping("/isUsernameExists")
-  public ResponseEntity<Boolean> isUsernameExists(final Long id, @NonNull final String username) {
-    return ResponseEntity.ok(service.isUsernameExists(id, username));
+  public ResponseEntity<Boolean> isUsernameExists(final Long neId, @NonNull final String username) {
+    return ResponseEntity.ok(service.isUsernameExists(neId, username));
   }
 
   @PatchMapping("/updatePassword")

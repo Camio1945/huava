@@ -52,11 +52,11 @@ public class AceUserService extends BaseService<UserMapper, UserExtPo> {
     return userPageService.userPage(pageQo, params);
   }
 
-  public boolean isUsernameExists(Long id, @NonNull String username) {
+  public boolean isUsernameExists(Long neId, @NonNull String username) {
     return exists(
         Fn.undeletedWrapper(UserExtPo::getDeleteInfo)
             .eq(UserExtPo::getUsername, username)
-            .ne(id != null, UserExtPo::getId, id));
+            .ne(neId != null, UserExtPo::getId, neId));
   }
 
   public void updatePassword(@NonNull UpdatePasswordQo updatePasswordQo) {

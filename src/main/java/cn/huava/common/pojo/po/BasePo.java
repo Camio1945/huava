@@ -4,6 +4,7 @@ import static cn.huava.common.constant.CommonConstant.ADMIN_USER_ID;
 
 import cn.huava.common.util.Fn;
 import cn.huava.sys.pojo.po.UserPo;
+import cn.hutool.v7.core.data.id.IdUtil;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serial;
@@ -45,7 +46,7 @@ public class BasePo implements Serializable {
   public static <T> void beforeCreate(@NonNull T entity) {
     if (entity instanceof BasePo basePo) {
       Date date = new Date();
-      basePo.setId(null);
+      basePo.setId(IdUtil.getSnowflakeNextId());
       Long userId = getLoginUserId();
       basePo.setCreatedBy(userId);
       basePo.setCreatedAt(date);
