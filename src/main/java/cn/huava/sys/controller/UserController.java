@@ -27,8 +27,8 @@ import org.springframework.web.bind.annotation.*;
  *
  * @author Camio1945
  */
-@NullMarked
 @Slf4j
+@NullMarked
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/sys/user")
