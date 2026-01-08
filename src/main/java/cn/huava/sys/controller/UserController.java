@@ -14,9 +14,10 @@ import cn.huava.sys.pojo.qo.UpdatePasswordQo;
 import cn.huava.sys.service.user.AceUserService;
 import cn.huava.sys.service.userrole.AceUserRoleService;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
  *
  * @author Camio1945
  */
+@NullMarked
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -37,14 +39,14 @@ public class UserController extends BaseController<AceUserService, UserMapper, U
 
   @GetMapping("/page")
   public ResponseEntity<PageDto<UserDto>> page(
-      @NonNull final PageQo<UserExtPo> pageQo, @NonNull final UserExtPo params) {
+      final PageQo<UserExtPo> pageQo, final UserExtPo params) {
     PageDto<UserDto> pageDto = service.userPage(pageQo, params);
     return ResponseEntity.ok(pageDto);
   }
 
   @PostMapping("/login")
   public ResponseEntity<UserJwtDto> login(
-      @NonNull final HttpServletRequest req, @RequestBody @NonNull final LoginQo loginQo) {
+      final HttpServletRequest req, @RequestBody final LoginQo loginQo) {
     return ResponseEntity.ok(service.login(req, loginQo));
   }
 
@@ -55,42 +57,43 @@ public class UserController extends BaseController<AceUserService, UserMapper, U
   }
 
   @PostMapping("/refreshToken")
-  public ResponseEntity<String> refreshToken(@RequestBody @NonNull String refreshToken) {
+  public ResponseEntity<String> refreshToken(@RequestBody String refreshToken) {
     String accessToken = service.refreshToken(refreshToken);
     return ResponseEntity.ok(accessToken);
   }
 
   @PostMapping("/logout")
-  public ResponseEntity<Void> logout(@RequestBody @NonNull String refreshToken) {
+  public ResponseEntity<Void> logout(@RequestBody String refreshToken) {
     service.logout(refreshToken);
     return ResponseEntity.ok(null);
   }
 
   @GetMapping("/isUsernameExists")
-  public ResponseEntity<Boolean> isUsernameExists(final Long neId, @NonNull final String username) {
+  public ResponseEntity<Boolean> isUsernameExists(
+      @Nullable final Long neId, final String username) {
     return ResponseEntity.ok(service.isUsernameExists(neId, username));
   }
 
   @PatchMapping("/updatePassword")
   public ResponseEntity<Void> updatePassword(
-      @RequestBody @NonNull @Validated UpdatePasswordQo updatePasswordQo) {
+      @RequestBody @Validated UpdatePasswordQo updatePasswordQo) {
     service.updatePassword(updatePasswordQo);
     return ResponseEntity.ok(null);
   }
 
   @Override
-  protected void afterGetById(@NonNull UserExtPo entity) {
+  protected void afterGetById(UserExtPo entity) {
     entity.setPassword(null);
     entity.setRoleIds(userRoleService.getRoleIdsByUserId(entity.getId()));
   }
 
   @Override
-  protected void beforeSave(@NonNull UserExtPo entity) {
+  protected void beforeSave(UserExtPo entity) {
     entity.setPassword(Fn.encryptPassword(entity.getPassword()));
   }
 
   @Override
-  protected void afterSave(@NonNull UserExtPo entity) {
+  protected void afterSave(UserExtPo entity) {
     afterSaveOrUpdate(entity);
   }
 
@@ -101,7 +104,7 @@ public class UserController extends BaseController<AceUserService, UserMapper, U
    * @param entity The entity to be updated.
    */
   @Override
-  protected void beforeUpdate(@NonNull UserExtPo entity) {
+  protected void beforeUpdate(UserExtPo entity) {
     String password = entity.getPassword();
     UserExtPo before = userCache.getById(entity.getId());
     if (Fn.isBlank(password)) {
@@ -114,12 +117,12 @@ public class UserController extends BaseController<AceUserService, UserMapper, U
   }
 
   @Override
-  protected void afterUpdate(@NonNull UserExtPo entity) {
+  protected void afterUpdate(UserExtPo entity) {
     afterSaveOrUpdate(entity);
   }
 
   @Override
-  protected Object beforeDelete(@NonNull Long id) {
+  protected Object beforeDelete(Long id) {
     return userCache.getById(id);
   }
 
@@ -128,7 +131,7 @@ public class UserController extends BaseController<AceUserService, UserMapper, U
     userCache.afterDelete((UserExtPo) obj);
   }
 
-  private void afterSaveOrUpdate(@NonNull UserExtPo entity) {
+  private void afterSaveOrUpdate(UserExtPo entity) {
     userRoleService.saveUserRole(entity.getId(), entity.getRoleIds());
     userCache.afterSaveOrUpdate(entity);
     userRoleCache.deleteCache(entity.getId());

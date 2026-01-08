@@ -23,6 +23,7 @@ import java.util.*;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NonNull;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,16 @@ class UserControllerTest extends WithSpringBootTestAnnotation {
   private static final String ADMIN_USERNAME = "admin";
   private static final String ADMIN_PASSWORD = "123456";
   @Autowired MockMvc mockMvcAutowired;
+
+  @AfterAll
+  @SneakyThrows
+  static void afterAll() {
+    RequestBuilder req =
+        initReq().post("/sys/user/logout").contentTypeText().content(refreshToken).build();
+    mockMvc.perform(req).andExpect(status().isOk());
+    req = initReq().post("/sys/user/refreshToken").contentTypeText().content(refreshToken).build();
+    mockMvc.perform(req).andExpect(status().isBadRequest());
+  }
 
   @Test
   @SneakyThrows
@@ -281,15 +292,6 @@ class UserControllerTest extends WithSpringBootTestAnnotation {
     assertThat(accessToken).isNotBlank();
   }
 
-  @BeforeEach
-  void beforeEach() {
-    if (ApiTestUtil.mockMvc == null) {
-      ApiTestUtil.mockMvc = mockMvcAutowired;
-      RedisUtil.flushNonProductionDb();
-      login();
-    }
-  }
-
   /**
    * Test the login api. <br>
    * 测试登录接口。
@@ -305,5 +307,14 @@ class UserControllerTest extends WithSpringBootTestAnnotation {
     assertFalse(userJwtDto.getRefreshToken().isEmpty());
     accessToken = userJwtDto.getAccessToken();
     refreshToken = userJwtDto.getRefreshToken();
+  }
+
+  @BeforeEach
+  void beforeEach() {
+    if (ApiTestUtil.mockMvc == null) {
+      ApiTestUtil.mockMvc = mockMvcAutowired;
+      RedisUtil.flushNonProductionDb();
+      login();
+    }
   }
 }
