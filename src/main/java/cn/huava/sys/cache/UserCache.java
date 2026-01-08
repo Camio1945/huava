@@ -86,7 +86,7 @@ public class UserCache {
   }
 
   /**
-   * 更新操作后的缓存处理
+   * 更新操作前的缓存处理
    *
    * @param before 更新前的用户
    */

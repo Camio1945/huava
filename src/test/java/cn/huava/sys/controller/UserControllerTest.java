@@ -204,7 +204,9 @@ class UserControllerTest extends WithSpringBootTestAnnotation {
   @SneakyThrows
   void should_update_with_old_password() {
     UserExtPo updateParamObj = createUser();
+    String oldPassword = updateParamObj.getPassword();
     updateParamObj
+        .setPassword(null)
         .setUsername(IdUtil.nanoId(10))
         .setRealName("测试用户2")
         .setPhoneNumber("18510336677")
@@ -221,8 +223,7 @@ class UserControllerTest extends WithSpringBootTestAnnotation {
     assertThat(updatedObj.getGender()).isEqualTo(updateParamObj.getGender());
     assertThat(updatedObj.getIsEnabled()).isEqualTo(updateParamObj.getIsEnabled());
     // 可以使用旧密码登录
-    UserJwtDto userJwtDto =
-        loginByUsernameAndPassword(updateParamObj.getUsername(), updateParamObj.getPassword());
+    UserJwtDto userJwtDto = loginByUsernameAndPassword(updateParamObj.getUsername(), oldPassword);
     assertThat(userJwtDto).isNotNull();
   }
 
