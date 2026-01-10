@@ -1,5 +1,7 @@
 package cn.huava.sys.service.role;
 
+import static cn.huava.common.constant.CommonConstant.ADMIN_ROLE_ID;
+
 import cn.huava.common.pojo.dto.PageDto;
 import cn.huava.common.pojo.qo.PageQo;
 import cn.huava.common.service.BaseService;
@@ -9,12 +11,13 @@ import cn.huava.sys.mapper.RoleMapper;
 import cn.huava.sys.pojo.po.*;
 import cn.huava.sys.pojo.qo.SetPermQo;
 import cn.huava.sys.service.roleperm.AceRolePermService;
+import cn.hutool.v7.core.collection.CollUtil;
+import cn.hutool.v7.core.lang.Assert;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import java.util.List;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import cn.hutool.v7.core.collection.CollUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +47,7 @@ public class AceRoleService extends BaseService<RoleMapper, RolePo> {
 
   @Transactional(rollbackFor = Throwable.class)
   public void setPerm(@NonNull SetPermQo setPermQo) {
+    Assert.isTrue(ADMIN_ROLE_ID != setPermQo.getRoleId(), "不允许修改超级管理员角色的权限");
     Long roleId = setPermQo.getRoleId();
     rolePermService.remove(new LambdaQueryWrapper<RolePermPo>().eq(RolePermPo::getRoleId, roleId));
     List<Long> permIds = setPermQo.getPermIds();

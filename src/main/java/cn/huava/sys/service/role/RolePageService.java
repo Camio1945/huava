@@ -20,13 +20,11 @@ import org.springframework.stereotype.Service;
 class RolePageService extends BaseService<RoleMapper, RolePo> {
 
   protected PageDto<RolePo> rolePage(@NonNull PageQo<RolePo> pageQo, @NonNull final RolePo params) {
+    String desc = params.getDescription();
     Wrapper<RolePo> wrapper =
         Fn.undeletedWrapper(RolePo::getDeleteInfo)
             .like(Fn.isNotBlank(params.getName()), RolePo::getName, params.getName())
-            .like(
-                Fn.isNotBlank(params.getDescription()),
-                RolePo::getDescription,
-                params.getDescription())
+            .like(Fn.isNotBlank(desc), RolePo::getDescription, desc)
             .orderByAsc(RolePo::getSort);
     pageQo = page(pageQo, wrapper);
     return new PageDto<>(pageQo.getRecords(), pageQo.getTotal());

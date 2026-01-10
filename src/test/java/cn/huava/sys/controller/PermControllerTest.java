@@ -1,6 +1,6 @@
 package cn.huava.sys.controller;
 
-import static cn.huava.sys.controller.ApiTestUtil.*;
+import static cn.huava.common.util.ApiTestUtil.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

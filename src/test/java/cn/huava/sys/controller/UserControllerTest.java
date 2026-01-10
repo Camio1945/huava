@@ -1,14 +1,15 @@
 package cn.huava.sys.controller;
 
 import static cn.huava.common.constant.CommonConstant.*;
-import static cn.huava.sys.controller.ApiTestUtil.*;
+import static cn.huava.common.constant.TestConstant.*;
+import static cn.huava.common.util.ApiTestUtil.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import cn.huava.common.WithSpringBootTestAnnotation;
 import cn.huava.common.pojo.dto.PageDto;
+import cn.huava.common.util.ApiTestUtil;
 import cn.huava.common.util.RedisUtil;
 import cn.huava.sys.enumeration.UserGenderEnum;
 import cn.huava.sys.pojo.dto.*;
@@ -46,18 +47,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 class UserControllerTest extends WithSpringBootTestAnnotation {
-  private static final String ADMIN_USERNAME = "admin";
-  private static final String ADMIN_PASSWORD = "123456";
   @Autowired MockMvc mockMvcAutowired;
 
   @AfterAll
   @SneakyThrows
   static void afterAll() {
-    RequestBuilder req =
-        initReq().post("/sys/user/logout").contentTypeText().content(refreshToken).build();
-    mockMvc.perform(req).andExpect(status().isOk());
-    req = initReq().post("/sys/user/refreshToken").contentTypeText().content(refreshToken).build();
-    mockMvc.perform(req).andExpect(status().isBadRequest());
+    logout();
   }
 
   @Test
@@ -183,23 +178,6 @@ class UserControllerTest extends WithSpringBootTestAnnotation {
     assertThat(userJwtDto).isNotNull();
   }
 
-  private static UserJwtDto loginByUsernameAndPassword(String username, String password)
-      throws Exception {
-    MvcResult res =
-        mockMvc.perform(get("/captcha").session(session)).andExpect(status().isOk()).andReturn();
-    assertThat(res.getResponse().getContentAsByteArray()).hasSizeGreaterThan(0);
-    LoginQo loginQo = new LoginQo();
-    loginQo.setUsername(username);
-    loginQo.setPassword(password);
-    loginQo.setCaptchaCode((String) session.getAttribute(CAPTCHA_CODE_SESSION_KEY));
-    loginQo.setIsCaptchaDisabledForTesting(false);
-    RequestBuilder req =
-        initReq().post("/sys/user/login").needToken(false).contentJson(loginQo).build();
-    res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
-    String resJsonStr = res.getResponse().getContentAsString();
-    return JSONUtil.toBean(resJsonStr, UserJwtDto.class);
-  }
-
   @Test
   @SneakyThrows
   void should_update_with_old_password() {
@@ -285,7 +263,7 @@ class UserControllerTest extends WithSpringBootTestAnnotation {
   void should_refresh_token() {
     accessToken = null;
     refreshToken = null;
-    login();
+    loginByAdmin();
     RequestBuilder req =
         initReq().post("/sys/user/refreshToken").contentTypeText().content(refreshToken).build();
     MvcResult res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
@@ -293,29 +271,12 @@ class UserControllerTest extends WithSpringBootTestAnnotation {
     assertThat(accessToken).isNotBlank();
   }
 
-  /**
-   * Test the login api. <br>
-   * 测试登录接口。
-   */
-  @SneakyThrows
-  @Test
-  synchronized void login() {
-    // 一次测试只登录一次
-    if (accessToken != null) {
-      return;
-    }
-    UserJwtDto userJwtDto = loginByUsernameAndPassword(ADMIN_USERNAME, ADMIN_PASSWORD);
-    assertFalse(userJwtDto.getRefreshToken().isEmpty());
-    accessToken = userJwtDto.getAccessToken();
-    refreshToken = userJwtDto.getRefreshToken();
-  }
-
   @BeforeEach
   void beforeEach() {
     if (ApiTestUtil.mockMvc == null) {
       ApiTestUtil.mockMvc = mockMvcAutowired;
       RedisUtil.flushNonProductionDb();
-      login();
+      loginByAdmin();
     }
   }
 }

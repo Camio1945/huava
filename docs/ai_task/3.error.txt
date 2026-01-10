@@ -1,1 +1,8 @@
-the src/main/java/cn/huava/common/config/MyBatisPlusConfig.java can not compile now, because the PaginationInnerInterceptor class is removed from the latest mybatis plus, but I still want to use the latest mybatis-plus-spring-boot4-starter:3.5.15, Please help me fix the problem
+refer to src/test/java/cn/huava/sys/controller/UserControllerTest.java,
+edit src/test/java/cn/huava/sys/controller/RoleControllerTest.java:
+1. Use @BeforeEach to login first
+2. Use @AfterAll to logout
+3. Remove the testAll method
+4. Use @Test and @SneakyThrows for each test
+5. Every test method's name should start with `should_`, use underscore style.
+6. Use assertj instead of junit to set assertions.

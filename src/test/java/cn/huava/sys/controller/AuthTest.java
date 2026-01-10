@@ -1,12 +1,13 @@
 package cn.huava.sys.controller;
 
 import static cn.huava.common.constant.CommonConstant.ADMIN_USER_ID;
-import static cn.huava.sys.controller.ApiTestUtil.*;
-import static cn.huava.sys.controller.ApiTestUtil.refreshToken;
+import static cn.huava.common.util.ApiTestUtil.*;
+import static cn.huava.common.util.ApiTestUtil.refreshToken;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import cn.huava.common.util.ApiTestUtil;
 import cn.huava.sys.enumeration.UserGenderEnum;
 import cn.huava.sys.pojo.dto.UserJwtDto;
 import cn.huava.sys.pojo.po.RolePo;

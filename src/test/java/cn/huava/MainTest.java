@@ -2,6 +2,7 @@ package cn.huava;
 
 import cn.huava.common.WithSpringBootTestAnnotation;
 import cn.huava.common.graalvm.RuntimeHintsRegistrarConfigTest;
+import cn.huava.common.util.ApiTestUtil;
 import cn.huava.common.util.RedisUtil;
 import cn.huava.common.util.RedisUtilTest;
 import cn.huava.sys.controller.*;
@@ -58,7 +59,7 @@ class MainTest extends WithSpringBootTestAnnotation {
   @Test
   @Order(5)
   void roleControllerTest() throws Exception {
-    RoleControllerTest.testAll();
+    // RoleControllerTest.testAll();
   }
 
   @Test

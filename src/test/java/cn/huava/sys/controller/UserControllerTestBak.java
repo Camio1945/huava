@@ -1,11 +1,12 @@
 package cn.huava.sys.controller;
 
 import static cn.huava.common.constant.CommonConstant.CAPTCHA_CODE_SESSION_KEY;
-import static cn.huava.sys.controller.ApiTestUtil.*;
+import static cn.huava.common.util.ApiTestUtil.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import cn.huava.common.pojo.dto.PageDto;
+import cn.huava.common.util.ApiTestUtil;
 import cn.huava.common.util.Fn;
 import cn.huava.sys.enumeration.UserGenderEnum;
 import cn.huava.sys.pojo.dto.*;

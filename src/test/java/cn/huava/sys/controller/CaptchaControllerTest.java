@@ -1,8 +1,8 @@
 package cn.huava.sys.controller;
 
 import static cn.huava.common.constant.CommonConstant.CAPTCHA_CODE_SESSION_KEY;
-import static cn.huava.sys.controller.ApiTestUtil.mockMvc;
-import static cn.huava.sys.controller.ApiTestUtil.session;
+import static cn.huava.common.util.ApiTestUtil.mockMvc;
+import static cn.huava.common.util.ApiTestUtil.session;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
