@@ -4,7 +4,7 @@ import static cn.huava.common.constant.CommonConstant.ADMIN_ROLE_ID;
 import static cn.huava.common.constant.TestConstant.ADMIN_ROLE_NAME;
 import static cn.huava.common.util.ApiTestUtil.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import cn.huava.common.WithSpringBootTestAnnotation;
@@ -111,7 +111,7 @@ class RoleControllerTest extends WithSpringBootTestAnnotation {
     PageDto<RolePo> pageDto = JSONUtil.toBean(resJsonStr, type);
     if (pageDto.getCount() > 0) {
       RolePo first = pageDto.getList().getFirst();
-      assertEquals(DESCRIPTION, first.getDescription());
+      assertThat(first.getDescription()).isEqualTo(DESCRIPTION);
       return first;
     }
     return createTestRole();
@@ -134,8 +134,8 @@ class RoleControllerTest extends WithSpringBootTestAnnotation {
     String resJsonStr = res.getResponse().getContentAsString();
     TypeReference<PageDto<RolePo>> type = new TypeReference<>() {};
     PageDto<RolePo> pageDto = JSONUtil.toBean(resJsonStr, type);
-    assertEquals(1, pageDto.getCount());
-    assertEquals(ADMIN_ROLE_ID, pageDto.getList().getFirst().getId());
+    assertThat(pageDto.getCount()).isEqualTo(1);
+    assertThat(pageDto.getList().getFirst().getId()).isEqualTo(ADMIN_ROLE_ID);
   }
 
   @Test
@@ -145,7 +145,7 @@ class RoleControllerTest extends WithSpringBootTestAnnotation {
     RequestBuilder req = initReq().get("/sys/role/isNameExists?name=" + ADMIN_ROLE_NAME).build();
     MvcResult res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
     String resJsonStr = res.getResponse().getContentAsString();
-    assertEquals("true", resJsonStr);
+    assertThat(resJsonStr).isEqualTo("true");
   }
 
   @Test
@@ -156,7 +156,7 @@ class RoleControllerTest extends WithSpringBootTestAnnotation {
     RequestBuilder req = initReq().get(url).build();
     MvcResult res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
     String resJsonStr = res.getResponse().getContentAsString();
-    assertEquals("false", resJsonStr);
+    assertThat(resJsonStr).isEqualTo("false");
   }
 
   @Test
@@ -169,11 +169,11 @@ class RoleControllerTest extends WithSpringBootTestAnnotation {
     RequestBuilder req = initReq().put("/sys/role/update").contentJson(updateParamObj).build();
     mockMvc.perform(req).andExpect(status().isOk());
     RolePo updatedObj = getById(updateParamObj.getId());
-    assertNotNull(updatedObj);
-    assertEquals(createdObj.getId(), updatedObj.getId());
-    assertEquals(updateParamObj.getName(), updatedObj.getName());
-    assertEquals(updateParamObj.getSort(), updatedObj.getSort());
-    assertEquals(updateParamObj.getDescription(), updatedObj.getDescription());
+    assertThat(updatedObj).isNotNull();
+    assertThat(updatedObj.getId()).isEqualTo(createdObj.getId());
+    assertThat(updatedObj.getName()).isEqualTo(updateParamObj.getName());
+    assertThat(updatedObj.getSort()).isEqualTo(updateParamObj.getSort());
+    assertThat(updatedObj.getDescription()).isEqualTo(updateParamObj.getDescription());
   }
 
   @Test
@@ -188,7 +188,7 @@ class RoleControllerTest extends WithSpringBootTestAnnotation {
     RequestBuilder req = initReq().post("/sys/role/setPerm").contentJson(setPermQo).build();
     mockMvc.perform(req).andExpect(status().isOk());
     List<Long> permIdsOfRole = getPermIdsByRoleId(roleId);
-    assertFalse(permIdsOfRole.isEmpty());
+    assertThat(permIdsOfRole).isNotEmpty();
     assertThat(CollUtil.equals(permIdsOfRole, permIdsOfAll, true)).isTrue();
   }
 
@@ -202,7 +202,7 @@ class RoleControllerTest extends WithSpringBootTestAnnotation {
     mockMvc.perform(req).andExpect(status().isOk());
 
     List<Long> permIds = getPermIdsByRoleId(createdObj.getId());
-    assertTrue(permIds.isEmpty());
+    assertThat(permIds).isEmpty();
   }
 
   private static List<Long> getPermIdsByRoleId(Long roleId) throws Exception {
