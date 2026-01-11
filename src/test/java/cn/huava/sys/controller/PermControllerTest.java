@@ -1,46 +1,71 @@
 package cn.huava.sys.controller;
 
 import static cn.huava.common.util.ApiTestUtil.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import cn.huava.common.WithSpringBootTestAnnotation;
+import cn.huava.common.util.ApiTestUtil;
 import cn.huava.sys.enumeration.PermTypeEnum;
+import cn.huava.sys.pojo.dto.PermDto;
 import cn.huava.sys.pojo.po.PermPo;
-import lombok.NonNull;
 import cn.hutool.v7.core.data.id.IdUtil;
 import cn.hutool.v7.core.math.NumberUtil;
+import cn.hutool.v7.core.reflect.TypeReference;
 import cn.hutool.v7.json.JSONUtil;
+import java.util.List;
+import java.util.Optional;
+import lombok.NonNull;
+import lombok.SneakyThrows;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Test the apis in {@link PermController}. <br>
- * 测试 {@link PermController} 中的接口。<br>
- * java:S2187 要求测试类中必须有 @Test 标注的方法，否则就认为这不是一个测试类。但当前类是被人调用的，其实是测试类。
  *
  * @author Camio1945
  */
-@SuppressWarnings("java:S2187")
-public class PermControllerTest {
+@AutoConfigureMockMvc
+@Rollback
+@Transactional
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+class PermControllerTest extends WithSpringBootTestAnnotation {
 
-  private static Long createdId = null;
-  private static PermPo createParamObj = null;
-  private static PermPo createdObj = null;
+  @Autowired MockMvc mockMvcAutowired;
 
-  public static void testAll() throws Exception {
-    create();
-    getById();
-    update();
-    // getAll() 方法在 RoleControllerTest 中已经测试过了
-    deleteById();
+  @AfterAll
+  @SneakyThrows
+  static void afterAll() {
+    logout();
   }
 
-  /**
-   * Test the create perm api. <br>
-   * 测试添加权限接口。
-   */
-  private static void create() throws Exception {
-    createParamObj = new PermPo();
+  @BeforeEach
+  @SneakyThrows
+  void beforeEach() {
+    if (ApiTestUtil.mockMvc == null) {
+      ApiTestUtil.mockMvc = mockMvcAutowired;
+      loginByAdmin();
+    }
+  }
+
+  @Test
+  @SneakyThrows
+  void should_create_perm() {
+    PermPo createParamObj = createTestPerm();
+    assertThat(createParamObj.getId()).isNotNull();
+  }
+
+  @SneakyThrows
+  private static PermPo createTestPerm() {
+    PermPo createParamObj = new PermPo();
     createParamObj
         .setType(PermTypeEnum.E.name())
         .setPid(0L)
@@ -50,25 +75,40 @@ public class PermControllerTest {
     RequestBuilder req = initReq().post("/sys/perm/create").contentJson(createParamObj).build();
     MvcResult res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
     String createdIdStr = res.getResponse().getContentAsString();
-    assertNotNull(createdIdStr);
-    assertTrue(NumberUtil.isLong(createdIdStr));
-    createdId = Long.parseLong(createdIdStr);
+    assertThat(createdIdStr).isNotBlank();
+    assertThat(NumberUtil.isLong(createdIdStr)).isTrue();
+    createParamObj.setId(Long.parseLong(createdIdStr));
+    return createParamObj;
   }
 
-  private static void getById() throws Exception {
-    createdObj = getById(createdId);
-    assertNotNull(createdObj);
-    assertEquals(createdObj.getId(), createdId);
-    assertEquals(createParamObj.getType(), createdObj.getType());
-    assertEquals(createParamObj.getPid(), createdObj.getPid());
-    assertEquals(createParamObj.getName(), createdObj.getName());
-    assertEquals(createParamObj.getUri(), createdObj.getUri());
-    assertEquals(createParamObj.getSort(), createdObj.getSort());
+  @Test
+  @SneakyThrows
+  void should_get_perm_by_id() {
+    PermPo createdObj = createTestPerm();
+    PermPo gotById = getById(createdObj.getId());
+    assertThat(gotById).isNotNull();
+    assertThat(gotById.getId()).isEqualTo(createdObj.getId());
+    assertThat(createdObj.getType()).isEqualTo(gotById.getType());
+    assertThat(createdObj.getPid()).isEqualTo(gotById.getPid());
+    assertThat(createdObj.getName()).isEqualTo(gotById.getName());
+    assertThat(createdObj.getUri()).isEqualTo(gotById.getUri());
+    assertThat(createdObj.getSort()).isEqualTo(gotById.getSort());
   }
 
-  private static void update() throws Exception {
+  @SneakyThrows
+  private PermPo getById(@NonNull Long id) {
+    RequestBuilder req = initReq().get("/sys/perm/get/" + id).build();
+    MvcResult res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
+    String resJsonStr = res.getResponse().getContentAsString();
+    return JSONUtil.toBean(resJsonStr, PermPo.class);
+  }
+
+  @Test
+  @SneakyThrows
+  void should_update_perm() {
+    PermPo createdObj = createTestPerm();
     PermPo updateParamObj = new PermPo();
-    updateParamObj.setId(createdId);
+    updateParamObj.setId(createdObj.getId());
     updateParamObj
         .setType(PermTypeEnum.E.name())
         .setPid(4L)
@@ -78,28 +118,39 @@ public class PermControllerTest {
     RequestBuilder req = initReq().put("/sys/perm/update").contentJson(updateParamObj).build();
     mockMvc.perform(req).andExpect(status().isOk());
     PermPo updatedObj = getById(updateParamObj.getId());
-    assertNotNull(updatedObj);
-    assertEquals(updatedObj.getId(), createdId);
-    assertEquals(updateParamObj.getType(), updatedObj.getType());
-    assertEquals(updateParamObj.getPid(), updatedObj.getPid());
-    assertEquals(updateParamObj.getName(), updatedObj.getName());
-    assertEquals(updateParamObj.getUri(), updatedObj.getUri());
-    assertEquals(updateParamObj.getSort(), updatedObj.getSort());
+    assertThat(updatedObj).isNotNull();
+    assertThat(updatedObj.getId()).isEqualTo(createdObj.getId());
+    assertThat(updateParamObj.getType()).isEqualTo(updatedObj.getType());
+    assertThat(updateParamObj.getPid()).isEqualTo(updatedObj.getPid());
+    assertThat(updateParamObj.getName()).isEqualTo(updatedObj.getName());
+    assertThat(updateParamObj.getUri()).isEqualTo(updatedObj.getUri());
+    assertThat(updateParamObj.getSort()).isEqualTo(updatedObj.getSort());
   }
 
-  private static void deleteById() throws Exception {
+  @Test
+  @SneakyThrows
+  void should_delete_perm_by_id() {
+    PermPo createdObj = createTestPerm();
     PermPo permPo = new PermPo();
-    permPo.setId(createdId);
+    permPo.setId(createdObj.getId());
     RequestBuilder req = initReq().delete("/sys/perm/delete").contentJson(permPo).build();
     mockMvc.perform(req).andExpect(status().isOk());
-    req = initReq().get("/sys/perm/get/" + createdId).build();
+    req = initReq().get("/sys/perm/get/" + createdObj.getId()).build();
     mockMvc.perform(req).andExpect(status().isNotFound());
   }
 
-  private static PermPo getById(@NonNull Long id) throws Exception {
-    RequestBuilder req = initReq().get("/sys/perm/get/" + id).build();
+  @Test
+  @SneakyThrows
+  void should_get_all_perms() {
+    PermPo createdObj = createTestPerm();
+    RequestBuilder req = initReq().get("/sys/perm/getAll").build();
     MvcResult res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
+    TypeReference<List<PermDto>> type = new TypeReference<>() {};
     String resJsonStr = res.getResponse().getContentAsString();
-    return JSONUtil.toBean(resJsonStr, PermPo.class);
+    List<PermDto> permDtos = JSONUtil.toBean(resJsonStr, type);
+    assertThat(permDtos).isNotNull();
+    Optional<PermDto> any =
+        permDtos.stream().filter(permDto -> permDto.getId().equals(createdObj.getId())).findAny();
+    assertThat(any).isPresent();
   }
 }

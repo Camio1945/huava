@@ -219,11 +219,11 @@ class RoleControllerTest extends WithSpringBootTestAnnotation {
     MvcResult res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
     TypeReference<List<PermDto>> type = new TypeReference<>() {};
     String resJsonStr = res.getResponse().getContentAsString();
-    List<PermDto> permDtoList = JSONUtil.toBean(resJsonStr, type);
+    List<PermDto> permDtos = JSONUtil.toBean(resJsonStr, type);
     // 优先获取『用户角色权限』一级菜单及子孙菜单，获取不到的话就取第一个一级菜单及其子孙菜单
     Optional<PermDto> optionalPermDto =
-        permDtoList.stream().filter(p -> p.getName().contains("权限")).findAny();
-    PermDto permDto = optionalPermDto.orElse(permDtoList.getFirst());
+        permDtos.stream().filter(p -> p.getName().contains("权限")).findAny();
+    PermDto permDto = optionalPermDto.orElse(permDtos.getFirst());
     List<Long> permIds = new ArrayList<>();
     appendPermIds(permIds, permDto);
     return permIds;

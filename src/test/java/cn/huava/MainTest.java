@@ -25,6 +25,15 @@ class MainTest extends WithSpringBootTestAnnotation {
 
   @Autowired MockMvc mockMvc;
 
+  public static void main(String[] args) {
+    try {
+      Long id = Long.parseLong("2008374986561216512");
+      System.out.println(id);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
   @Test
   @Order(1) // 必须在第 1 位执行， 因为这个方法里面初始化了 mockMvc， 清空了 redis 数据库
   void tempTestControllerTest() {
@@ -39,12 +48,6 @@ class MainTest extends WithSpringBootTestAnnotation {
   }
 
   @Test
-  @Order(3) // 必须在第 3 位执行，方法里面执行了登录操作，后续的方法才有权限执行
-  void userControllerTest() throws Exception {
-    //    UserControllerTest.testAllExceptLogout();
-  }
-
-  @Test
   @Order(4)
   void utilTest() {
     RedisUtilTest.testAll();
@@ -54,18 +57,6 @@ class MainTest extends WithSpringBootTestAnnotation {
   @Order(5)
   void attachmentTest() throws Exception {
     AttachmentTest.testAll();
-  }
-
-  @Test
-  @Order(5)
-  void roleControllerTest() throws Exception {
-    // RoleControllerTest.testAll();
-  }
-
-  @Test
-  @Order(6)
-  void permControllerTest() throws Exception {
-    PermControllerTest.testAll();
   }
 
   /** 不重要的测试，一般是为了提升覆盖率而增加的。 */
@@ -79,14 +70,5 @@ class MainTest extends WithSpringBootTestAnnotation {
   @Order(Integer.MAX_VALUE) // 必须在最后执行，因为会退出登录
   void logout() throws Exception {
     AuthTest.testAll();
-  }
-
-  public static void main(String[] args) {
-    try {
-      Long id = Long.parseLong("2008374986561216512");
-      System.out.println(id);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
   }
 }
