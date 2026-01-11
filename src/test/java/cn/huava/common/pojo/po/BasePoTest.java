@@ -1,7 +1,6 @@
 package cn.huava.common.pojo.po;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.*;
 
 import java.util.Date;
 import org.junit.jupiter.api.Test;
@@ -11,7 +10,7 @@ import org.junit.jupiter.api.Test;
  */
 class BasePoTest {
   @Test
-  void testBasePo() {
+  void should_perform_full_lifecycle_operations() {
     BasePo basePo = new BasePo();
     basePo.setId(1L);
     basePo.setCreatedBy(1L);
@@ -20,22 +19,52 @@ class BasePoTest {
     basePo.setUpdatedAt(new Date());
     basePo.setDeleteInfo(0L);
 
-    assertEquals(1L, basePo.getId());
-    assertEquals(1L, basePo.getCreatedBy());
-    assertNotNull(basePo.getCreatedAt());
-    assertEquals(1L, basePo.getUpdatedBy());
-    assertNotNull(basePo.getUpdatedAt());
-    assertEquals(0L, basePo.getDeleteInfo());
+    assertThat(basePo.getId()).isEqualTo(1L);
+    assertThat(basePo.getCreatedBy()).isEqualTo(1L);
+    assertThat(basePo.getCreatedAt()).isNotNull();
+    assertThat(basePo.getUpdatedBy()).isEqualTo(1L);
+    assertThat(basePo.getUpdatedAt()).isNotNull();
+    assertThat(basePo.getDeleteInfo()).isZero();
 
     BasePo.beforeCreate(basePo);
-    assertNotNull(basePo.getCreatedAt());
-    assertNotNull(basePo.getUpdatedAt());
-    assertEquals(0L, basePo.getDeleteInfo());
+    assertThat(basePo.getCreatedAt()).isNotNull();
+    assertThat(basePo.getUpdatedAt()).isNotNull();
+    assertThat(basePo.getDeleteInfo()).isZero();
 
     BasePo.beforeUpdate(basePo);
-    assertNotNull(basePo.getUpdatedAt());
+    assertThat(basePo.getUpdatedAt()).isNotNull();
 
     BasePo.beforeDelete(basePo);
-    assertNotNull(basePo.getDeleteInfo());
+    assertThat(basePo.getDeleteInfo()).isNotNull();
+  }
+
+  @Test
+  void should_not_process_non_BasePo_entities_in_beforeCreate() {
+    // Test the generic method with a non-BasePo entity to cover the instanceof condition
+    Object nonBasePoEntity = new Object();
+    // Calling beforeCreate with a non-BasePo entity should not throw an exception
+    // and should not affect the non-BasePo entity
+    assertThatCode(() -> BasePo.beforeCreate(nonBasePoEntity)).doesNotThrowAnyException();
+    // The method should complete without processing the non-BasePo entity
+  }
+
+  @Test
+  void should_not_process_non_BasePo_entities_in_beforeUpdate() {
+    // Test the generic method with a non-BasePo entity to cover the instanceof condition
+    Object nonBasePoEntity = new Object();
+    // Calling beforeUpdate with a non-BasePo entity should not throw an exception
+    // and should not affect the non-BasePo entity
+    assertThatCode(() -> BasePo.beforeUpdate(nonBasePoEntity)).doesNotThrowAnyException();
+    // The method should complete without processing the non-BasePo entity
+  }
+
+  @Test
+  void should_not_process_non_BasePo_entities_in_beforeDelete() {
+    // Test the generic method with a non-BasePo entity to cover the instanceof condition
+    Object nonBasePoEntity = new Object();
+    // Calling beforeDelete with a non-BasePo entity should not throw an exception
+    // and should not affect the non-BasePo entity
+    assertThatCode(() -> BasePo.beforeDelete(nonBasePoEntity)).doesNotThrowAnyException();
+    // The method should complete without processing the non-BasePo entity
   }
 }

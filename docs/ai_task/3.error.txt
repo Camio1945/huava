@@ -1,34 +1,5 @@
-Edit these files :
-src/main/java/cn/huava/common/controller/BaseController.java
-src/main/java/cn/huava/common/graalvm/NativeRuntimeHintsRegistrar.java
-src/main/java/cn/huava/common/graalvm/RuntimeHintsRegistrarConfig.java
-src/main/java/cn/huava/common/service/BaseService.java
-src/main/java/cn/huava/common/util/EncryptUtil.java
-src/main/java/cn/huava/common/util/Fn.java
-src/main/java/cn/huava/common/util/HttpServletUtil.java
-src/main/java/cn/huava/common/util/LoginUtil.java
-src/main/java/cn/huava/common/util/MybatisPlusTool.java
-src/main/java/cn/huava/common/util/MybatisPlusUtil.java
-src/main/java/cn/huava/common/util/RedisUtil.java
-src/main/java/cn/huava/sys/cache/RoleCache.java
-src/main/java/cn/huava/sys/cache/UserRoleCache.java
-src/main/java/cn/huava/sys/mapper/UserRoleMapper.java
-src/main/java/cn/huava/sys/service/jwt/AceJwtService.java
-src/main/java/cn/huava/sys/service/jwt/CreateTokenService.java
-src/main/java/cn/huava/sys/service/refreshtoken/AceRefreshTokenService.java
-src/main/java/cn/huava/sys/service/role/AceRoleService.java
-src/main/java/cn/huava/sys/service/user/AceUserService.java
-src/main/java/cn/huava/sys/service/userrole/AceUserRoleService.java
-
-do this:
-1. Add @NullMarked for class, if the class has @Slf4j annotation, put @NullMarked under @Slf4j.
-2. Since the class has @NullMarked now, the parameters or return values which are not marked as @NonNull (lombok.NonNull) before should be marked as @Nullable (org.jspecify.annotations.Nullable) now. If it already marked as @Nullable, ignore it.
-3. Remove lombok.NonNull importing, and then remove the @NonNull from the code.
-4. If the class has inner classes, do the same for the inner classes.
-
-
-Write a GlobalExceptionHandlerTest.java in src/test/java/cn/huava/common/controller/handler folder to test the src/main/java/cn/huava/common/controller/handler/GlobalExceptionHandler.java
-
-Edit src/test/java/cn/huava/common/controller/handler/GlobalExceptionHandlerTest.java:
+Edit src/test/java/cn/huava/common/pojo/po/BasePoTest.java, use it to test src/main/java/cn/huava/common/pojo/po/BasePo.java:
 1. Every test method's name should start with `should_`, use underscore style.
 2. Use assertj(org.assertj.core.api.Assertions) instead of junit to set assertions.
+3. Achieve 100% branch test coverage.
+4. Add at least one assertion to each test case.
