@@ -9,7 +9,14 @@ import jakarta.validation.ConstraintValidatorContext;
 ///
 /// # Base validator class
 ///
+/// About @SuppressWarnings("java:S1118"):
+///   This rule says: Utility classes should not have public constructors.
+///   But our BaseValidator class need to be inherited, can not provide a private constructor.
+///
 /// @author Camio1945
+///
+///
+@SuppressWarnings("java:S1118")
 public class BaseValidator {
 
   public static boolean basicValidate(BasePo basePo) {

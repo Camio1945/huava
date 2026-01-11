@@ -4,7 +4,7 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 ///
-/// # Enum type validator, used together with {@link ValidEnum} annotation
+/// # Enum type validator, used together with [ValidEnum] annotation
 ///
 /// @author Camio1945
 public class EnumValidator implements ConstraintValidator<ValidEnum, String> {
