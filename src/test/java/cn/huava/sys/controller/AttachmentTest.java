@@ -2,20 +2,33 @@ package cn.huava.sys.controller;
 
 import static cn.huava.common.constant.CommonConstant.MULTIPART_PARAM_NAME;
 import static cn.huava.common.util.ApiTestUtil.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import cn.huava.common.WithSpringBootTestAnnotation;
 import cn.huava.common.controller.AttachmentController;
 import cn.huava.common.controller.AttachmentServingController;
 import cn.huava.common.pojo.po.AttachmentPo;
-import cn.huava.common.util.Fn;
+import cn.huava.common.util.ApiTestUtil;
+import cn.hutool.v7.core.io.file.FileUtil;
 import cn.hutool.v7.json.JSONUtil;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Test the apis in {@link AttachmentController} and {@link AttachmentServingController}. <br>
@@ -24,39 +37,85 @@ import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequ
  *
  * @author Camio1945
  */
-@SuppressWarnings("java:S2187")
-public class AttachmentTest {
+@Slf4j
+@AutoConfigureMockMvc
+@Rollback
+@Transactional
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+class AttachmentTest extends WithSpringBootTestAnnotation {
 
-  private static String uploadedUrl = null;
+  @Autowired MockMvc mockMvcAutowired;
 
-  public static void testAll() throws Exception {
-    upload();
-    download();
+  @AfterAll
+  @SneakyThrows
+  static void afterAll() {
+    logout();
   }
 
-  private static void upload() throws Exception {
+  @BeforeEach
+  @SneakyThrows
+  void beforeEach() {
+    if (ApiTestUtil.mockMvc == null) {
+      ApiTestUtil.mockMvc = mockMvcAutowired;
+      loginByAdmin();
+    }
+  }
+
+  @Test
+  @SneakyThrows
+  void should_upload_attachment_successfully() {
+    // Create a temporary file instead of using head.jpg
+    File tempFile = File.createTempFile("test_attachment_", ".jpg");
+    Files.write(tempFile.toPath(), "test image content".getBytes(), StandardOpenOption.WRITE);
+
     MockMultipartHttpServletRequestBuilder req =
         (MockMultipartHttpServletRequestBuilder)
             initReq().multipart("/common/attachment/upload").build();
-    Resource[] resources =
-        new PathMatchingResourcePatternResolver().getResources("classpath:static_captcha/*");
-    Resource resource = resources[0];
-    byte[] bytes = Fn.resourceToBytes(resource);
+
+    byte[] bytes = Files.readAllBytes(tempFile.toPath());
     MockMultipartFile file =
-        new MockMultipartFile(MULTIPART_PARAM_NAME, "head.jpg", "image/jpeg", bytes);
+        new MockMultipartFile(MULTIPART_PARAM_NAME, tempFile.getName(), "image/jpeg", bytes);
     req.file(file);
     MvcResult res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
     String resJsonStr = res.getResponse().getContentAsString();
     AttachmentPo attachmentPo = JSONUtil.toBean(resJsonStr, AttachmentPo.class);
-    assertNotNull(attachmentPo);
-    assertNotNull(attachmentPo.getUrl());
-    uploadedUrl = attachmentPo.getUrl();
+    assertThat(attachmentPo).isNotNull();
+    assertThat(attachmentPo.getUrl()).isNotNull();
+
+    // Clean up temp file
+    FileUtil.del(tempFile);
   }
 
-  private static void download() throws Exception {
-    RequestBuilder req =
-        initReq().get(uploadedUrl).contentTypeText().acceptType("image/jpeg").build();
+  @Test
+  @SneakyThrows
+  void should_download_attachment_successfully() {
+    // First upload a file to get a URL
+    File tempFile = File.createTempFile("test_attachment_", ".jpg");
+    Files.write(tempFile.toPath(), "test image content".getBytes(), StandardOpenOption.WRITE);
+
+    MockMultipartHttpServletRequestBuilder req =
+        (MockMultipartHttpServletRequestBuilder)
+            initReq().multipart("/common/attachment/upload").build();
+
+    byte[] bytes = Files.readAllBytes(tempFile.toPath());
+    MockMultipartFile file =
+        new MockMultipartFile(MULTIPART_PARAM_NAME, tempFile.getName(), "image/jpeg", bytes);
+    req.file(file);
     MvcResult res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
-    assertTrue(res.getResponse().getContentLength() > 0);
+    String resJsonStr = res.getResponse().getContentAsString();
+    AttachmentPo attachmentPo = JSONUtil.toBean(resJsonStr, AttachmentPo.class);
+    assertThat(attachmentPo).isNotNull();
+    assertThat(attachmentPo.getUrl()).isNotNull();
+
+    String uploadedUrl = attachmentPo.getUrl();
+
+    // Now test downloading
+    RequestBuilder downloadReq =
+        initReq().get(uploadedUrl).contentTypeText().acceptType("image/jpeg").build();
+    MvcResult downloadRes = mockMvc.perform(downloadReq).andExpect(status().isOk()).andReturn();
+    assertThat(downloadRes.getResponse().getContentLength()).isGreaterThan(0);
+
+    // Clean up temp file
+    FileUtil.del(tempFile);
   }
 }
