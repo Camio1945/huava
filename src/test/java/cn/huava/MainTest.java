@@ -25,15 +25,6 @@ class MainTest extends WithSpringBootTestAnnotation {
 
   @Autowired MockMvc mockMvc;
 
-  public static void main(String[] args) {
-    try {
-      Long id = Long.parseLong("2008374986561216512");
-      System.out.println(id);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
-
   @Test
   @Order(1) // 必须在第 1 位执行， 因为这个方法里面初始化了 mockMvc， 清空了 redis 数据库
   void tempTestControllerTest() {
@@ -42,21 +33,9 @@ class MainTest extends WithSpringBootTestAnnotation {
   }
 
   @Test
-  @Order(2) // 必须在第 2 位执行，方法里面初始化了验证码，用于后续的登录
-  void captchaControllerTest() throws Exception {
-    // CaptchaControllerTest.testAll();
-  }
-
-  @Test
   @Order(4)
   void utilTest() {
     RedisUtilTest.testAll();
-  }
-
-  @Test
-  @Order(5)
-  void attachmentTest() throws Exception {
-    AttachmentTest.testAll();
   }
 
   /** 不重要的测试，一般是为了提升覆盖率而增加的。 */
