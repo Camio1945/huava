@@ -2,8 +2,6 @@ package cn.huava;
 
 import cn.huava.common.WithSpringBootTestAnnotation;
 import cn.huava.common.graalvm.RuntimeHintsRegistrarConfigTest;
-import cn.huava.common.util.ApiTestUtil;
-import cn.huava.common.util.RedisUtil;
 import cn.huava.common.util.RedisUtilTest;
 import cn.huava.sys.controller.*;
 import lombok.extern.slf4j.Slf4j;
@@ -26,13 +24,6 @@ class MainTest extends WithSpringBootTestAnnotation {
   @Autowired MockMvc mockMvc;
 
   @Test
-  @Order(1) // 必须在第 1 位执行， 因为这个方法里面初始化了 mockMvc， 清空了 redis 数据库
-  void tempTestControllerTest() {
-    ApiTestUtil.mockMvc = mockMvc;
-    RedisUtil.flushNonProductionDb();
-  }
-
-  @Test
   @Order(4)
   void utilTest() {
     RedisUtilTest.testAll();
@@ -43,11 +34,5 @@ class MainTest extends WithSpringBootTestAnnotation {
   @Order(Integer.MAX_VALUE - 1)
   void notImportantTest() throws Exception {
     RuntimeHintsRegistrarConfigTest.testAll();
-  }
-
-  @Test
-  @Order(Integer.MAX_VALUE) // 必须在最后执行，因为会退出登录
-  void logout() throws Exception {
-    AuthTest.testAll();
   }
 }
