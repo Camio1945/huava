@@ -5,9 +5,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.TimeZone;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CachingConfigurer;
@@ -29,6 +29,7 @@ import tools.jackson.databind.jsontype.PolymorphicTypeValidator;
  * @author Camio1945
  */
 @Slf4j
+@NullMarked
 @Configuration
 @EnableCaching
 @RequiredArgsConstructor
@@ -65,11 +66,12 @@ public class RedisConfig implements CachingConfigurer {
   }
 }
 
+@NullMarked
 record RandomOffsetTtlFunction(Duration duration) implements RedisCacheWriter.TtlFunction {
 
   /** 这个方法在每次生成 ttl 时都会执行，保证了缓存不会同时过期，而会产生随机的偏移，因此规避了缓存雪崩的问题 */
   @Override
-  public @NonNull Duration getTimeToLive(@NonNull Object key, @Nullable Object value) {
+  public Duration getTimeToLive(Object key, @Nullable Object value) {
     return RedisUtil.randomOffsetDuration(duration);
   }
 }

@@ -1,14 +1,5 @@
-refer to src/test/java/cn/huava/sys/controller/RoleControllerTest.java,
-edit src/test/java/cn/huava/sys/controller/PermControllerTest.java:
-1. Use @BeforeEach to login first
-2. Use @AfterAll to logout
-3. Remove the testAll method
-4. Use @Test and @SneakyThrows for each test
-5. Every test method's name should start with `should_`, use underscore style.
-6. Use assertj instead of junit to set assertions.
-
-refer to src/test/java/cn/huava/sys/controller/RoleControllerTest.java,
-edit src/test/java/cn/huava/sys/controller/PermControllerTest.java:
-1. Remove static variables: createdId, createParamObj
-2. Extract methods: getOrCreateTestPerm, createTestPerm
-3. Refer to RoleControllerTest of how to use getOrCreateTestPerm and createTestPerm
+Edit src/main/java/cn/huava/common/config/RedisConfig.java:
+1. Add @NullMarked for class, if the class has @Slf4j annotation, put @NullMarked under @Slf4j.
+2. Since the class has @NullMarked now, the parameters or return values which are not marked as @NonNull (lombok.NonNull) before should be marked as @Nullable (org.jspecify.annotations.Nullable) now. If it already marked as @Nullable, ignore it.
+3. Remove lombok.NonNull importing, and then remove the @NonNull from the code.
+4. If the class has inner classes, do the same for the inner classes.
