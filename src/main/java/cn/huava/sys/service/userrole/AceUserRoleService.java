@@ -7,8 +7,8 @@ import cn.huava.sys.pojo.po.UserRolePo;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import java.util.List;
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NullMarked;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,8 +18,9 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
+@NullMarked
 public class AceUserRoleService extends BaseService<UserRoleMapper, UserRolePo> {
-  public void saveUserRole(@NonNull final Long userId, @NonNull final List<Long> roleIds) {
+  public void saveUserRole(final Long userId, final List<Long> roleIds) {
     AceUserRoleService self = getSelf();
     self.remove(new LambdaQueryWrapper<UserRolePo>().eq(UserRolePo::getUserId, userId));
     List<UserRolePo> userRolePos =
@@ -50,7 +51,7 @@ public class AceUserRoleService extends BaseService<UserRoleMapper, UserRolePo> 
     return Fn.getBean(AceUserRoleService.class);
   }
 
-  public List<Long> getRoleIdsByUserId(@NonNull final Long userId) {
+  public List<Long> getRoleIdsByUserId(final Long userId) {
     Wrapper<UserRolePo> wrapper =
         new LambdaQueryWrapper<UserRolePo>()
             .eq(UserRolePo::getUserId, userId)
@@ -58,7 +59,7 @@ public class AceUserRoleService extends BaseService<UserRoleMapper, UserRolePo> 
     return list(wrapper).stream().map(UserRolePo::getRoleId).toList();
   }
 
-  public long countUserByRoleId(@NonNull Long roleId) {
+  public long countUserByRoleId(Long roleId) {
     return baseMapper.countUserByRoleId(roleId);
   }
 }

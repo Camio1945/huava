@@ -2,7 +2,7 @@ package cn.huava.sys.mapper;
 
 import cn.huava.sys.pojo.po.UserRolePo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import lombok.NonNull;
+import org.jspecify.annotations.NullMarked;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -12,13 +12,14 @@ import org.apache.ibatis.annotations.Select;
  * @author Camio1945
  */
 @Mapper
+@NullMarked
 public interface UserRoleMapper extends BaseMapper<UserRolePo> {
 
   /**
    * 根据角色 id 查询用户数量
    *
    * @param roleId 角色 id
-   * @return
+   * @return 用户数量
    */
   @Select(
       """
@@ -27,5 +28,5 @@ public interface UserRoleMapper extends BaseMapper<UserRolePo> {
       and ur.role_id = #{roleId}
       and u.delete_info = 0
       """)
-  long countUserByRoleId(@NonNull Long roleId);
+  long countUserByRoleId(Long roleId);
 }

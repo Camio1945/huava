@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import java.util.Arrays;
 import java.util.List;
 import lombok.AllArgsConstructor;
-import lombok.NonNull;
+import org.jspecify.annotations.NullMarked;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
  * @author Camio1945
  */
 @Service
+@NullMarked
 @AllArgsConstructor
 public class UserRoleCache {
   public static final String ROLE_IDS_BY_USER_ID_CACHE_PREFIX = "cache:userRole:userId";
@@ -30,7 +31,7 @@ public class UserRoleCache {
    * VALUE_STRING: need String, Number of Boolean value that contains type id (for subtype of
    * java.lang.Object)
    */
-  public @NonNull List<Long> getRoleIdsByUserId(@NonNull Long userId) {
+  public List<Long> getRoleIdsByUserId(Long userId) {
     String key = ROLE_IDS_BY_USER_ID_CACHE_PREFIX + "::" + userId;
     String roleIdsStr = RedisUtil.get(key);
     if (Fn.isBlank(roleIdsStr)) {
@@ -51,7 +52,7 @@ public class UserRoleCache {
     return Arrays.stream(roleIdsStr.split(",")).map(Long::parseLong).toList();
   }
 
-  public void deleteCache(@NonNull Long userId) {
+  public void deleteCache(Long userId) {
     RedisUtil.delete(ROLE_IDS_BY_USER_ID_CACHE_PREFIX + "::" + userId);
   }
 }

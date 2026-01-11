@@ -15,9 +15,10 @@ import cn.hutool.v7.core.collection.CollUtil;
 import cn.hutool.v7.core.lang.Assert;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import java.util.List;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,17 +29,18 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Slf4j
 @Service
+@NullMarked
 @RequiredArgsConstructor
 public class AceRoleService extends BaseService<RoleMapper, RolePo> {
   private final RolePageService rolePageService;
   private final AceRolePermService rolePermService;
   private final RoleCache roleCache;
 
-  public PageDto<RolePo> rolePage(@NonNull PageQo<RolePo> pageQo, @NonNull final RolePo params) {
+  public PageDto<RolePo> rolePage(PageQo<RolePo> pageQo, final RolePo params) {
     return rolePageService.rolePage(pageQo, params);
   }
 
-  public boolean isNameExists(Long id, @NonNull String name) {
+  public boolean isNameExists(@Nullable Long id, String name) {
     return exists(
         Fn.undeletedWrapper(RolePo::getDeleteInfo)
             .eq(RolePo::getName, name)
@@ -46,7 +48,7 @@ public class AceRoleService extends BaseService<RoleMapper, RolePo> {
   }
 
   @Transactional(rollbackFor = Throwable.class)
-  public void setPerm(@NonNull SetPermQo setPermQo) {
+  public void setPerm(SetPermQo setPermQo) {
     Assert.isTrue(ADMIN_ROLE_ID != setPermQo.getRoleId(), "不允许修改超级管理员角色的权限");
     Long roleId = setPermQo.getRoleId();
     rolePermService.remove(new LambdaQueryWrapper<RolePermPo>().eq(RolePermPo::getRoleId, roleId));
@@ -59,7 +61,7 @@ public class AceRoleService extends BaseService<RoleMapper, RolePo> {
     roleCache.deleteCache(roleId);
   }
 
-  public List<Long> getPerm(@NonNull Long id) {
+  public List<Long> getPerm(Long id) {
     return rolePermService
         .list(new LambdaQueryWrapper<RolePermPo>().eq(RolePermPo::getRoleId, id))
         .stream()

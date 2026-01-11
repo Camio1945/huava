@@ -5,7 +5,7 @@ import cn.hutool.v7.core.lang.Assert;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import lombok.NonNull;
+import org.jspecify.annotations.NonNull;
 
 ///
 /// # Base Service to provide common CRUD operations. <br>

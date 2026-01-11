@@ -7,10 +7,11 @@ import cn.huava.sys.pojo.po.UserExtPo;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import java.util.HashMap;
 import java.util.Map;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NullMarked;
 import cn.hutool.v7.json.jwt.JWTUtil;
+import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,10 +21,11 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
+@NullMarked
 @RequiredArgsConstructor
 class CreateTokenService extends BaseService<UserMapper, UserExtPo> {
 
-  protected UserJwtDto createToken(@NonNull Long userId, byte[] jwtKey) {
+  protected UserJwtDto createToken(Long userId, byte[] jwtKey) {
     return new UserJwtDto()
         .setAccessToken(createAccessToken(userId, jwtKey))
         .setRefreshToken(createRefreshToken(jwtKey));

@@ -3,9 +3,9 @@ package cn.huava.sys.service.jwt;
 import cn.huava.common.constant.CommonConstant;
 import cn.huava.sys.pojo.dto.UserJwtDto;
 import java.util.*;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NullMarked;
 import cn.hutool.v7.core.lang.Assert;
 import cn.hutool.v7.json.jwt.JWT;
 import cn.hutool.v7.json.jwt.JWTUtil;
@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
  * @author Camio1945
  */
 @Slf4j
+@NullMarked
 @Service
 @RequiredArgsConstructor
 public class AceJwtService {
@@ -26,15 +27,15 @@ public class AceJwtService {
   @Value("${project.jwt_key_base64}")
   private String jwtKeyBase64;
 
-  public UserJwtDto createToken(@NonNull Long userId) {
+  public UserJwtDto createToken(Long userId) {
     return createTokenService.createToken(userId, getJwtKeyBytes());
   }
 
-  public Long getUserIdFromAccessToken(@NonNull final String token) {
+  public Long getUserIdFromAccessToken(final String token) {
     return JWTUtil.parseToken(token).getPayload("sub", Long.class);
   }
 
-  public boolean isTokenExpired(@NonNull final String token) {
+  public boolean isTokenExpired(final String token) {
     Assert.isTrue(JWTUtil.verify(token, getJwtKeyBytes()), "invalid token");
     JWT jwt = JWTUtil.parseToken(token);
     Long exp = jwt.getPayload("exp", Long.class);

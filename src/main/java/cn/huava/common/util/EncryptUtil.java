@@ -1,15 +1,17 @@
 package cn.huava.common.util;
 
-import lombok.NonNull;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * @author Camio1945
  */
+@NullMarked
 class EncryptUtil {
   private EncryptUtil() {}
 
-  public static String encryptPassword(@NonNull final String str) {
+  public static @Nullable String encryptPassword(final String str) {
     PasswordEncoder encoder = Fn.getBean(PasswordEncoder.class);
     return encoder.encode(str);
   }

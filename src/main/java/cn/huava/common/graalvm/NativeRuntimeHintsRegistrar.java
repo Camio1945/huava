@@ -11,7 +11,8 @@ import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import java.util.*;
 import java.util.stream.Stream;
 import java.util.zip.GZIPInputStream;
-import lombok.NonNull;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 import org.apache.ibatis.javassist.util.proxy.ProxyFactory;
 import org.apache.ibatis.logging.slf4j.Slf4jImpl;
 import org.apache.ibatis.logging.stdout.StdOutImpl;
@@ -28,15 +29,16 @@ import tools.jackson.databind.ser.std.ToStringSerializer;
  *
  * @author Camio1945
  */
+@NullMarked
 public class NativeRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
 
   @Override
-  public void registerHints(@NonNull RuntimeHints hints, ClassLoader classLoader) {
+  public void registerHints(RuntimeHints hints, @Nullable ClassLoader classLoader) {
     registerResources(hints);
     registerClasses(hints);
   }
 
-  protected void registerResources(@NonNull RuntimeHints hints) {
+  protected void registerResources(RuntimeHints hints) {
     Stream.of(
             "org/apache/ibatis/builder/xml/*.dtd",
             "org/apache/ibatis/builder/xml/*.xsd",
@@ -47,7 +49,7 @@ public class NativeRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
         .forEach(hints.resources()::registerPattern);
   }
 
-  protected void registerClasses(@NonNull RuntimeHints hints) {
+  protected void registerClasses(RuntimeHints hints) {
     Set<Class<?>> classes = new HashSet<>();
     addMiscellaneousClasses(classes);
     addIbatisClasses(classes);

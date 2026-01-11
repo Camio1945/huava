@@ -7,8 +7,8 @@ import cn.huava.sys.mapper.RefreshTokenMapper;
 import cn.huava.sys.pojo.po.RefreshTokenPo;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import lombok.AllArgsConstructor;
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NullMarked;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,16 +18,17 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
+@NullMarked
 @AllArgsConstructor
 public class AceRefreshTokenService extends BaseService<RefreshTokenMapper, RefreshTokenPo> {
-  public void saveRefreshToken(@NonNull Long sysUserId, @NonNull String refreshToken) {
+  public void saveRefreshToken(Long sysUserId, String refreshToken) {
     RefreshTokenPo po = new RefreshTokenPo().setRefreshToken(refreshToken).setSysUserId(sysUserId);
     po.setCreatedBy(sysUserId).setUpdatedBy(sysUserId);
     BasePo.beforeCreate(po);
     save(po);
   }
 
-  public RefreshTokenPo getByRefreshToken(@NonNull String refreshToken) {
+  public RefreshTokenPo getByRefreshToken(String refreshToken) {
     Wrapper<RefreshTokenPo> wrapper =
         Fn.undeletedWrapper(RefreshTokenPo::getDeleteInfo)
             .eq(RefreshTokenPo::getRefreshToken, refreshToken);

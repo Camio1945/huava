@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import jakarta.servlet.http.HttpServletRequest;
 import java.io.File;
-import lombok.NonNull;
+import org.jspecify.annotations.NonNull;
 import org.springframework.core.io.Resource;
 import org.springframework.util.StringUtils;
 
@@ -99,5 +99,4 @@ public class Fn {
   public static boolean isInJar() {
     return EnvironmentUtil.isInJar();
   }
-
 }

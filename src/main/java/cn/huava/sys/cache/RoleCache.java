@@ -12,7 +12,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import java.util.Collections;
 import java.util.Set;
 import lombok.AllArgsConstructor;
-import lombok.NonNull;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
  * @author Camio1945
  */
 @Service
+@NullMarked
 @AllArgsConstructor
 public class RoleCache {
   public static final String URIS_CACHE_PREFIX = "cache:role:uris:roleId";
@@ -30,12 +32,12 @@ public class RoleCache {
   private PermMapper permMapper;
 
   @Cacheable(value = URIS_CACHE_PREFIX, key = "#roleId")
-  public Set<String> getPermUrisByRoleId(@NonNull Long roleId) {
+  public Set<String> getPermUrisByRoleId(Long roleId) {
     String key = URIS_CACHE_PREFIX + "::" + roleId;
     return SingleFlightUtil.execute(key, () -> getPermUrisByRoleIdInner(roleId));
   }
 
-  public void deleteCache(@NonNull Long roleId) {
+  public void deleteCache(Long roleId) {
     RedisUtil.delete(URIS_CACHE_PREFIX + "::" + roleId);
   }
 

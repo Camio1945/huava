@@ -10,7 +10,8 @@ import cn.hutool.v7.core.util.RandomUtil;
 import cn.hutool.v7.extra.spring.SpringUtil;
 import java.time.Duration;
 import java.util.*;
-import lombok.NonNull;
+
+import org.jspecify.annotations.NonNull;
 import org.redisson.api.*;
 import org.springframework.core.env.Environment;
 import org.springframework.data.redis.connection.RedisConnection;
