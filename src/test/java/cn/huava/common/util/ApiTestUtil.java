@@ -3,7 +3,7 @@ package cn.huava.common.util;
 import static cn.huava.common.constant.CommonConstant.*;
 import static cn.huava.common.constant.TestConstant.ADMIN_PASSWORD;
 import static cn.huava.common.constant.TestConstant.ADMIN_USERNAME;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

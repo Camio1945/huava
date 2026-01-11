@@ -62,6 +62,12 @@
       "name": "cn.huava.common.filter.UriAuthFilter"
     },
     {
+      "name": "cn.huava.common.controller.handler.GlobalExceptionHandler"
+    },
+    {
+      "name": "cn.huava.common.service.attachment.ServeFileService"
+    },
+    {
       "name": "cn.huava.common.service.captcha.RefreshCaptchaService"
     }
   ]

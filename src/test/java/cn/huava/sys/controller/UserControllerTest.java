@@ -3,8 +3,7 @@ package cn.huava.sys.controller;
 import static cn.huava.common.constant.CommonConstant.*;
 import static cn.huava.common.constant.TestConstant.*;
 import static cn.huava.common.util.ApiTestUtil.*;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import cn.huava.common.WithSpringBootTestAnnotation;
@@ -62,9 +61,9 @@ class UserControllerTest extends WithSpringBootTestAnnotation {
     MvcResult res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
     String resJsonStr = res.getResponse().getContentAsString();
     UserInfoDto userInfoDto = JSONUtil.toBean(resJsonStr, UserInfoDto.class);
-    assertNotNull(userInfoDto);
-    assertEquals(ADMIN_USERNAME, userInfoDto.getUsername());
-    assertFalse(userInfoDto.getMenu().isEmpty());
+    assertThat(userInfoDto).isNotNull();
+    assertThat(userInfoDto.getUsername()).isEqualTo(ADMIN_USERNAME);
+    assertThat(userInfoDto.getMenu()).isNotEmpty();
   }
 
   /**

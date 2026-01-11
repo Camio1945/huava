@@ -1,7 +1,7 @@
 package cn.huava.sys.controller;
 
 import static cn.huava.common.util.ApiTestUtil.*;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import cn.huava.common.WithSpringBootTestAnnotation;

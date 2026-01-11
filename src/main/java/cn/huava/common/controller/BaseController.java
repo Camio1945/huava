@@ -5,6 +5,7 @@ import cn.huava.common.service.BaseService;
 import cn.huava.common.validation.*;
 import cn.hutool.v7.core.reflect.FieldUtil;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 ///
-/// # Base controller that provides CRUD operations (excluding pagination queries)<br>
-/// Generics: T - Entity type, M - MyBatis Mapper type, S - Service type <br>
+/// # Base controller that provides CRUD operations (excluding pagination queries)
+/// Generics: T - Entity type, M - MyBatis Mapper type, S - Service type
 ///
 /// @author Camio1945
+@Slf4j
 @NullMarked
 @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 public abstract class BaseController<S extends BaseService<M, T>, M extends BaseMapper<T>, T> {
@@ -42,6 +44,7 @@ public abstract class BaseController<S extends BaseService<M, T>, M extends Base
   @GetMapping("/get/{id}")
   public ResponseEntity<T> getById(@PathVariable final Long id) {
     T entity = service.getById(id);
+    System.out.println("entity instanceof BasePo: " + (entity instanceof BasePo));
     if (entity instanceof BasePo basePo && basePo.getDeleteInfo() > 0) {
       return ResponseEntity.notFound().build();
     }

@@ -4,9 +4,9 @@ import cn.huava.common.mapper.AttachmentMapper;
 import cn.huava.common.pojo.po.AttachmentPo;
 import cn.huava.common.service.attachment.AceAttachmentService;
 import cn.huava.common.util.Fn;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NullMarked;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
  * @author Camio1945
  */
 @Slf4j
+@NullMarked
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/20{date:\\d{6}}/{filename:.+}")
@@ -25,7 +26,7 @@ public class AttachmentServingController
 
   @GetMapping
   public ResponseEntity<Resource> serveFile(
-      @PathVariable @NonNull final String date, @PathVariable @NonNull final String filename) {
+      @PathVariable final String date, @PathVariable final String filename) {
     String url = Fn.format("/20{}/{}", date, filename);
     return service.serveFile(url);
   }

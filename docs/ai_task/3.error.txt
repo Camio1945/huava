@@ -25,3 +25,10 @@ do this:
 2. Since the class has @NullMarked now, the parameters or return values which are not marked as @NonNull (lombok.NonNull) before should be marked as @Nullable (org.jspecify.annotations.Nullable) now. If it already marked as @Nullable, ignore it.
 3. Remove lombok.NonNull importing, and then remove the @NonNull from the code.
 4. If the class has inner classes, do the same for the inner classes.
+
+
+Write a GlobalExceptionHandlerTest.java in src/test/java/cn/huava/common/controller/handler folder to test the src/main/java/cn/huava/common/controller/handler/GlobalExceptionHandler.java
+
+Edit src/test/java/cn/huava/common/controller/handler/GlobalExceptionHandlerTest.java:
+1. Every test method's name should start with `should_`, use underscore style.
+2. Use assertj(org.assertj.core.api.Assertions) instead of junit to set assertions.
