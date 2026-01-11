@@ -8,7 +8,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 ///
-/// # Enum type validator annotation, used together with {@link EnumValidator}
+/// # Enum type validator annotation, used together with [EnumValidator]
 ///
 /// @author Camio1945
 @Target({ElementType.FIELD, ElementType.PARAMETER})
