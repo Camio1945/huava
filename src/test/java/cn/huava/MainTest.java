@@ -44,7 +44,7 @@ class MainTest extends WithSpringBootTestAnnotation {
   @Test
   @Order(2) // 必须在第 2 位执行，方法里面初始化了验证码，用于后续的登录
   void captchaControllerTest() throws Exception {
-    CaptchaControllerTest.testAll();
+    // CaptchaControllerTest.testAll();
   }
 
   @Test

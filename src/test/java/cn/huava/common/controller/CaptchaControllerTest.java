@@ -1,11 +1,12 @@
 package cn.huava.common.controller;
 
+import static cn.huava.common.constant.CommonConstant.CAPTCHA_CODE_SESSION_KEY;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 import cn.huava.common.util.SkijaCaptchaUtil;
 import jakarta.servlet.ServletOutputStream;
-import java.io.IOException;
+import lombok.SneakyThrows;
 import org.jspecify.annotations.NonNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,6 +19,11 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
 
+/**
+ * Test the apis in {@link CaptchaController}.
+ *
+ * @author Camio1945
+ */
 @ExtendWith(MockitoExtension.class)
 class CaptchaControllerTest {
 
@@ -41,23 +47,18 @@ class CaptchaControllerTest {
   }
 
   @Test
-  void captchaGeneratesImageAndStoresSessionAttribute() throws IOException {
+  @SneakyThrows
+  void should_generate_captcha() {
     byte[] fakeImage = new byte[10];
     String fakeCode = "TEST";
     SkijaCaptchaUtil.CaptchaResult captchaResult =
         new SkijaCaptchaUtil.CaptchaResult(fakeCode, fakeImage);
-
     try (MockedStatic<SkijaCaptchaUtil> mocked = mockStatic(SkijaCaptchaUtil.class)) {
       mocked
           .when(() -> SkijaCaptchaUtil.generateCaptcha(anyInt(), anyInt(), anyInt()))
           .thenReturn(captchaResult);
-
       captchaController.captcha(request, response);
-
-      // Assert session state
-      assertThat(session.getAttribute("captcha")).isEqualTo(fakeCode);
-
-      // Assert response behavior
+      assertThat(session.getAttribute(CAPTCHA_CODE_SESSION_KEY)).isEqualTo(fakeCode);
       verify(servletOutputStream).write(fakeImage);
       assertThat(response.getContentType()).isEqualTo("image/png");
     }
