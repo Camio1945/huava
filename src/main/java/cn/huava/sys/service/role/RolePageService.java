@@ -9,6 +9,7 @@ import cn.huava.sys.pojo.po.*;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NullMarked;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,10 +17,11 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
+@NullMarked
 @RequiredArgsConstructor
 class RolePageService extends BaseService<RoleMapper, RolePo> {
 
-  protected PageDto<RolePo> rolePage(@NonNull PageQo<RolePo> pageQo, @NonNull final RolePo params) {
+  protected PageDto<RolePo> rolePage(PageQo<RolePo> pageQo, final RolePo params) {
     String desc = params.getDescription();
     Wrapper<RolePo> wrapper =
         Fn.undeletedWrapper(RolePo::getDeleteInfo)
