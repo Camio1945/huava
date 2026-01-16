@@ -68,7 +68,7 @@ public class AuthTest {
         .setUsername(IdUtil.nanoId(10))
         .setPassword("12345678")
         .setRealName("测试用户")
-        .setPhoneNumber("18510336674")
+        .setPhoneNumber("19999999999")
         .setGender(UserGenderEnum.U.name())
         .setIsEnabled(true);
     createUserParamObj.setRoleIds(List.of(createdRoleId));

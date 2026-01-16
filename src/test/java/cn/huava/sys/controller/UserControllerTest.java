@@ -66,10 +66,6 @@ class UserControllerTest extends WithSpringBootTestAnnotation {
     assertThat(userInfoDto.getMenu()).isNotEmpty();
   }
 
-  /**
-   * Test the create user api. <br>
-   * 测试添加用户接口。
-   */
   @Test
   @SneakyThrows
   void should_create_user() {
@@ -84,7 +80,7 @@ class UserControllerTest extends WithSpringBootTestAnnotation {
         .setUsername(IdUtil.nanoId(10))
         .setPassword("12345678")
         .setRealName("测试用户")
-        .setPhoneNumber("18510336674")
+        .setPhoneNumber("19999999999")
         .setGender(UserGenderEnum.U.name())
         .setIsEnabled(true);
     createParamObj.setRoleIds(List.of(ADMIN_ROLE_ID));
@@ -95,6 +91,24 @@ class UserControllerTest extends WithSpringBootTestAnnotation {
     assertThat(NumberUtil.isLong(createdIdStr)).isTrue();
     createParamObj.setId(Long.parseLong(createdIdStr));
     return createParamObj;
+  }
+
+  @Test
+  @SneakyThrows
+  void should_not_create_user_when_username_exists() {
+    UserExtPo createParamObj = new UserExtPo();
+    createParamObj
+        .setUsername("admin")
+        .setPassword("12345678")
+        .setRealName("测试用户")
+        .setPhoneNumber("19999999999")
+        .setGender(UserGenderEnum.U.name())
+        .setIsEnabled(true);
+    createParamObj.setRoleIds(List.of(ADMIN_ROLE_ID));
+    RequestBuilder req = initReq().post("/sys/user/create").contentJson(createParamObj).build();
+    MvcResult res = mockMvc.perform(req).andExpect(status().isBadRequest()).andReturn();
+    String msg = res.getResponse().getContentAsString();
+    assertThat(msg).startsWith("用户名已存在");
   }
 
   @Test

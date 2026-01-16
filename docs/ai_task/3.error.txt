@@ -1,23 +1,13 @@
-Write test for src/main/java/cn/huava/common/service/attachment/AceAttachmentService.java:
+Write test for
+src/main/java/cn/huava/sys/validation/user/BeforeDeleteUserValidator.java
+src/main/java/cn/huava/sys/validation/user/BeforeUpdateUserValidator.java
+src/main/java/cn/huava/sys/validation/user/PasswordValidator.java
+src/main/java/cn/huava/sys/validation/user/RoleIdsValidator.java
+src/main/java/cn/huava/sys/validation/user/UniqueUsernameValidator.java:
 1. Every test method's name should start with `should_`, use underscore style.
 2. Use assertj(org.assertj.core.api.Assertions) instead of junit to set assertions.
 3. Cover every method, every line, every instruction, every branch.
 4. The test class should not be public.
 5. Add at least one assertion to each test case, if there is nothing to assert, use `verify()`.
 6. The author of the new file should be Camio1945.
-
-Edit src/test/java/cn/huava/sys/service/jwt/AceJwtServiceTest.java to fix this:
-2 branches of this line of code missed:
-return exp != null && exp * CommonConstant.MILLIS_PER_SECOND <= System.currentTimeMillis();
-
-Please simulate the IOException for cn.huava.common.service.attachment.UploadToLocalServiceImpl.saveFile method
-
-  @SneakyThrows(IOException.class)
-  private String saveFile(MultipartFile file) {
-    String destFilePath = buildFilePath(file.getOriginalFilename());
-    file.transferTo(new File(destFilePath));
-    File destFile = new File(destFilePath);
-    Assert.isTrue(destFile.exists(), "文件保存失败");
-    Assert.isTrue(destFile.length() == file.getSize(), "文件保存失败，文件大小不匹配");
-    return destFilePath.replace(attachmentPath, "");
-  }
+7. Each class need a separate test file.
