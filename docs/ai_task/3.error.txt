@@ -1,4 +1,4 @@
-Write test for src/main/java/cn/huava/common/service/attachment/UploadToLocalServiceImpl.java:
+Write test for src/main/java/cn/huava/common/service/attachment/AceAttachmentService.java:
 1. Every test method's name should start with `should_`, use underscore style.
 2. Use assertj(org.assertj.core.api.Assertions) instead of junit to set assertions.
 3. Cover every method, every line, every instruction, every branch.
