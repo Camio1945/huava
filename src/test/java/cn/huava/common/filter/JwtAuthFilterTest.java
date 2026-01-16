@@ -2,10 +2,12 @@ package cn.huava.common.filter;
 
 import static cn.huava.common.constant.CommonConstant.AUTHORIZATION_HEADER;
 import static cn.huava.common.constant.CommonConstant.BEARER_PREFIX;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import cn.huava.sys.cache.UserCache;
+import cn.huava.sys.pojo.po.UserPo;
 import cn.huava.sys.service.jwt.AceJwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
@@ -114,10 +116,7 @@ class JwtAuthFilterTest {
     jwtAuthFilter.doFilterInternal(request, response, filterChain);
 
     // Then
-    verify(filterChain)
-        .doFilter(
-            any(),
-            any()); // Should continue the filter chain since it doesn't start with Bearer prefix
+    verify(filterChain).doFilter(any(), any()); // Should continue the filter chain since it doesn't start with Bearer prefix
     verify(response, never()).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
   }
 
@@ -130,8 +129,7 @@ class JwtAuthFilterTest {
     jwtAuthFilter.doFilterInternal(request, response, filterChain);
 
     // Then
-    verify(filterChain)
-        .doFilter(any(), any()); // Should continue the filter chain without validation
+    verify(filterChain).doFilter(any(), any()); // Should continue the filter chain without validation
     verify(jwtAceService, never()).isTokenExpired(any());
     verify(response, never()).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
   }
