@@ -1,6 +1,12 @@
-This line is not fully tested of branches:
-if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX))
+like the src/test/java/cn/huava/common/filter/JwtAuthFilterTest.java,
+write a src/test/java/cn/huava/common/filter/UriAuthFilterTest.java to test src/main/java/cn/huava/common/filter/UriAuthFilter.java
+Make sure all methods and all lines and all branches are covered.
 
-Every test method's name should start with `should_`, use underscore style.
-Use assertj(org.assertj.core.api.Assertions) instead of junit to set assertions.
 
+in src/main/java/cn/huava/common/filter/UriAuthFilter.java
+this line
+```
+if (URI_AUTH_RANGE_MAIN.equals(uriAuthRange))
+```
+only has tested 1/2 branches,
+please edit src/test/java/cn/huava/common/filter/UriAuthFilterTest.java to test all branches.

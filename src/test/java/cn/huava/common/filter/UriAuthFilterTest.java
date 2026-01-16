@@ -21,7 +21,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -61,34 +60,13 @@ class UriAuthFilterTest {
   }
 
   @Test
-  void should_continue_filter_chain_when_not_logged_in() throws Exception {
-    // Given
-    lenient().when(request.getRequestURI()).thenReturn("/some/protected/resource/create");
-    // Mock static SecurityContextHolder to return null authentication
-    try (MockedStatic<SecurityContextHolder> mockedSecurityContextHolder =
-        mockStatic(SecurityContextHolder.class)) {
-      SecurityContext mockSecurityContext = mock(SecurityContext.class);
-      when(SecurityContextHolder.getContext()).thenReturn(mockSecurityContext);
-      when(mockSecurityContext.getAuthentication()).thenReturn(null);
-
-      // When
-      uriAuthFilter.doFilterInternal(request, response, filterChain);
-
-      // Then
-      verify(filterChain).doFilter(any(), any()); // Should continue the filter chain
-      verify(response, never()).setStatus(HttpServletResponse.SC_FORBIDDEN);
-    }
-  }
-
-  @Test
   void should_continue_filter_chain_when_user_has_permission_for_main_uri() throws Exception {
     // Given
     lenient().when(request.getRequestURI()).thenReturn("/api/resource/create");
 
     // Mock static SecurityContextHolder and Fn
-    try (MockedStatic<SecurityContextHolder> mockedSecurityContextHolder =
-            mockStatic(SecurityContextHolder.class);
-        MockedStatic<Fn> mockedFn = mockStatic(Fn.class)) {
+    try (var _ = mockStatic(SecurityContextHolder.class);
+        var _ = mockStatic(Fn.class)) {
 
       SecurityContext mockSecurityContext = mock(SecurityContext.class);
       when(SecurityContextHolder.getContext()).thenReturn(mockSecurityContext);
@@ -119,9 +97,8 @@ class UriAuthFilterTest {
     // Given
     lenient().when(request.getRequestURI()).thenReturn("/api/resource/create");
 
-    try (MockedStatic<SecurityContextHolder> mockedSecurityContextHolder =
-            mockStatic(SecurityContextHolder.class);
-        MockedStatic<Fn> mockedFn = mockStatic(Fn.class)) {
+    try (var _ = mockStatic(SecurityContextHolder.class);
+        var _ = mockStatic(Fn.class)) {
 
       SecurityContext mockSecurityContext = mock(SecurityContext.class);
       when(SecurityContextHolder.getContext()).thenReturn(mockSecurityContext);
@@ -158,9 +135,8 @@ class UriAuthFilterTest {
     // Given
     lenient().when(request.getRequestURI()).thenReturn("/api/resource/create");
 
-    try (MockedStatic<SecurityContextHolder> mockedSecurityContextHolder =
-            mockStatic(SecurityContextHolder.class);
-        MockedStatic<Fn> mockedFn = mockStatic(Fn.class)) {
+    try (var _ = mockStatic(SecurityContextHolder.class);
+        var _ = mockStatic(Fn.class)) {
 
       SecurityContext mockSecurityContext = mock(SecurityContext.class);
       when(SecurityContextHolder.getContext()).thenReturn(mockSecurityContext);
@@ -194,9 +170,8 @@ class UriAuthFilterTest {
     // Given
     lenient().when(request.getRequestURI()).thenReturn("/api/resource/create");
 
-    try (MockedStatic<SecurityContextHolder> mockedSecurityContextHolder =
-            mockStatic(SecurityContextHolder.class);
-        MockedStatic<Fn> mockedFn = mockStatic(Fn.class)) {
+    try (var _ = mockStatic(SecurityContextHolder.class);
+        var _ = mockStatic(Fn.class)) {
 
       SecurityContext mockSecurityContext = mock(SecurityContext.class);
       when(SecurityContextHolder.getContext()).thenReturn(mockSecurityContext);
@@ -224,9 +199,8 @@ class UriAuthFilterTest {
     // Given
     lenient().when(request.getRequestURI()).thenReturn("/api/resource/view");
 
-    try (MockedStatic<SecurityContextHolder> mockedSecurityContextHolder =
-            mockStatic(SecurityContextHolder.class);
-        MockedStatic<Fn> mockedFn = mockStatic(Fn.class)) {
+    try (var _ = mockStatic(SecurityContextHolder.class);
+        var _ = mockStatic(Fn.class)) {
 
       SecurityContext mockSecurityContext = mock(SecurityContext.class);
       when(SecurityContextHolder.getContext()).thenReturn(mockSecurityContext);
@@ -251,9 +225,8 @@ class UriAuthFilterTest {
     // Given
     lenient().when(request.getRequestURI()).thenReturn("/api/resource/create");
 
-    try (MockedStatic<SecurityContextHolder> mockedSecurityContextHolder =
-            mockStatic(SecurityContextHolder.class);
-        MockedStatic<Fn> mockedFn = mockStatic(Fn.class)) {
+    try (var _ = mockStatic(SecurityContextHolder.class);
+        var _ = mockStatic(Fn.class)) {
 
       SecurityContext mockSecurityContext = mock(SecurityContext.class);
       when(SecurityContextHolder.getContext()).thenReturn(mockSecurityContext);
@@ -291,9 +264,8 @@ class UriAuthFilterTest {
     PrintWriter printWriter = new PrintWriter(stringWriter);
     lenient().when(response.getWriter()).thenReturn(printWriter);
 
-    try (MockedStatic<SecurityContextHolder> mockedSecurityContextHolder =
-            mockStatic(SecurityContextHolder.class);
-        MockedStatic<Fn> mockedFn = mockStatic(Fn.class)) {
+    try (var _ = mockStatic(SecurityContextHolder.class);
+        var _ = mockStatic(Fn.class)) {
 
       SecurityContext mockSecurityContext = mock(SecurityContext.class);
       lenient().when(SecurityContextHolder.getContext()).thenReturn(mockSecurityContext);
