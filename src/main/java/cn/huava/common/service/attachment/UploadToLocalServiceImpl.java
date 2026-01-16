@@ -75,7 +75,6 @@ public class UploadToLocalServiceImpl extends BaseUploadService {
     file.transferTo(new File(destFilePath));
     File destFile = new File(destFilePath);
     Assert.isTrue(destFile.exists(), "文件保存失败");
-    Assert.isTrue(destFile.length() == file.getSize(), "文件保存失败，文件大小不匹配");
     return destFilePath.replace(attachmentPath, "");
   }
 
