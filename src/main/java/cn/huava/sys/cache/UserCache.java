@@ -74,7 +74,9 @@ public class UserCache {
     if (userCacheInner != null) {
       return userCacheInner;
     }
-    userCacheInner = SingleFlightUtil.execute("userCache", () -> Fn.getBean(UserCache.class));
+    synchronized (UserCache.class) {
+      userCacheInner = Fn.getBean(UserCache.class);
+    }
     return userCacheInner;
   }
 

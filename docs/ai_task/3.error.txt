@@ -1,9 +1,4 @@
-Write test for
-src/main/java/cn/huava/sys/validation/user/BeforeDeleteUserValidator.java
-src/main/java/cn/huava/sys/validation/user/BeforeUpdateUserValidator.java
-src/main/java/cn/huava/sys/validation/user/PasswordValidator.java
-src/main/java/cn/huava/sys/validation/user/RoleIdsValidator.java
-src/main/java/cn/huava/sys/validation/user/UniqueUsernameValidator.java:
+Write test for src/main/java/cn/huava/sys/cache/UserCache.java:
 1. Every test method's name should start with `should_`, use underscore style.
 2. Use assertj(org.assertj.core.api.Assertions) instead of junit to set assertions.
 3. Cover every method, every line, every instruction, every branch.
@@ -11,3 +6,22 @@ src/main/java/cn/huava/sys/validation/user/UniqueUsernameValidator.java:
 5. Add at least one assertion to each test case, if there is nothing to assert, use `verify()`.
 6. The author of the new file should be Camio1945.
 7. Each class need a separate test file.
+
+This line `return userExtPo == null ? null : userExtPo.getId().toString();` as reported: 1 of 2 branches missed
+fix it
+
+
+Edit src/test/java/cn/huava/sys/cache/UserCacheTest.java, write test for src/main/java/cn/huava/sys/cache/UserCache.java:
+1. Every test method's name should start with `should_`, use underscore style.
+2. Use assertj(org.assertj.core.api.Assertions) instead of junit to set assertions.
+3. Cover every method, every line, every instruction, every branch.
+4. The test class should not be public.
+5. Add at least one assertion to each test case, if there is nothing to assert, use `verify()`.
+6. Don't use @ExtendWith(MockitoExtension.class)
+7. Keep the `extends WithSpringBootTestAnnotation` part.
+
+When I remove src/test/java/cn/huava/sys/cache/UserCacheTest.java, and then run `mvn clean verify`, all tests pass.
+When I remain src/test/java/cn/huava/sys/cache/UserCacheTest.java, and the run the src/test/java/cn/huava/sys/cache/UserCacheTest.java itself, it passes too.
+But when I remain src/test/java/cn/huava/sys/cache/UserCacheTest.java, then run `mvn clean verify`, the test stuck, why is that?
+Just answer the question, don't change any code.
+Don't guess, analyze the code and find the accurate reason.
