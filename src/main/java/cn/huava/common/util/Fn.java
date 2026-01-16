@@ -2,15 +2,12 @@ package cn.huava.common.util;
 
 import cn.huava.sys.pojo.po.UserPo;
 import cn.hutool.v7.core.bean.BeanUtil;
-import cn.hutool.v7.core.io.file.FileUtil;
 import cn.hutool.v7.core.text.*;
 import cn.hutool.v7.extra.spring.SpringUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import jakarta.servlet.http.HttpServletRequest;
-import java.io.File;
 import org.jspecify.annotations.NonNull;
-import org.springframework.core.io.Resource;
 import org.springframework.util.StringUtils;
 
 /**
@@ -59,14 +56,6 @@ public class Fn {
     return SpringUtil.getBean(clazz);
   }
 
-  public static boolean exists(final String path) {
-    return FileUtil.exists(path);
-  }
-
-  public static boolean exists(final File file) {
-    return FileUtil.exists(file);
-  }
-
   public static UserPo getLoginUser() {
     return LoginUtil.getLoginUser();
   }
@@ -86,17 +75,5 @@ public class Fn {
 
   public static String encryptPassword(@NonNull final String str) {
     return EncryptUtil.encryptPassword(str);
-  }
-
-  public static byte[] resourceToBytes(@NonNull Resource resource) {
-    return ResourceUtil.resourceToBytes(resource);
-  }
-
-  public static boolean isInGraalVmNativeImage() {
-    return EnvironmentUtil.isInGraalVmNativeImage();
-  }
-
-  public static boolean isInJar() {
-    return EnvironmentUtil.isInJar();
   }
 }
