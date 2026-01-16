@@ -1,19 +1,18 @@
 package cn.huava.common.util;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Set;
+import cn.huava.common.WithSpringBootTestAnnotation;
 import cn.hutool.v7.core.data.id.IdUtil;
+import java.util.Set;
+import org.junit.jupiter.api.Test;
 
-/** 测试 {@link RedisUtil} 类，由于依赖 Spring 环境，所以需要在 {@link cn.huava.MainTest} 中调用当前类。 */
-public class RedisUtilTest {
+/** Redis 工具类测试 */
+class RedisUtilTest extends WithSpringBootTestAnnotation {
 
-  public static void testAll() {
-    hasKey();
-    map();
-  }
-
-  private static void hasKey() {
+  @Test
+  void hasKey() {
     String key = IdUtil.nanoId(10);
     assertFalse(RedisUtil.hasKey(key));
     String value = "tempValue";
@@ -24,7 +23,8 @@ public class RedisUtilTest {
     RedisUtil.delete(key);
   }
 
-  private static void map() {
+  @Test
+  void map() {
     String mapName = "testMap";
     String key = "key1";
     String value = "value1";
@@ -34,5 +34,14 @@ public class RedisUtilTest {
     Set<String> keys = RedisUtil.getMapKeys(mapName);
     assertEquals(1, keys.size());
     assertTrue(keys.contains(key));
+  }
+
+  @Test
+  void should_get_hit_ratio_percentage() {
+    String key = "hello";
+    String value = "world";
+    RedisUtil.set(key, value, 10);
+    assertThat((String) RedisUtil.get(key)).isEqualTo(value);
+    assertThat(RedisUtil.getHitRatioPercentage()).isGreaterThan(0);
   }
 }
