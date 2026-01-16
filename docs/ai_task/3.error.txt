@@ -1,8 +1,4 @@
-Edit src/test/java/cn/huava/common/util/RedisUtilTest.java, add test to cover all branches of this line:
-Assert.isTrue(!ENV_PROD.equals(env) && !ENV_PRODUCTION.equals(env), "不允许在生产环境下清空 Redis 数据库");
-
-
-
+Write test for src/main/java/cn/huava/common/util/LoginUtil.java:
 1. Every test method's name should start with `should_`, use underscore style.
 2. Use assertj(org.assertj.core.api.Assertions) instead of junit to set assertions.
 3. Cover every method, every line, every instruction, every branch.
