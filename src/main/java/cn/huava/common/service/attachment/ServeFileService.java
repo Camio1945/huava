@@ -15,6 +15,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.time.Instant;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NullMarked;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -29,6 +30,7 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
+@NullMarked
 @RequiredArgsConstructor
 class ServeFileService extends BaseService<AttachmentMapper, AttachmentPo> {
 
@@ -36,7 +38,7 @@ class ServeFileService extends BaseService<AttachmentMapper, AttachmentPo> {
   private String attachmentPath;
 
   @SneakyThrows(IOException.class)
-  public ResponseEntity<Resource> serveFile(@NonNull final String url) {
+  public ResponseEntity<Resource> serveFile(final String url) {
     convertAttachmentPathToAbsolutePath();
     AttachmentPo attachmentPo = getAttachmentPo(url);
     String filePath = buildFilePath(url);
@@ -48,16 +50,6 @@ class ServeFileService extends BaseService<AttachmentMapper, AttachmentPo> {
         .contentType(MediaType.parseMediaType(mimeType))
         .lastModified(getLastModified(filePath).toEpochMilli())
         .body(resource);
-  }
-
-  private static long getCacheTime() {
-    // 缓存 100 年，以秒为单位
-    return 100 * 365 * 24 * 60 * 60L;
-  }
-
-  private static Instant getLastModified(String filePath) throws IOException {
-    BasicFileAttributes attr = Files.readAttributes(Path.of(filePath), BasicFileAttributes.class);
-    return attr.lastModifiedTime().toInstant();
   }
 
   private void convertAttachmentPathToAbsolutePath() {
@@ -84,6 +76,16 @@ class ServeFileService extends BaseService<AttachmentMapper, AttachmentPo> {
     String contentDispositionPrefix =
         isImage(FileNameUtil.extName(filePath)) ? "inline" : "attachment";
     return contentDispositionPrefix + "; filename=\"" + attachmentPo.getOriginalName() + "\"";
+  }
+
+  private static long getCacheTime() {
+    // 缓存 100 年，以秒为单位
+    return 100 * 365 * 24 * 60 * 60L;
+  }
+
+  private static Instant getLastModified(String filePath) throws IOException {
+    BasicFileAttributes attr = Files.readAttributes(Path.of(filePath), BasicFileAttributes.class);
+    return attr.lastModifiedTime().toInstant();
   }
 
   private boolean isImage(String fileExtension) {
