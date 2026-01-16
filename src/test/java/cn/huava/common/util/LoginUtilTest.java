@@ -21,7 +21,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 /**
  * Tests for LoginUtil class
  *
- * @author Qwen
+ * @author Camio1945
  */
 @ExtendWith(MockitoExtension.class)
 class LoginUtilTest {

@@ -16,7 +16,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 /**
  * Tests for HttpServletUtil class
  *
- * @author Qwen
+ * @author Camio1945
  */
 @ExtendWith(MockitoExtension.class)
 class HttpServletUtilTest {

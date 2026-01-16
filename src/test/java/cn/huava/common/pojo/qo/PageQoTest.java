@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests for {@link PageQo}
  *
- * @author Qwen
+ * @author Camio1945
  */
 class PageQoTest {
 
