@@ -1,4 +1,4 @@
-Write test for src/main/java/cn/huava/sys/service/jwt/AceJwtService.java:
+Write test for src/main/java/cn/huava/common/service/captcha/ValidateCaptchaService.java:
 1. Every test method's name should start with `should_`, use underscore style.
 2. Use assertj(org.assertj.core.api.Assertions) instead of junit to set assertions.
 3. Cover every method, every line, every instruction, every branch.
