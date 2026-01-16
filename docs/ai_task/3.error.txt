@@ -1,5 +1,7 @@
-Edit src/test/java/cn/huava/common/graalvm/RuntimeHintsRegistrarConfigTest.java:
+Write test for src/main/java/cn/huava/common/pojo/qo/PageQo.java:
 1. Every test method's name should start with `should_`, use underscore style.
 2. Use assertj(org.assertj.core.api.Assertions) instead of junit to set assertions.
 3. Cover every method, every line, every branch.
-4. Remove testAll method.
+4. The test class should not be public.
+5. Add at least one assertion to each test case, if there is nothing to assert, use `verify()`.
+6. Remove testAll method.
