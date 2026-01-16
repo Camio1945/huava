@@ -10,7 +10,6 @@ import cn.hutool.v7.core.util.RandomUtil;
 import cn.hutool.v7.extra.spring.SpringUtil;
 import java.time.Duration;
 import java.util.*;
-
 import org.jspecify.annotations.NonNull;
 import org.redisson.api.*;
 import org.springframework.core.env.Environment;
@@ -39,6 +38,14 @@ public class RedisUtil {
     return bucket.isExists();
   }
 
+  public static RedissonClient getRedissonClient() {
+    if (redissonClient == null) {
+      redissonClient =
+          SingleFlightUtil.execute("redissonClient", () -> Fn.getBean(RedissonClient.class));
+    }
+    return redissonClient;
+  }
+
   /** 清空非生产环境的 Redis 数据库（由于该操作非常危险，因此不允许在生产环境下执行） */
   public static void flushNonProductionDb() {
     String env = SpringUtil.getProperty("spring.profiles.active");
@@ -52,13 +59,9 @@ public class RedisUtil {
             .getConnection();
     RedisServerCommands redisServerCommands = connection.serverCommands();
     Properties info = redisServerCommands.info();
-    assert info != null;
     long keyspaceHits = ConvertUtil.toLong(info.getProperty("keyspace_hits"));
     long keyspaceMisses = ConvertUtil.toLong(info.getProperty("keyspace_misses"));
     long total = keyspaceHits + keyspaceMisses;
-    if (total <= 0) {
-      return -1;
-    }
     return NumberUtil.div(keyspaceHits * (float) 100, total, 4).doubleValue();
   }
 
@@ -88,6 +91,8 @@ public class RedisUtil {
     return Duration.ofSeconds(seconds + offset);
   }
 
+  // ============================ String ==============================
+
   /**
    * Delete a key (or keys) from Redis.
    *
@@ -96,8 +101,6 @@ public class RedisUtil {
   public static void delete(@NonNull String... keys) {
     getRedissonClient().getKeys().delete(keys);
   }
-
-  // ============================ String ==============================
 
   /**
    * Get the value of a key from Redis.
@@ -121,6 +124,8 @@ public class RedisUtil {
     bucket.set(value);
   }
 
+  // ============================ Map ==============================
+
   /**
    * Set a key-value pair in Redis with expiration time.
    *
@@ -132,8 +137,6 @@ public class RedisUtil {
     RBucket<Object> bucket = getRedissonClient().getBucket(key);
     bucket.set(value, Duration.ofSeconds(ttlInSeconds));
   }
-
-  // ============================ Map ==============================
 
   /**
    * Get a value from a Redis Map by key.
@@ -168,13 +171,5 @@ public class RedisUtil {
   public static Set<String> getMapKeys(String mapName) {
     RMap<String, Object> map = getRedissonClient().getMap(mapName);
     return map.keySet();
-  }
-
-  public static RedissonClient getRedissonClient() {
-    if (redissonClient == null) {
-      redissonClient =
-          SingleFlightUtil.execute("redissonClient", () -> Fn.getBean(RedissonClient.class));
-    }
-    return redissonClient;
   }
 }
