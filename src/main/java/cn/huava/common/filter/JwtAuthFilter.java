@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 import lombok.*;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,6 +31,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
  *
  * @author Camio1945
  */
+@NullMarked
 @Component
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
@@ -39,9 +42,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
   @Override
   protected void doFilterInternal(
-      @NonNull final HttpServletRequest request,
-      @NonNull final HttpServletResponse response,
-      @NonNull final FilterChain filterChain)
+      final HttpServletRequest request,
+      final HttpServletResponse response,
+      final FilterChain filterChain)
       throws ServletException, IOException {
     if (!request.getRequestURI().equals(REFRESH_TOKEN_URI)) {
       String token = getTokenFromRequest(request);
@@ -56,19 +59,19 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     filterChain.doFilter(request, response);
   }
 
-  private static void writeResponse(HttpServletResponse response) throws IOException {
-    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-    PrintWriter writer = response.getWriter();
-    writer.write("Access token expired");
-    writer.flush();
-  }
-
-  private String getTokenFromRequest(HttpServletRequest request) {
+  private @Nullable String getTokenFromRequest(HttpServletRequest request) {
     String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
     if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
       return bearerToken.substring(BEARER_PREFIX.length());
     }
     return null;
+  }
+
+  private static void writeResponse(HttpServletResponse response) throws IOException {
+    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+    PrintWriter writer = response.getWriter();
+    writer.write("Access token expired");
+    writer.flush();
   }
 
   private void setAuthentication(HttpServletRequest request, String token) {

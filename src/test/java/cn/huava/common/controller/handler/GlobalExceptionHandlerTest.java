@@ -61,7 +61,7 @@ class GlobalExceptionHandlerTest {
   }
 
   @Test
-  void should_handle_MethodArgumentNotValidException() {
+  void should_handle_MethodArgumentNotValidException() throws Exception {
     // Create a BindingResult with validation errors
     BindingResult bindingResult = mock(BindingResult.class);
     FieldError fieldError1 = new FieldError("objectName", "fieldName1", "Field 1 error");
@@ -69,13 +69,7 @@ class GlobalExceptionHandlerTest {
     when(bindingResult.getAllErrors()).thenReturn(List.of(fieldError1, fieldError2));
     // Create a minimal MethodParameter to avoid the NPE in getMessage()
     // We'll create a MethodParameter for a dummy method to avoid the null executable issue
-    java.lang.reflect.Method dummyMethod;
-    try {
-      // Use a public method from Object class
-      dummyMethod = Object.class.getMethod("toString");
-    } catch (NoSuchMethodException e) {
-      throw new RuntimeException(e);
-    }
+    java.lang.reflect.Method dummyMethod = Object.class.getMethod("toString");
     org.springframework.core.MethodParameter methodParameter =
         new org.springframework.core.MethodParameter(dummyMethod, -1);
     MethodArgumentNotValidException exception =
