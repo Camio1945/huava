@@ -6,6 +6,7 @@ import cn.huava.common.service.BaseService;
 import cn.huava.common.util.Fn;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NullMarked;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
  */
 @Slf4j
 @Service
+@NullMarked
 @RequiredArgsConstructor
 public class AceAttachmentService extends BaseService<AttachmentMapper, AttachmentPo> {
   private final ServeFileService serveFileService;
@@ -27,13 +29,13 @@ public class AceAttachmentService extends BaseService<AttachmentMapper, Attachme
   private String handleClass;
 
   @SneakyThrows(ClassNotFoundException.class)
-  public AttachmentPo upload(@NonNull final MultipartHttpServletRequest req) {
+  public AttachmentPo upload(final MultipartHttpServletRequest req) {
     Class<?> clazz = Class.forName(handleClass);
     BaseUploadService uploadService = (BaseUploadService) Fn.getBean(clazz);
     return uploadService.upload(req);
   }
 
-  public ResponseEntity<Resource> serveFile(@NonNull final String url) {
+  public ResponseEntity<Resource> serveFile(final String url) {
     return serveFileService.serveFile(url);
   }
 }
