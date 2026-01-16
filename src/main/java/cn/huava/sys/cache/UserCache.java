@@ -5,6 +5,8 @@ import cn.huava.sys.mapper.UserMapper;
 import cn.huava.sys.pojo.po.UserExtPo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.*;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
  * @author Camio1945
  */
 @Service
+@NullMarked
 @RequiredArgsConstructor
 public class UserCache {
   public static final String USER_ID_CACHE_PREFIX = "cache:user:id";
@@ -23,10 +26,10 @@ public class UserCache {
 
   /**
    * 1. Don't add `final` key word, otherwise will get circular dependency error. <br>
-   * 2. Don't use it directly, use {@link #getUserCache()} instead. <br>
+   * 2. Don't use it directly, use {@link #getUserCacheInner()} instead. <br>
    * 3. Don't delete it and use `this`, otherwise the cache will not work. <br>
    */
-  private UserCache userCache;
+  private @Nullable UserCache userCacheInner;
 
   /**
    * 根据 id 获取用户
@@ -35,13 +38,13 @@ public class UserCache {
    * @return 用户
    */
   @Cacheable(value = USER_ID_CACHE_PREFIX, key = "#id")
-  public UserExtPo getById(@NonNull Long id) {
+  public UserExtPo getById(Long id) {
     String key = USER_ID_CACHE_PREFIX + "::" + id;
     return SingleFlightUtil.execute(key, () -> userMapper.selectById(id));
   }
 
-  public Long getIdByUsername(@NonNull String username) {
-    String strId = getUserCache().getStrIdByUsername(username);
+  public @Nullable Long getIdByUsername(String username) {
+    String strId = getUserCacheInner().getStrIdByUsername(username);
     return strId == null ? null : Long.parseLong(strId);
   }
 
@@ -54,7 +57,7 @@ public class UserCache {
    *     java.lang.Long
    */
   @Cacheable(value = USER_USERNAME_CACHE_PREFIX, key = "#username")
-  public String getStrIdByUsername(@NonNull String username) {
+  public @Nullable String getStrIdByUsername(String username) {
     String key = USER_USERNAME_CACHE_PREFIX + "::" + username;
     return SingleFlightUtil.execute(
         key,
@@ -67,6 +70,14 @@ public class UserCache {
         });
   }
 
+  private UserCache getUserCacheInner() {
+    if (userCacheInner != null) {
+      return userCacheInner;
+    }
+    userCacheInner = SingleFlightUtil.execute("userCache", () -> Fn.getBean(UserCache.class));
+    return userCacheInner;
+  }
+
   /**
    * 新增或修改操作后的缓存处理
    *
@@ -74,6 +85,14 @@ public class UserCache {
    */
   public void afterSaveOrUpdate(UserExtPo after) {
     deleteKeys(after);
+  }
+
+  private void deleteKeys(UserExtPo user) {
+    String[] keys = {
+      USER_ID_CACHE_PREFIX + "::" + user.getId(),
+      USER_USERNAME_CACHE_PREFIX + "::" + user.getUsername()
+    };
+    RedisUtil.delete(keys);
   }
 
   /**
@@ -92,21 +111,5 @@ public class UserCache {
    */
   public void beforeUpdate(UserExtPo before) {
     RedisUtil.delete(USER_USERNAME_CACHE_PREFIX + "::" + before.getUsername());
-  }
-
-  private UserCache getUserCache() {
-    if (userCache != null) {
-      return userCache;
-    }
-    userCache = SingleFlightUtil.execute("userCache", () -> Fn.getBean(UserCache.class));
-    return userCache;
-  }
-
-  private void deleteKeys(UserExtPo user) {
-    String[] keys = {
-      USER_ID_CACHE_PREFIX + "::" + user.getId(),
-      USER_USERNAME_CACHE_PREFIX + "::" + user.getUsername()
-    };
-    RedisUtil.delete(keys);
   }
 }
