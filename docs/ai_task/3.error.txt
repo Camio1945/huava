@@ -1,4 +1,5 @@
-Write tests for NativeHintsRegistrarGenerator:
+Edit src/test/java/cn/huava/common/graalvm/RuntimeHintsRegistrarConfigTest.java:
 1. Every test method's name should start with `should_`, use underscore style.
 2. Use assertj(org.assertj.core.api.Assertions) instead of junit to set assertions.
 3. Cover every method, every line, every branch.
+4. Remove testAll method.

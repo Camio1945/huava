@@ -1,7 +1,6 @@
 package cn.huava;
 
 import cn.huava.common.WithSpringBootTestAnnotation;
-import cn.huava.common.graalvm.RuntimeHintsRegistrarConfigTest;
 import cn.huava.common.util.RedisUtilTest;
 import cn.huava.sys.controller.*;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +32,6 @@ class MainTest extends WithSpringBootTestAnnotation {
   @Test
   @Order(Integer.MAX_VALUE - 1)
   void notImportantTest() throws Exception {
-    RuntimeHintsRegistrarConfigTest.testAll();
+    // Removed call to old testAll method - now covered by individual unit tests
   }
 }
