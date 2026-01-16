@@ -1,5 +1,6 @@
-Edit src/test/java/cn/huava/common/pojo/po/BasePoTest.java, use it to test src/main/java/cn/huava/common/pojo/po/BasePo.java:
-1. Every test method's name should start with `should_`, use underscore style.
-2. Use assertj(org.assertj.core.api.Assertions) instead of junit to set assertions.
-3. Achieve 100% branch test coverage.
-4. Add at least one assertion to each test case.
+This line is not fully tested of branches:
+if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX))
+
+Every test method's name should start with `should_`, use underscore style.
+Use assertj(org.assertj.core.api.Assertions) instead of junit to set assertions.
+
