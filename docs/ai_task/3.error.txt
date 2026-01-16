@@ -1,6 +1,11 @@
-Write test for src/main/java/cn/huava/common/util/SingleFlightUtil.java
+Write test for src/main/java/cn/huava/sys/service/jwt/AceJwtService.java:
 1. Every test method's name should start with `should_`, use underscore style.
 2. Use assertj(org.assertj.core.api.Assertions) instead of junit to set assertions.
 3. Cover every method, every line, every instruction, every branch.
 4. The test class should not be public.
 5. Add at least one assertion to each test case, if there is nothing to assert, use `verify()`.
+6. The author of the new file should be Camio1945.
+
+Edit src/test/java/cn/huava/sys/service/jwt/AceJwtServiceTest.java to fix this:
+2 branches of this line of code missed:
+return exp != null && exp * CommonConstant.MILLIS_PER_SECOND <= System.currentTimeMillis();
