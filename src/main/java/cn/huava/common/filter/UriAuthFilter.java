@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 import lombok.*;
+import org.jspecify.annotations.NullMarked;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,6 +34,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
  *
  * @author Camio1945
  */
+@NullMarked
 @Component
 @RequiredArgsConstructor
 public class UriAuthFilter extends OncePerRequestFilter {
@@ -49,29 +51,15 @@ public class UriAuthFilter extends OncePerRequestFilter {
 
   @Override
   protected void doFilterInternal(
-      @NonNull final HttpServletRequest request,
-      @NonNull final HttpServletResponse response,
-      @NonNull final FilterChain filterChain)
+      final HttpServletRequest request,
+      final HttpServletResponse response,
+      final FilterChain filterChain)
       throws ServletException, IOException {
     if (!hasPerm(request)) {
       writeResponse(response);
       return;
     }
     filterChain.doFilter(request, response);
-  }
-
-  private static void writeResponse(HttpServletResponse response) throws IOException {
-    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-    response.setContentType("text/plain; charset=UTF-8");
-    PrintWriter writer = response.getWriter();
-    writer.write("无权访问");
-    writer.flush();
-  }
-
-  private static String getUri(HttpServletRequest request) {
-    String uri = request.getRequestURI();
-    uri = uri.replaceAll("\\d+$", "");
-    return uri;
   }
 
   private boolean hasPerm(HttpServletRequest request) {
@@ -94,6 +82,20 @@ public class UriAuthFilter extends OncePerRequestFilter {
       }
     }
     return hasPerm;
+  }
+
+  private static void writeResponse(HttpServletResponse response) throws IOException {
+    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+    response.setContentType("text/plain; charset=UTF-8");
+    PrintWriter writer = response.getWriter();
+    writer.write("无权访问");
+    writer.flush();
+  }
+
+  private static String getUri(HttpServletRequest request) {
+    String uri = request.getRequestURI();
+    uri = uri.replaceAll("\\d+$", "");
+    return uri;
   }
 
   /** 见 application.yml 文件中关于 api_auth_range 的注释 */
