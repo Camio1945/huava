@@ -10,12 +10,13 @@ import cn.huava.sys.mapper.UserMapper;
 import cn.huava.sys.pojo.dto.UserDto;
 import cn.huava.sys.pojo.po.*;
 import cn.huava.sys.service.userrole.AceUserRoleService;
+import cn.hutool.v7.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import java.util.*;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
-import cn.hutool.v7.core.collection.CollUtil;
+import org.jspecify.annotations.NullMarked;
 import org.springframework.stereotype.Service;
 
 /**
@@ -25,21 +26,16 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
+@NullMarked
 @RequiredArgsConstructor
 class UserPageService extends BaseService<UserMapper, UserExtPo> {
   private final AceUserRoleService userRoleService;
 
-  protected PageDto<UserDto> userPage(
-      @NonNull PageQo<UserExtPo> pageQo, @NonNull final UserExtPo params) {
+  protected PageDto<UserDto> userPage(PageQo<UserExtPo> pageQo, final UserExtPo params) {
     pageQo = getPageQo(pageQo, params);
     List<UserDto> userDtos = pageQo.getRecords().stream().map(UserDto::new).toList();
     setRoleIds(userDtos);
     return new PageDto<>(userDtos, pageQo.getTotal());
-  }
-
-  private static Map<Long, List<Long>> getUserIdToRoleIdsMap(List<UserRolePo> userRoles) {
-    return userRoles.stream()
-        .collect(groupingBy(UserRolePo::getUserId, mapping(UserRolePo::getRoleId, toList())));
   }
 
   /** Note: the `params` renamed to po to save some space */
@@ -70,5 +66,10 @@ class UserPageService extends BaseService<UserMapper, UserExtPo> {
     List<Long> userIds = userDtos.stream().map(UserDto::getId).toList();
     LambdaUpdateWrapper<UserRolePo> wrapper = new LambdaUpdateWrapper<>();
     return userRoleService.list(wrapper.in(UserRolePo::getUserId, userIds));
+  }
+
+  private static Map<Long, List<Long>> getUserIdToRoleIdsMap(List<UserRolePo> userRoles) {
+    return userRoles.stream()
+        .collect(groupingBy(UserRolePo::getUserId, mapping(UserRolePo::getRoleId, toList())));
   }
 }
