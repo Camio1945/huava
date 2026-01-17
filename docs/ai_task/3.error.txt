@@ -7,8 +7,9 @@ Write test for src/main/java/cn/huava/sys/cache/UserCache.java:
 6. The author of the new file should be Camio1945.
 7. Each class need a separate test file.
 
-This line `return userExtPo == null ? null : userExtPo.getId().toString();` as reported: 1 of 2 branches missed
-fix it
+
+This line `return userExtPo == null ? null : userExtPo.getId().toString();` is reported: 1 of 2 branches missed
+Edit src/test/java/cn/huava/sys/cache/UserCacheTest.java, fix it
 
 
 Edit src/test/java/cn/huava/sys/cache/UserCacheTest.java, write test for src/main/java/cn/huava/sys/cache/UserCache.java:

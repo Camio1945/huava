@@ -1,16 +1,14 @@
 package cn.huava.sys.cache;
 
+import static cn.huava.common.constant.CommonConstant.ADMIN_USER_ID;
+import static cn.huava.sys.cache.UserCache.USER_ID_CACHE_PREFIX;
+import static cn.huava.sys.cache.UserCache.USER_USERNAME_CACHE_PREFIX;
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
 
 import cn.huava.common.WithSpringBootTestAnnotation;
-import cn.huava.common.util.Fn;
 import cn.huava.common.util.RedisUtil;
-import cn.huava.common.util.SingleFlightUtil;
-import cn.huava.sys.mapper.UserMapper;
 import cn.huava.sys.pojo.po.UserExtPo;
-import java.util.concurrent.Callable;
+import cn.hutool.v7.core.data.id.IdUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -24,110 +22,43 @@ class UserCacheTest extends WithSpringBootTestAnnotation {
   @Autowired private UserCache userCache;
 
   @Test
-  void should_getUserById() {
-    // Arrange
-    Long userId = 1L;
-    UserExtPo expectedUser = new UserExtPo();
-    expectedUser.setId(userId);
-
-    // Since the method is cached, we can't directly verify SingleFlightUtil calls
-    // But we can verify the result is as expected
-    // For this test, we'll focus on verifying the behavior rather than mocking internal calls
-    // that happen within the cached method
-
-    // The actual implementation will be tested through integration
-    assertThat(userCache).isNotNull();
+  void should_get_user_by_id() {
+    UserExtPo user = userCache.getById(ADMIN_USER_ID);
+    assertThat(user.getId()).isEqualTo(ADMIN_USER_ID);
   }
 
   @Test
-  void should_getIdByUsername_whenUserExists() {
-    // Test the logic of getIdByUsername method
-    String strId = "123";
-    Long result = strId == null ? null : Long.parseLong(strId);
-
-    // Assert
-    assertThat(result).isEqualTo(123L);
+  void should_get_id_by_username() {
+    Long id = userCache.getIdByUsername("admin");
+    assertThat(id).isEqualTo(ADMIN_USER_ID);
   }
 
   @Test
-  void should_returnNull_whenGetIdByUsernameAndUserDoesNotExist() {
-    // Test the logic of getIdByUsername method when strId is null
-    String strId = null;
-    Long result = strId == null ? null : Long.parseLong(strId);
-
-    // Assert
-    assertThat(result).isNull();
+  void should_get_null_by_non_exist_username() {
+    Long id = userCache.getIdByUsername(IdUtil.getSnowflakeNextIdStr());
+    assertThat(id).isNull();
   }
 
   @Test
-  void should_getStrIdByUsername() {
-    // Arrange
-    String username = "testuser";
-    String expectedStrId = "123";
-
-    // Since the method is cached, we can't directly verify SingleFlightUtil calls
-    // But we can verify the result is as expected
-    // For this test, we'll focus on verifying the behavior rather than mocking internal calls
-    // that happen within the cached method
-
-    // The actual implementation will be tested through integration
-    assertThat(userCache).isNotNull();
+  void should_delete_keys_after_save_or_update() {
+    UserExtPo user = userCache.getById(ADMIN_USER_ID);
+    userCache.afterSaveOrUpdate(user);
+    assertThat(RedisUtil.hasKey(USER_ID_CACHE_PREFIX + "::" + user.getId())).isFalse();
+    assertThat(RedisUtil.hasKey(USER_USERNAME_CACHE_PREFIX + "::" + user.getUsername())).isFalse();
   }
 
   @Test
-  void should_notCallGetStrIdByUsernameWithNullResult_directlyToAvoidRedisCacheError() {
-    // This test is to document that calling getStrIdByUsername with a scenario that returns null
-    // will cause a Redis cache error because it doesn't allow null values
-    // The actual implementation handles this by using @Cacheable with proper null handling
-    // if needed in the original code
-    assertThat(true).isTrue(); // Placeholder to acknowledge this limitation
+  void should_delete_keys_after_delete() {
+    UserExtPo user = userCache.getById(ADMIN_USER_ID);
+    userCache.afterDelete(user);
+    assertThat(RedisUtil.hasKey(USER_ID_CACHE_PREFIX + "::" + user.getId())).isFalse();
+    assertThat(RedisUtil.hasKey(USER_USERNAME_CACHE_PREFIX + "::" + user.getUsername())).isFalse();
   }
 
   @Test
-  void should_handleAfterSaveOrUpdate() {
-    // Arrange
-    UserExtPo user = new UserExtPo();
-    user.setId(1L);
-    user.setUsername("testuser");
-
-    try (var mockedStatic = mockStatic(RedisUtil.class)) {
-      // Act
-      userCache.afterSaveOrUpdate(user);
-
-      // Assert
-      mockedStatic.verify(() -> RedisUtil.delete(any(String[].class)), times(1));
-    }
-  }
-
-  @Test
-  void should_handleAfterDelete() {
-    // Arrange
-    UserExtPo user = new UserExtPo();
-    user.setId(1L);
-    user.setUsername("testuser");
-
-    try (var mockedStatic = mockStatic(RedisUtil.class)) {
-      // Act
-      userCache.afterDelete(user);
-
-      // Assert
-      mockedStatic.verify(() -> RedisUtil.delete(any(String[].class)), times(1));
-    }
-  }
-
-  @Test
-  void should_handleBeforeUpdate() {
-    // Arrange
-    UserExtPo user = new UserExtPo();
-    user.setId(1L);
-    user.setUsername("testuser");
-
-    try (var mockedStatic = mockStatic(RedisUtil.class)) {
-      // Act
-      userCache.beforeUpdate(user);
-
-      // Assert
-      mockedStatic.verify(() -> RedisUtil.delete(anyString()), times(1));
-    }
+  void should_delete_keys_before_update() {
+    UserExtPo user = userCache.getById(ADMIN_USER_ID);
+    userCache.beforeUpdate(user);
+    assertThat(RedisUtil.hasKey(USER_USERNAME_CACHE_PREFIX + "::" + user.getUsername())).isFalse();
   }
 }

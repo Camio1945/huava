@@ -37,12 +37,18 @@ public class UserCache {
    * @param id 用户 id
    * @return 用户
    */
-  @Cacheable(value = USER_ID_CACHE_PREFIX, key = "#id")
+  @Cacheable(value = USER_ID_CACHE_PREFIX, key = "#id", unless = "#result == null")
   public UserExtPo getById(Long id) {
     String key = USER_ID_CACHE_PREFIX + "::" + id;
     return SingleFlightUtil.execute(key, () -> userMapper.selectById(id));
   }
 
+  /**
+   * 根据用户名获取用户 id
+   *
+   * @param username 用户名
+   * @return 用户 id
+   */
   public @Nullable Long getIdByUsername(String username) {
     String strId = getUserCacheInner().getStrIdByUsername(username);
     return strId == null ? null : Long.parseLong(strId);
@@ -56,7 +62,7 @@ public class UserCache {
    *     java.lang.ClassCastException: class java.lang.Integer cannot be cast to class
    *     java.lang.Long
    */
-  @Cacheable(value = USER_USERNAME_CACHE_PREFIX, key = "#username")
+  @Cacheable(value = USER_USERNAME_CACHE_PREFIX, key = "#username", unless = "#result == null")
   public @Nullable String getStrIdByUsername(String username) {
     String key = USER_USERNAME_CACHE_PREFIX + "::" + username;
     return SingleFlightUtil.execute(

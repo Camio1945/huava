@@ -9,11 +9,10 @@ import cn.huava.sys.pojo.po.PermPo;
 import cn.huava.sys.pojo.po.RolePermPo;
 import cn.hutool.v7.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import org.jspecify.annotations.NullMarked;
-import org.jspecify.annotations.Nullable;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -31,14 +30,10 @@ public class RoleCache {
   private RolePermMapper rolePermMapper;
   private PermMapper permMapper;
 
-  @Cacheable(value = URIS_CACHE_PREFIX, key = "#roleId")
+  @Cacheable(value = URIS_CACHE_PREFIX, key = "#roleId", unless = "#result == null")
   public Set<String> getPermUrisByRoleId(Long roleId) {
     String key = URIS_CACHE_PREFIX + "::" + roleId;
     return SingleFlightUtil.execute(key, () -> getPermUrisByRoleIdInner(roleId));
-  }
-
-  public void deleteCache(Long roleId) {
-    RedisUtil.delete(URIS_CACHE_PREFIX + "::" + roleId);
   }
 
   private Set<String> getPermUrisByRoleIdInner(Long roleId) {
@@ -47,8 +42,12 @@ public class RoleCache {
     Set<Long> permIds =
         rolePermMapper.selectList(wrapper).stream().map(RolePermPo::getPermId).collect(toSet());
     if (CollUtil.isEmpty(permIds)) {
-      return Collections.emptySet();
+      return new HashSet<>();
     }
-    return permMapper.selectBatchIds(permIds).stream().map(PermPo::getUri).collect(toSet());
+    return permMapper.selectByIds(permIds).stream().map(PermPo::getUri).collect(toSet());
+  }
+
+  public void deleteCache(Long roleId) {
+    RedisUtil.delete(URIS_CACHE_PREFIX + "::" + roleId);
   }
 }
