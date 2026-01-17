@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import cn.huava.common.WithSpringBootTestAnnotation;
 import cn.huava.common.pojo.dto.PageDto;
 import cn.huava.common.util.ApiTestUtil;
+import cn.huava.sys.cache.RoleCache;
 import cn.huava.sys.pojo.dto.PermDto;
 import cn.huava.sys.pojo.po.RolePo;
 import cn.huava.sys.pojo.qo.SetPermQo;
@@ -46,6 +47,7 @@ class RoleControllerTest extends WithSpringBootTestAnnotation {
   private static final String DESCRIPTION = "测试角色";
 
   @Autowired MockMvc mockMvcAutowired;
+  @Autowired RoleCache roleCache;
 
   @AfterAll
   @SneakyThrows
@@ -189,6 +191,8 @@ class RoleControllerTest extends WithSpringBootTestAnnotation {
     List<Long> permIdsOfRole = getPermIdsByRoleId(roleId);
     assertThat(permIdsOfRole).isNotEmpty();
     assertThat(CollUtil.equals(permIdsOfRole, permIdsOfAll, true)).isTrue();
+    Set<String> permUris = roleCache.getPermUrisByRoleId(roleId);
+    assertThat(permUris).isNotEmpty();
   }
 
   @Test

@@ -9,6 +9,8 @@ import cn.huava.sys.pojo.po.PermPo;
 import cn.huava.sys.pojo.po.RolePermPo;
 import cn.hutool.v7.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
@@ -42,7 +44,7 @@ public class RoleCache {
     Set<Long> permIds =
         rolePermMapper.selectList(wrapper).stream().map(RolePermPo::getPermId).collect(toSet());
     if (CollUtil.isEmpty(permIds)) {
-      return new HashSet<>();
+      return Collections.emptySet();
     }
     return permMapper.selectByIds(permIds).stream().map(PermPo::getUri).collect(toSet());
   }
