@@ -1,6 +1,8 @@
 package cn.huava.common.graalvm;
 
 import cn.huava.common.annotation.UnreachableForTesting;
+import cn.huava.common.annotation.VisibleForTesting;
+import cn.huava.common.enumeration.AccessModifierEnum;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -193,7 +195,8 @@ public class RuntimeHintsRegistrarConfig {
           .collect(Collectors.toSet());
     }
 
-    private static Class<?> typeToClass(Type src, Class<?> fallback) {
+    @VisibleForTesting(original = AccessModifierEnum.PRIVATE)
+    protected static Class<?> typeToClass(Type src, Class<?> fallback) {
       Class<?> result = null;
       if (src instanceof Class<?>) {
         if (((Class<?>) src).isArray()) {
@@ -218,7 +221,7 @@ public class RuntimeHintsRegistrarConfig {
     }
   }
 
-  static class MyBatisMapperFactoryBeanPostProcessor
+  protected static class MyBatisMapperFactoryBeanPostProcessor
       implements MergedBeanDefinitionPostProcessor, BeanFactoryAware {
 
     private static final org.apache.commons.logging.Log LOG =
@@ -244,7 +247,8 @@ public class RuntimeHintsRegistrarConfig {
     }
 
     @UnreachableForTesting("第二个 if 分支的代码只在 GraalVM native image 编译时才会执行到")
-    private void resolveMapperFactoryBeanTypeIfNecessary(RootBeanDefinition beanDefinition) {
+    @VisibleForTesting(original = AccessModifierEnum.PRIVATE)
+    protected void resolveMapperFactoryBeanTypeIfNecessary(RootBeanDefinition beanDefinition) {
       if (!beanDefinition.hasBeanClass()
           || !MapperFactoryBean.class.isAssignableFrom(beanDefinition.getBeanClass())) {
         return;
