@@ -35,11 +35,17 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.quality.Strictness;
 import org.mockito.junit.jupiter.MockitoSettings;
+import org.mybatis.spring.mapper.MapperFactoryBean;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.aot.hint.ReflectionHints;
 import org.springframework.aot.hint.RuntimeHints;
+import org.springframework.beans.PropertyValue;
+import org.springframework.beans.factory.aot.BeanFactoryInitializationAotContribution;
 import org.springframework.beans.factory.aot.BeanRegistrationExcludeFilter;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.RegisteredBean;
+import org.springframework.beans.factory.support.RootBeanDefinition;
 
 /**
  * Tests for {@link MyBatisBeanFactoryInitializationAotProcessor}.
@@ -136,6 +142,107 @@ class MyBatisBeanFactoryInitializationAotProcessorTest {
     // then
     // The method has annotations, so the reflection should be called for the type
     verify(mockHints).reflection();
+  }
+
+  @Test
+  void should_process_mybatis_mapper_factory_beans_with_hash_prefix() {
+    // given
+    ConfigurableListableBeanFactory mockBeanFactory = Mockito.mock(ConfigurableListableBeanFactory.class);
+
+    // Mock bean names that include a MyBatis mapper factory bean with hash prefix
+    String[] beanNames = {"#myMapper"};
+    when(mockBeanFactory.getBeanNamesForType(MapperFactoryBean.class)).thenReturn(beanNames);
+
+    // Create a mock bean definition for the actual mapper
+    BeanDefinition mockBeanDefinition = Mockito.mock(BeanDefinition.class);
+    when(mockBeanFactory.getBeanDefinition("myMapper")).thenReturn(mockBeanDefinition);
+
+    // Mock the property values
+    org.springframework.beans.MutablePropertyValues mockPropertyValues =
+        Mockito.mock(org.springframework.beans.MutablePropertyValues.class);
+    when(mockBeanDefinition.getPropertyValues()).thenReturn(mockPropertyValues);
+
+    // Mock the property value for mapperInterface
+    PropertyValue mockPropertyValue = Mockito.mock(PropertyValue.class);
+    when(mockPropertyValues.getPropertyValue("mapperInterface")).thenReturn(mockPropertyValue);
+    when(mockPropertyValue.getValue()).thenReturn(TestMapper.class);
+
+    // when
+    BeanFactoryInitializationAotContribution contribution =
+        processor.processAheadOfTime(mockBeanFactory);
+
+    // then
+    assertThat(contribution).isNotNull();
+
+    // Actually invoke the contribution to execute the code path
+    org.springframework.aot.generate.GenerationContext mockGenContext = Mockito.mock(org.springframework.aot.generate.GenerationContext.class);
+    org.springframework.beans.factory.aot.BeanFactoryInitializationCode mockCode = Mockito.mock(org.springframework.beans.factory.aot.BeanFactoryInitializationCode.class);
+    contribution.applyTo(mockGenContext, mockCode);
+  }
+
+  @Test
+  void should_skip_bean_names_without_hash_prefix() {
+    // given
+    ConfigurableListableBeanFactory mockBeanFactory = Mockito.mock(ConfigurableListableBeanFactory.class);
+
+    // Mock bean names that include a MyBatis mapper factory bean without hash prefix
+    String[] beanNames = {"myMapper"}; // No # prefix
+    when(mockBeanFactory.getBeanNamesForType(MapperFactoryBean.class)).thenReturn(beanNames);
+
+    // when
+    BeanFactoryInitializationAotContribution contribution =
+        processor.processAheadOfTime(mockBeanFactory);
+
+    // then
+    // When bean names don't start with #, the contribution should still be created but won't process those beans
+    // The contribution will exist but will skip the beans without # prefix
+    assertThat(contribution).isNotNull();
+
+    // Actually invoke the contribution to execute the code path
+    org.springframework.aot.generate.GenerationContext mockGenContext = Mockito.mock(org.springframework.aot.generate.GenerationContext.class);
+    org.springframework.beans.factory.aot.BeanFactoryInitializationCode mockCode = Mockito.mock(org.springframework.beans.factory.aot.BeanFactoryInitializationCode.class);
+    contribution.applyTo(mockGenContext, mockCode);
+  }
+
+  @Test
+  void should_handle_exception_when_accessing_bean_definition() {
+    // given
+    ConfigurableListableBeanFactory mockBeanFactory = Mockito.mock(ConfigurableListableBeanFactory.class);
+
+    // Mock bean names that include a MyBatis mapper factory bean with hash prefix
+    String[] beanNames = {"#myMapper"};
+    when(mockBeanFactory.getBeanNamesForType(MapperFactoryBean.class)).thenReturn(beanNames);
+
+    // Throw an exception when trying to get the bean definition
+    when(mockBeanFactory.getBeanDefinition("myMapper")).thenThrow(new RuntimeException("Test exception"));
+
+    // when
+    BeanFactoryInitializationAotContribution contribution =
+        processor.processAheadOfTime(mockBeanFactory);
+
+    // then
+    // The contribution should still be created even if there's an exception accessing a bean definition
+    // The exception handling should prevent the process from failing
+    assertThat(contribution).isNotNull();
+
+    // Actually invoke the contribution to execute the code path
+    org.springframework.aot.generate.GenerationContext mockGenContext = Mockito.mock(org.springframework.aot.generate.GenerationContext.class);
+    org.springframework.beans.factory.aot.BeanFactoryInitializationCode mockCode = Mockito.mock(org.springframework.beans.factory.aot.BeanFactoryInitializationCode.class);
+    contribution.applyTo(mockGenContext, mockCode);
+  }
+
+  @Test
+  void should_return_null_when_no_mapper_factory_beans_exist() {
+    // given
+    ConfigurableListableBeanFactory mockBeanFactory = Mockito.mock(ConfigurableListableBeanFactory.class);
+    when(mockBeanFactory.getBeanNamesForType(MapperFactoryBean.class)).thenReturn(new String[]{});
+
+    // when
+    BeanFactoryInitializationAotContribution contribution =
+        processor.processAheadOfTime(mockBeanFactory);
+
+    // then
+    assertThat(contribution).isNull();
   }
 
   // Test interface for annotation testing
