@@ -4,8 +4,9 @@ import cn.huava.common.annotation.UnreachableForTesting;
 import cn.huava.common.annotation.VisibleForTesting;
 import cn.huava.common.enumeration.AccessModifierEnum;
 import org.apache.commons.logging.LogFactory;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 import org.mybatis.spring.mapper.MapperFactoryBean;
-import org.springframework.beans.PropertyValue;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -14,13 +15,13 @@ import org.springframework.beans.factory.support.MergedBeanDefinitionPostProcess
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.core.ResolvableType;
 import org.springframework.util.ClassUtils;
-import org.jspecify.annotations.NonNull;
 
 /**
  * Post-processor for MyBatis mapper factory beans.
  *
  * @author Camio1945
  */
+@NullMarked
 public class MyBatisMapperFactoryBeanPostProcessor
     implements MergedBeanDefinitionPostProcessor, BeanFactoryAware {
 
@@ -29,19 +30,20 @@ public class MyBatisMapperFactoryBeanPostProcessor
 
   private static final String MAPPER_FACTORY_BEAN = "org.mybatis.spring.mapper.MapperFactoryBean";
 
-  private ConfigurableBeanFactory beanFactory;
+  private @Nullable ConfigurableBeanFactory beanFactory;
 
   @Override
-  public void setBeanFactory(@NonNull BeanFactory beanFactory) {
+  public void setBeanFactory(BeanFactory beanFactory) {
     this.beanFactory = (ConfigurableBeanFactory) beanFactory;
   }
 
   @Override
   public void postProcessMergedBeanDefinition(
-      @NonNull RootBeanDefinition beanDefinition,
-      @NonNull Class<?> beanType,
-      @NonNull String beanName) {
-    if (ClassUtils.isPresent(MAPPER_FACTORY_BEAN, this.beanFactory.getBeanClassLoader())) {
+      RootBeanDefinition beanDefinition, Class<?> beanType, String beanName) {
+    if (beanFactory == null) {
+      return;
+    }
+    if (ClassUtils.isPresent(MAPPER_FACTORY_BEAN, beanFactory.getBeanClassLoader())) {
       resolveMapperFactoryBeanTypeIfNecessary(beanDefinition);
     }
   }
@@ -66,8 +68,11 @@ public class MyBatisMapperFactoryBeanPostProcessor
     }
   }
 
-  protected Class<?> getMapperInterface(RootBeanDefinition beanDefinition) {
+  protected @Nullable Class<?> getMapperInterface(@Nullable RootBeanDefinition beanDefinition) {
     try {
+      if (beanDefinition == null) {
+        return null;
+      }
       return (Class<?>) beanDefinition.getPropertyValues().get("mapperInterface");
     } catch (Exception e) {
       LOG.debug("Fail getting mapper interface type.", e);
