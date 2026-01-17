@@ -39,9 +39,9 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Camio1945
  */
 @Slf4j
-@AutoConfigureMockMvc
 @Rollback
 @Transactional
+@AutoConfigureMockMvc
 @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 class RoleControllerTest extends WithSpringBootTestAnnotation {
   private static final String DESCRIPTION = "测试角色";

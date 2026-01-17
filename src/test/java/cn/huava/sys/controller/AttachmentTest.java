@@ -38,9 +38,9 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Camio1945
  */
 @Slf4j
-@AutoConfigureMockMvc
 @Rollback
 @Transactional
+@AutoConfigureMockMvc
 @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 class AttachmentTest extends WithSpringBootTestAnnotation {
 

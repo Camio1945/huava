@@ -33,9 +33,9 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Camio1945
  */
-@AutoConfigureMockMvc
 @Rollback
 @Transactional
+@AutoConfigureMockMvc
 @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 class PermControllerTest extends WithSpringBootTestAnnotation {
 

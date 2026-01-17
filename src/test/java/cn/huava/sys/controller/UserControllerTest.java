@@ -26,6 +26,7 @@ import org.jspecify.annotations.NonNull;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Isolated;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.mock.web.MockHttpSession;
@@ -41,9 +42,10 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Camio1945
  */
 @Slf4j
-@AutoConfigureMockMvc
 @Rollback
+@Isolated
 @Transactional
+@AutoConfigureMockMvc
 @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 class UserControllerTest extends WithSpringBootTestAnnotation {
   @Autowired MockMvc mockMvcAutowired;
