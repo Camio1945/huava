@@ -8,6 +8,7 @@ import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
+import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.mapper.MapperFactoryBean;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.aot.hint.MemberCategory;
@@ -26,6 +27,7 @@ import org.springframework.util.ReflectionUtils;
  *
  * @author Camio1945
  */
+@Slf4j
 public class MyBatisBeanFactoryInitializationAotProcessor
     implements BeanFactoryInitializationAotProcessor, BeanRegistrationExcludeFilter {
 
@@ -62,18 +64,16 @@ public class MyBatisBeanFactoryInitializationAotProcessor
               beanDefinition.getPropertyValues().getPropertyValue("mapperInterface");
           if (mapperInterface != null && mapperInterface.getValue() != null) {
             Class<?> mapperInterfaceType = (Class<?>) mapperInterface.getValue();
-            if (mapperInterfaceType != null) {
-              registerReflectionTypeIfNecessary(mapperInterfaceType, hints);
-              hints.proxies().registerJdkProxy(mapperInterfaceType);
-              hints
-                  .resources()
-                  .registerPattern(mapperInterfaceType.getName().replace('.', '/').concat(".xml"));
-              registerMapperRelationships(mapperInterfaceType, hints);
-            }
+            registerReflectionTypeIfNecessary(mapperInterfaceType, hints);
+            hints.proxies().registerJdkProxy(mapperInterfaceType);
+            hints
+                .resources()
+                .registerPattern(mapperInterfaceType.getName().replace('.', '/').concat(".xml"));
+            registerMapperRelationships(mapperInterfaceType, hints);
           }
         } catch (Exception e) {
           // Skip if there's an issue accessing the bean definition
-          continue;
+          log.info("Error processing MyBatis bean: {}", e.getMessage());
         }
       }
     };

@@ -334,6 +334,60 @@ class MyBatisBeanFactoryInitializationAotProcessorTest {
     contribution.applyTo(mockGenContext, mockCode);
   }
 
+  @Test
+  void should_handle_mapper_interface_type_cast_to_null() {
+    // given
+    ConfigurableListableBeanFactory mockBeanFactory =
+        Mockito.mock(ConfigurableListableBeanFactory.class);
+
+    // Mock bean names that include a MyBatis mapper factory bean with hash prefix
+    String[] beanNames = {"#myMapper"};
+    when(mockBeanFactory.getBeanNamesForType(MapperFactoryBean.class)).thenReturn(beanNames);
+
+    // Create a mock bean definition for the actual mapper
+    BeanDefinition mockBeanDefinition = Mockito.mock(BeanDefinition.class);
+    when(mockBeanFactory.getBeanDefinition("myMapper")).thenReturn(mockBeanDefinition);
+
+    // Mock the property values
+    org.springframework.beans.MutablePropertyValues mockPropertyValues =
+        Mockito.mock(org.springframework.beans.MutablePropertyValues.class);
+    when(mockBeanDefinition.getPropertyValues()).thenReturn(mockPropertyValues);
+
+    // Mock the property value for mapperInterface - the getValue() returns null when cast to Class
+    PropertyValue mockPropertyValue = Mockito.mock(PropertyValue.class);
+    when(mockPropertyValues.getPropertyValue("mapperInterface")).thenReturn(mockPropertyValue);
+    when(mockPropertyValue.getValue()).thenReturn(null); // This creates the case where mapperInterfaceType becomes null after cast
+
+    // Mock the RuntimeHints and its components
+    RuntimeHints mockRuntimeHints = Mockito.mock(RuntimeHints.class);
+    org.springframework.aot.hint.ProxyHints mockProxyHints = Mockito.mock(org.springframework.aot.hint.ProxyHints.class);
+    org.springframework.aot.hint.ResourceHints mockResourceHints = Mockito.mock(org.springframework.aot.hint.ResourceHints.class);
+    org.springframework.aot.hint.ReflectionHints mockReflectionHints = Mockito.mock(org.springframework.aot.hint.ReflectionHints.class);
+
+    when(mockRuntimeHints.proxies()).thenReturn(mockProxyHints);
+    when(mockRuntimeHints.resources()).thenReturn(mockResourceHints);
+    when(mockRuntimeHints.reflection()).thenReturn(mockReflectionHints);
+    when(mockProxyHints.registerJdkProxy(any(Class.class))).thenReturn(mockProxyHints);
+    when(mockResourceHints.registerPattern(any(String.class))).thenReturn(mockResourceHints);
+    when(mockReflectionHints.registerType(any(Class.class), any(MemberCategory[].class))).thenReturn(mockReflectionHints);
+
+    org.springframework.aot.generate.GenerationContext mockGenContext =
+        Mockito.mock(org.springframework.aot.generate.GenerationContext.class);
+    when(mockGenContext.getRuntimeHints()).thenReturn(mockRuntimeHints);
+
+    // when
+    BeanFactoryInitializationAotContribution contribution =
+        processor.processAheadOfTime(mockBeanFactory);
+
+    // then
+    assertThat(contribution).isNotNull();
+
+    // Actually invoke the contribution to execute the code path
+    org.springframework.beans.factory.aot.BeanFactoryInitializationCode mockCode =
+        Mockito.mock(org.springframework.beans.factory.aot.BeanFactoryInitializationCode.class);
+    contribution.applyTo(mockGenContext, mockCode);
+  }
+
 
   @Test
   void should_handle_null_mapper_interface_type() {
