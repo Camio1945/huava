@@ -230,11 +230,11 @@ class UserControllerTest extends WithSpringBootTestAnnotation {
     mockMvc.perform(req).andExpect(status().isOk());
 
     // 用旧密码不能登录
-    req = buildLoginReq(ADMIN_PASSWORD);
+    req = buildLoginReq(ADMIN_USERNAME, ADMIN_PASSWORD);
     mockMvc.perform(req).andExpect(status().isBadRequest());
 
     // 用新密码可以登录
-    req = buildLoginReq(newPassword);
+    req = buildLoginReq(ADMIN_USERNAME, newPassword);
     mockMvc.perform(req).andExpect(status().isOk());
 
     // 把密码再改回来
@@ -245,9 +245,9 @@ class UserControllerTest extends WithSpringBootTestAnnotation {
     mockMvc.perform(req).andExpect(status().isOk());
   }
 
-  private static RequestBuilder buildLoginReq(@NonNull String password) {
+  private static RequestBuilder buildLoginReq(@NonNull String username,  @NonNull String password) {
     LoginQo loginQo = new LoginQo();
-    loginQo.setUsername(ADMIN_USERNAME);
+    loginQo.setUsername(username);
     loginQo.setPassword(password);
     // 由于第一次登录以后已经把 session 中的验证码清空了，因此这一次不传验证码了
     loginQo.setIsCaptchaDisabledForTesting(true);
@@ -282,6 +282,15 @@ class UserControllerTest extends WithSpringBootTestAnnotation {
     MvcResult res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
     accessToken = res.getResponse().getContentAsString();
     assertThat(accessToken).isNotBlank();
+  }
+
+  @Test
+  @SneakyThrows
+  void should_not_login_by_nonexist_username() {
+    RequestBuilder req = buildLoginReq("nonexist", "123456");
+    MvcResult res = mockMvc.perform(req).andExpect(status().isBadRequest()).andReturn();
+    String content = res.getResponse().getContentAsString();
+    assertThat(content).contains("用户名或密码错误");
   }
 
   @BeforeEach

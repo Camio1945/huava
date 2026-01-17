@@ -7,3 +7,6 @@ Write tests for src/main/java/cn/huava/sys/service/user/RefreshTokenService.java
 6. The author of the new file should be Camio1945.
 7. Each class need a separate test file.
 8. Give priority to `@ExtendWith(MockitoExtension.class)` over `extends WithSpringBootTestAnnotation`.
+
+Edit src/test/java/cn/huava/common/util/LoginUtilTest.java, cover this line:
+Assert.isTrue(userExtPo != null, "用户名或密码错误");
