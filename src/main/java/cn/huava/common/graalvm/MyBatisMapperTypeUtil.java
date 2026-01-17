@@ -53,13 +53,11 @@ public class MyBatisMapperTypeUtil {
   }
 
   private static int getIndex(ParameterizedType parameterizedType) {
-    int index;
     if (isMapWithMultipleTypeArguments(parameterizedType)) {
-      index = 1;
+      return 1;
     } else {
-      index = 0;
+      return 0;
     }
-    return index;
   }
 
   private static boolean isMapWithMultipleTypeArguments(ParameterizedType parameterizedType) {
