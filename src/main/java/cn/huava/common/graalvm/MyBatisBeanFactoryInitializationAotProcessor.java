@@ -1,7 +1,9 @@
 package cn.huava.common.graalvm;
 
-import cn.huava.common.annotation.UnreachableForTesting;
+import static cn.huava.common.graalvm.MyBatisMapperTypeUtil.resolveParameterClasses;
+import static cn.huava.common.graalvm.MyBatisMapperTypeUtil.resolveReturnClass;
 
+import cn.huava.common.annotation.UnreachableForTesting;
 import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,9 +20,6 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.util.ReflectionUtils;
-
-import static cn.huava.common.graalvm.MyBatisMapperTypeUtil.resolveParameterClasses;
-import static cn.huava.common.graalvm.MyBatisMapperTypeUtil.resolveReturnClass;
 
 /**
  * AOT processor for MyBatis mapper factory beans.
@@ -93,13 +92,29 @@ public class MyBatisBeanFactoryInitializationAotProcessor
       if (method.getDeclaringClass() != Object.class) {
         ReflectionUtils.makeAccessible(method);
         registerSqlProviderTypes(
-            method, hints, org.apache.ibatis.annotations.SelectProvider.class, org.apache.ibatis.annotations.SelectProvider::value, org.apache.ibatis.annotations.SelectProvider::type);
+            method,
+            hints,
+            org.apache.ibatis.annotations.SelectProvider.class,
+            org.apache.ibatis.annotations.SelectProvider::value,
+            org.apache.ibatis.annotations.SelectProvider::type);
         registerSqlProviderTypes(
-            method, hints, org.apache.ibatis.annotations.InsertProvider.class, org.apache.ibatis.annotations.InsertProvider::value, org.apache.ibatis.annotations.InsertProvider::type);
+            method,
+            hints,
+            org.apache.ibatis.annotations.InsertProvider.class,
+            org.apache.ibatis.annotations.InsertProvider::value,
+            org.apache.ibatis.annotations.InsertProvider::type);
         registerSqlProviderTypes(
-            method, hints, org.apache.ibatis.annotations.UpdateProvider.class, org.apache.ibatis.annotations.UpdateProvider::value, org.apache.ibatis.annotations.UpdateProvider::type);
+            method,
+            hints,
+            org.apache.ibatis.annotations.UpdateProvider.class,
+            org.apache.ibatis.annotations.UpdateProvider::value,
+            org.apache.ibatis.annotations.UpdateProvider::type);
         registerSqlProviderTypes(
-            method, hints, org.apache.ibatis.annotations.DeleteProvider.class, org.apache.ibatis.annotations.DeleteProvider::value, org.apache.ibatis.annotations.DeleteProvider::type);
+            method,
+            hints,
+            org.apache.ibatis.annotations.DeleteProvider.class,
+            org.apache.ibatis.annotations.DeleteProvider::value,
+            org.apache.ibatis.annotations.DeleteProvider::type);
         Class<?> returnType = resolveReturnClass(mapperInterfaceType, method);
         registerReflectionTypeIfNecessary(returnType, hints);
         resolveParameterClasses(mapperInterfaceType, method)

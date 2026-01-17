@@ -1,5 +1,17 @@
 /*
- * Copyright (c) 2024-present. All rights reserved.
+ * Copyright 2024-present the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package cn.huava.common.graalvm;
@@ -14,21 +26,22 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mybatis.spring.mapper.MapperFactoryBean;
+import org.springframework.beans.MutablePropertyValues;
+import org.springframework.beans.PropertyValue;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.ConstructorArgumentValues;
-import org.springframework.beans.factory.support.MergedBeanDefinitionPostProcessor;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.core.ResolvableType;
 
 /**
- * Test for {@link MyBatisMapperFactoryBeanPostProcessor}
+ * Tests for {@link MyBatisMapperFactoryBeanPostProcessor}.
  *
  * @author Camio1945
  */
 @ExtendWith(MockitoExtension.class)
 class MyBatisMapperFactoryBeanPostProcessorTest {
 
-  @Mock private ConfigurableBeanFactory beanFactory;
+  @Mock private ConfigurableBeanFactory mockBeanFactory;
 
   private MyBatisMapperFactoryBeanPostProcessor processor;
 
@@ -38,228 +51,186 @@ class MyBatisMapperFactoryBeanPostProcessorTest {
   }
 
   @Test
-  void should_implement_necessary_interfaces() {
-    assertThat(processor).isInstanceOf(MergedBeanDefinitionPostProcessor.class);
-    assertThat(processor).isInstanceOf(org.springframework.beans.factory.BeanFactoryAware.class);
-  }
-
-  @Test
   void should_set_bean_factory() {
-    // Given
-    // When
-    processor.setBeanFactory(beanFactory);
+    // when
+    processor.setBeanFactory(mockBeanFactory);
 
-    // Then
-    // Verify that the internal beanFactory field is set correctly
-    // Using reflection to access the private field
-    try {
-      java.lang.reflect.Field beanFactoryField =
-          MyBatisMapperFactoryBeanPostProcessor.class.getDeclaredField("beanFactory");
-      beanFactoryField.setAccessible(true);
-      ConfigurableBeanFactory actualBeanFactory =
-          (ConfigurableBeanFactory) beanFactoryField.get(processor);
-
-      assertThat(actualBeanFactory).isEqualTo(beanFactory);
-    } catch (NoSuchFieldException | IllegalAccessException e) {
-      fail("Failed to access beanFactory field", e);
-    }
+    // then
+    assertThat(processor).extracting("beanFactory").isEqualTo(mockBeanFactory);
   }
 
   @Test
-  void should_not_process_when_bean_factory_is_null() {
-    // Given
-    RootBeanDefinition beanDefinition = mock(RootBeanDefinition.class);
-    Class<?> beanType = Object.class;
+  void should_not_process_merged_bean_definition_when_bean_factory_is_null() {
+    // given
+    RootBeanDefinition mockBeanDefinition = mock(RootBeanDefinition.class);
+    Class<?> mockBeanType = Object.class;
     String beanName = "testBean";
 
-    // When
-    processor.postProcessMergedBeanDefinition(beanDefinition, beanType, beanName);
+    // when
+    processor.postProcessMergedBeanDefinition(mockBeanDefinition, mockBeanType, beanName);
 
-    // Then
-    // No exception should be thrown and no interactions should happen
-    verifyNoInteractions(beanDefinition);
-  }
-
-//  @Test
-//  void should_process_when_bean_factory_is_set_and_mapper_factory_bean_present() throws Exception {
-//    // Given
-//    processor.setBeanFactory(beanFactory);
-//    RootBeanDefinition beanDefinition = mock(RootBeanDefinition.class);
-//    Class<?> beanType = Object.class;
-//    String beanName = "testBean";
-//
-//    when(beanFactory.getBeanClassLoader())
-//        .thenReturn(Thread.currentThread().getContextClassLoader());
-//
-//    // Mock the resolveMapperFactoryBeanTypeIfNecessary method to verify it gets called
-//    MyBatisMapperFactoryBeanPostProcessor spyProcessor = spy(processor);
-//
-//    // When
-//    spyProcessor.postProcessMergedBeanDefinition(beanDefinition, beanType, beanName);
-//
-//    // Then
-//    verify(beanFactory).getBeanClassLoader();
-//    // Verify that resolveMapperFactoryBeanTypeIfNecessary is called if the class exists in
-//    // classpath
-//    // Since we can't easily mock ClassUtils.isPresent, we'll verify based on whether the class
-//    // exists
-//    try {
-//      Class.forName("org.mybatis.spring.mapper.MapperFactoryBean");
-//      // Class exists, so the method should be called
-//      verify(spyProcessor).resolveMapperFactoryBeanTypeIfNecessary(beanDefinition);
-//    } catch (ClassNotFoundException e) {
-//      // Class doesn't exist in classpath, so the method shouldn't be called
-//      verify(spyProcessor, never()).resolveMapperFactoryBeanTypeIfNecessary(beanDefinition);
-//    }
-//  }
-
-  @Test
-  void should_not_call_resolve_method_when_mapper_factory_bean_not_present_in_classloader() {
-    // This test is difficult to implement directly because we can't easily mock ClassUtils.isPresent
-    // However, we can verify the behavior by checking that if the class isn't available,
-    // the resolveMapperFactoryBeanTypeIfNecessary method won't be called
-    // This test is conceptually testing the branch where ClassUtils.isPresent returns false
-
-    // Since we can't directly control ClassUtils.isPresent, we'll rely on the previous test
-    // which handles both cases depending on whether the class exists in the classpath
-    // If the class doesn't exist in the classpath, the condition evaluates to false
-    // and resolveMapperFactoryBeanTypeIfNecessary is not called
+    // then
+    verify(mockBeanDefinition, never()).hasBeanClass();
   }
 
   @Test
-  void should_resolve_mapper_factory_bean_type_if_necessary_with_non_mapper_factory_bean() {
-    // Given
-    RootBeanDefinition beanDefinition = mock(RootBeanDefinition.class);
-    when(beanDefinition.hasBeanClass()).thenReturn(false); // Not a MapperFactoryBean
+  void should_process_merged_bean_definition_when_bean_factory_is_set() {
+    // given
+    processor.setBeanFactory(mockBeanFactory);
+    RootBeanDefinition mockBeanDefinition = mock(RootBeanDefinition.class);
+    Class<?> mockBeanType = Object.class;
+    String beanName = "testBean";
 
-    // When
-    processor.resolveMapperFactoryBeanTypeIfNecessary(beanDefinition);
+    // when
+    processor.postProcessMergedBeanDefinition(mockBeanDefinition, mockBeanType, beanName);
 
-    // Then
-    verify(beanDefinition).hasBeanClass();
-    verify(beanDefinition, never()).getResolvableType();
+    // then
+    verify(mockBeanDefinition).hasBeanClass();
+  }
+
+  @Test
+  void should_not_resolve_mapper_factory_bean_type_when_bean_has_no_class() {
+    // given
+    processor.setBeanFactory(mockBeanFactory);
+    RootBeanDefinition mockBeanDefinition = mock(RootBeanDefinition.class);
+    when(mockBeanDefinition.hasBeanClass()).thenReturn(false);
+
+    // when
+    processor.resolveMapperFactoryBeanTypeIfNecessary(mockBeanDefinition);
+
+    // then
+    verify(mockBeanDefinition, never()).getBeanClass();
+  }
+
+  @Test
+  void should_not_resolve_mapper_factory_bean_type_when_bean_class_is_not_mapper_factory_bean() {
+    // given
+    processor.setBeanFactory(mockBeanFactory);
+    RootBeanDefinition mockBeanDefinition = mock(RootBeanDefinition.class);
+    when(mockBeanDefinition.hasBeanClass()).thenReturn(true);
+    when(mockBeanDefinition.getBeanClass()).thenReturn((Class) Object.class);
+
+    // when
+    processor.resolveMapperFactoryBeanTypeIfNecessary(mockBeanDefinition);
+
+    // then
+    verify(mockBeanDefinition, never()).getResolvableType();
   }
 
   @Test
   void
-      should_resolve_mapper_factory_bean_type_if_necessary_with_mapper_factory_bean_but_no_unresolvable_generics() {
-    // Given
-    RootBeanDefinition beanDefinition = mock(RootBeanDefinition.class);
-    when(beanDefinition.hasBeanClass()).thenReturn(true);
-    when(beanDefinition.getBeanClass()).thenReturn((Class) MapperFactoryBean.class);
+      should_not_resolve_mapper_factory_bean_type_when_bean_class_is_mapper_factory_bean_but_generics_are_resolvable() {
+    // given
+    processor.setBeanFactory(mockBeanFactory);
+    RootBeanDefinition mockBeanDefinition = mock(RootBeanDefinition.class);
+    when(mockBeanDefinition.hasBeanClass()).thenReturn(true);
+    when(mockBeanDefinition.getBeanClass()).thenReturn((Class) MapperFactoryBean.class);
+    ResolvableType mockResolvableType = mock(ResolvableType.class);
+    when(mockBeanDefinition.getResolvableType()).thenReturn(mockResolvableType);
+    when(mockResolvableType.hasUnresolvableGenerics()).thenReturn(false);
 
-    ResolvableType resolvableType = mock(ResolvableType.class);
-    when(resolvableType.hasUnresolvableGenerics()).thenReturn(false);
-    when(beanDefinition.getResolvableType()).thenReturn(resolvableType);
+    // when
+    processor.resolveMapperFactoryBeanTypeIfNecessary(mockBeanDefinition);
 
-    // When
-    processor.resolveMapperFactoryBeanTypeIfNecessary(beanDefinition);
-
-    // Then
-    verify(beanDefinition).hasBeanClass();
-    verify(beanDefinition).getBeanClass();
-    verify(resolvableType).hasUnresolvableGenerics();
+    // then
+    verify(mockBeanDefinition, never()).getPropertyValues();
   }
 
   @Test
   void
-      should_resolve_mapper_factory_bean_type_if_necessary_with_mapper_factory_bean_and_unresolvable_generics_and_null_interface() {
-    // Given
-    RootBeanDefinition beanDefinition = mock(RootBeanDefinition.class);
-    when(beanDefinition.hasBeanClass()).thenReturn(true);
-    when(beanDefinition.getBeanClass()).thenReturn((Class) MapperFactoryBean.class);
+      should_resolve_mapper_factory_bean_type_when_bean_class_is_mapper_factory_bean_and_generics_are_unresolvable() {
+    // given
+    processor.setBeanFactory(mockBeanFactory);
+    RootBeanDefinition mockBeanDefinition = mock(RootBeanDefinition.class);
+    when(mockBeanDefinition.hasBeanClass()).thenReturn(true);
+    when(mockBeanDefinition.getBeanClass()).thenReturn((Class) MapperFactoryBean.class);
+    ResolvableType mockResolvableType = mock(ResolvableType.class);
+    when(mockBeanDefinition.getResolvableType()).thenReturn(mockResolvableType);
+    when(mockResolvableType.hasUnresolvableGenerics()).thenReturn(true);
+    Class<?> mockMapperInterface = String.class;
+    MutablePropertyValues propertyValues = new MutablePropertyValues();
+    propertyValues.addPropertyValue(new PropertyValue("mapperInterface", mockMapperInterface));
+    when(mockBeanDefinition.getPropertyValues()).thenReturn(propertyValues);
 
-    ResolvableType resolvableType = mock(ResolvableType.class);
-    when(resolvableType.hasUnresolvableGenerics()).thenReturn(true);
-    when(beanDefinition.getResolvableType()).thenReturn(resolvableType);
+    // when
+    processor.resolveMapperFactoryBeanTypeIfNecessary(mockBeanDefinition);
 
-    org.springframework.beans.MutablePropertyValues mockPropertyValues =
-        mock(org.springframework.beans.MutablePropertyValues.class);
-    when(mockPropertyValues.get("mapperInterface")).thenReturn(null);
-    when(beanDefinition.getPropertyValues()).thenReturn(mockPropertyValues);
-
-    // When
-    processor.resolveMapperFactoryBeanTypeIfNecessary(beanDefinition);
-
-    // Then
-    verify(beanDefinition).hasBeanClass();
-    verify(beanDefinition).getBeanClass();
-    verify(resolvableType).hasUnresolvableGenerics();
-    verify(beanDefinition).getPropertyValues();
-    verify(mockPropertyValues).get("mapperInterface");
+    // then
+    verify(mockBeanDefinition).setConstructorArgumentValues(any(ConstructorArgumentValues.class));
+    verify(mockBeanDefinition).setTargetType(any(ResolvableType.class));
   }
 
   @Test
   void
-      should_resolve_mapper_factory_bean_type_if_necessary_with_mapper_factory_bean_and_unresolvable_generics_and_valid_interface() {
-    // Given
-    RootBeanDefinition beanDefinition = mock(RootBeanDefinition.class);
-    when(beanDefinition.hasBeanClass()).thenReturn(true);
-    when(beanDefinition.getBeanClass()).thenReturn((Class) MapperFactoryBean.class);
+      should_not_resolve_mapper_factory_bean_type_when_bean_class_is_mapper_factory_bean_and_generics_are_unresolvable_but_mapper_interface_is_null() {
+    // given
+    processor.setBeanFactory(mockBeanFactory);
+    RootBeanDefinition mockBeanDefinition = mock(RootBeanDefinition.class);
+    when(mockBeanDefinition.hasBeanClass()).thenReturn(true);
+    when(mockBeanDefinition.getBeanClass()).thenReturn((Class) MapperFactoryBean.class);
+    ResolvableType mockResolvableType = mock(ResolvableType.class);
+    when(mockBeanDefinition.getResolvableType()).thenReturn(mockResolvableType);
+    when(mockResolvableType.hasUnresolvableGenerics()).thenReturn(true);
+    when(mockBeanDefinition.getPropertyValues()).thenReturn(new MutablePropertyValues());
 
-    ResolvableType resolvableType = mock(ResolvableType.class);
-    when(resolvableType.hasUnresolvableGenerics()).thenReturn(true);
-    when(beanDefinition.getResolvableType()).thenReturn(resolvableType);
+    // when
+    processor.resolveMapperFactoryBeanTypeIfNecessary(mockBeanDefinition);
 
-    org.springframework.beans.MutablePropertyValues propertyValues =
-        mock(org.springframework.beans.MutablePropertyValues.class);
-    when(propertyValues.get("mapperInterface")).thenReturn(TestMapper.class);
-    when(beanDefinition.getPropertyValues()).thenReturn(propertyValues);
-
-    // When
-    processor.resolveMapperFactoryBeanTypeIfNecessary(beanDefinition);
-
-    // Then
-    verify(beanDefinition).hasBeanClass();
-    verify(beanDefinition, times(2)).getBeanClass();
-    verify(resolvableType).hasUnresolvableGenerics();
-    verify(beanDefinition).getPropertyValues();
-    verify(propertyValues).get("mapperInterface");
-    verify(beanDefinition).setConstructorArgumentValues(any(ConstructorArgumentValues.class));
-    verify(beanDefinition).setTargetType(any(ResolvableType.class));
+    // then
+    verify(mockBeanDefinition, never())
+        .setConstructorArgumentValues(any(ConstructorArgumentValues.class));
+    verify(mockBeanDefinition, never()).setTargetType(any(ResolvableType.class));
   }
 
   @Test
-  void should_get_mapper_interface_return_null_when_bean_definition_is_null() {
-    // Given
-    RootBeanDefinition beanDefinition = null;
+  void should_return_null_from_get_mapper_interface_when_bean_definition_is_null() {
+    // when
+    Class<?> result = processor.getMapperInterface(null);
 
-    // When
-    Class<?> result = processor.getMapperInterface(beanDefinition);
-
-    // Then
+    // then
     assertThat(result).isNull();
   }
 
   @Test
-  void should_get_mapper_interface_return_null_when_property_values_throws_exception() {
-    // Given
-    RootBeanDefinition beanDefinition = mock(RootBeanDefinition.class);
-    when(beanDefinition.getPropertyValues()).thenThrow(new RuntimeException("Test exception"));
+  void should_return_null_from_get_mapper_interface_when_property_values_throws_exception() {
+    // given
+    RootBeanDefinition mockBeanDefinition = mock(RootBeanDefinition.class);
+    when(mockBeanDefinition.getPropertyValues()).thenThrow(new RuntimeException("Test exception"));
 
-    // When
-    Class<?> result = processor.getMapperInterface(beanDefinition);
+    // when
+    Class<?> result = processor.getMapperInterface(mockBeanDefinition);
 
-    // Then
+    // then
     assertThat(result).isNull();
   }
 
   @Test
-  void should_get_mapper_interface_return_correct_value() {
-    // Given
-    RootBeanDefinition beanDefinition = mock(RootBeanDefinition.class);
-    org.springframework.beans.MutablePropertyValues propertyValues =
-        mock(org.springframework.beans.MutablePropertyValues.class);
-    when(propertyValues.get("mapperInterface")).thenReturn(TestMapper.class);
-    when(beanDefinition.getPropertyValues()).thenReturn(propertyValues);
+  void should_return_mapper_interface_from_get_mapper_interface_when_property_exists() {
+    // given
+    RootBeanDefinition mockBeanDefinition = mock(RootBeanDefinition.class);
+    MutablePropertyValues propertyValues = new MutablePropertyValues();
+    propertyValues.addPropertyValue(new PropertyValue("mapperInterface", String.class));
+    when(mockBeanDefinition.getPropertyValues()).thenReturn(propertyValues);
 
-    // When
-    Class<?> result = processor.getMapperInterface(beanDefinition);
+    // when
+    Class<?> result = processor.getMapperInterface(mockBeanDefinition);
 
-    // Then
-    assertThat(result).isEqualTo(TestMapper.class);
+    // then
+    assertThat(result).isEqualTo(String.class);
   }
 
-  /** Test interface for mapper testing */
-  public interface TestMapper {}
+  @Test
+  void should_return_null_from_get_mapper_interface_when_property_does_not_exist() {
+    // given
+    RootBeanDefinition mockBeanDefinition = mock(RootBeanDefinition.class);
+    MutablePropertyValues propertyValues = new MutablePropertyValues();
+    when(mockBeanDefinition.getPropertyValues()).thenReturn(propertyValues);
+
+    // when
+    Class<?> result = processor.getMapperInterface(mockBeanDefinition);
+
+    // then
+    assertThat(result).isNull();
+  }
+
 }
