@@ -14,7 +14,6 @@ import org.springframework.beans.factory.config.ConstructorArgumentValues;
 import org.springframework.beans.factory.support.MergedBeanDefinitionPostProcessor;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.core.ResolvableType;
-import org.springframework.util.ClassUtils;
 
 /**
  * Post-processor for MyBatis mapper factory beans.
@@ -27,8 +26,6 @@ public class MyBatisMapperFactoryBeanPostProcessor
 
   private static final org.apache.commons.logging.Log LOG =
       LogFactory.getLog(MyBatisMapperFactoryBeanPostProcessor.class);
-
-  private static final String MAPPER_FACTORY_BEAN = "org.mybatis.spring.mapper.MapperFactoryBean";
 
   private @Nullable ConfigurableBeanFactory beanFactory;
 
@@ -43,9 +40,7 @@ public class MyBatisMapperFactoryBeanPostProcessor
     if (beanFactory == null) {
       return;
     }
-    if (ClassUtils.isPresent(MAPPER_FACTORY_BEAN, beanFactory.getBeanClassLoader())) {
-      resolveMapperFactoryBeanTypeIfNecessary(beanDefinition);
-    }
+    resolveMapperFactoryBeanTypeIfNecessary(beanDefinition);
   }
 
   @UnreachableForTesting("第二个 if 分支的代码只在 GraalVM native image 编译时才会执行到")
