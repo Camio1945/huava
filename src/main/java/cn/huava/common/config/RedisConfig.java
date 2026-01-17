@@ -55,8 +55,8 @@ public class RedisConfig implements CachingConfigurer {
             .allowIfSubType(cn.huava.common.pojo.po.BasePo.class)
             // Trust Dates
             .allowIfBaseType(java.util.Date.class)
-            // Trust Lists
-            .allowIfBaseType(java.util.ArrayList.class)
+            // Trust Collections
+            .allowIfSubType(java.util.Collection.class)
             .build();
     return JsonMapper.builder()
         .defaultDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))

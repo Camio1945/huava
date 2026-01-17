@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
 import tools.jackson.databind.module.SimpleModule;
 import tools.jackson.databind.ser.std.ToStringSerializer;
 
@@ -17,8 +18,14 @@ public class JacksonConfig {
 
   @Bean
   public ObjectMapper jacksonObjectMapper() {
+    BasicPolymorphicTypeValidator ptv =
+        BasicPolymorphicTypeValidator.builder()
+            .allowIfBaseType(Object.class)
+            .allowIfSubType(java.util.Collection.class)
+            .build();
     // Jackson 3 推荐使用 JsonMapper.builder() 来构建 ObjectMapper
     return JsonMapper.builder()
+        .polymorphicTypeValidator(ptv)
         // 注册 Module
         .addModule(
             new SimpleModule()
