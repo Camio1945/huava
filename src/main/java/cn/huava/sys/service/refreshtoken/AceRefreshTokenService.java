@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -28,7 +29,7 @@ public class AceRefreshTokenService extends BaseService<RefreshTokenMapper, Refr
     save(po);
   }
 
-  public RefreshTokenPo getByRefreshToken(String refreshToken) {
+  public @Nullable RefreshTokenPo getByRefreshToken(String refreshToken) {
     Wrapper<RefreshTokenPo> wrapper =
         Fn.undeletedWrapper(RefreshTokenPo::getDeleteInfo)
             .eq(RefreshTokenPo::getRefreshToken, refreshToken);

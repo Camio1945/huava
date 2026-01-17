@@ -1,52 +1,9 @@
-Is it possible to solve this problem by editing src/main/java/cn/huava/common/config/JacksonConfig.java:
-
-2026-01-17T08:56:54.846+08:00  INFO 49292 --- [huava] [           main] cn.huava.sys.cache.RoleCacheTest         : Started RoleCacheTest in 4.862 seconds (process running for 6.739)
-Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
-WARNING: A Java agent has been loaded dynamically (/home/camio/.m2/repository/net/bytebuddy/byte-buddy-agent/1.17.8/byte-buddy-agent-1.17.8.jar)
-WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
-WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
-WARNING: Dynamic loading of agents will be disallowed by default in a future release
-
-org.springframework.data.redis.serializer.SerializationException: Could not read JSON:Could not resolve type id 'java.util.HashSet' as a subtype of `java.lang.Object`: Configured `PolymorphicTypeValidator` (of type `tools.jackson.databind.jsontype.BasicPolymorphicTypeValidator`) denied resolution
- at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); byte offset: #21]
-
-	at org.springframework.data.redis.serializer.GenericJacksonJsonRedisSerializer.deserialize(GenericJacksonJsonRedisSerializer.java:212)
-	at org.springframework.data.redis.serializer.GenericJacksonJsonRedisSerializer.deserialize(GenericJacksonJsonRedisSerializer.java:182)
-	at org.springframework.data.redis.serializer.DefaultRedisElementReader.read(DefaultRedisElementReader.java:46)
-	at org.springframework.data.redis.serializer.RedisSerializationContext$SerializationPair.read(RedisSerializationContext.java:276)
-	at org.springframework.data.redis.cache.RedisCache.deserializeCacheValue(RedisCache.java:375)
-	at org.springframework.data.redis.cache.RedisCache.lookup(RedisCache.java:188)
-	at org.springframework.cache.support.AbstractValueAdaptingCache.get(AbstractValueAdaptingCache.java:58)
-	at org.springframework.cache.interceptor.AbstractCacheInvoker.doGet(AbstractCacheInvoker.java:78)
-	at org.springframework.cache.interceptor.CacheAspectSupport.findInCaches(CacheAspectSupport.java:563)
-	at org.springframework.cache.interceptor.CacheAspectSupport.findCachedValue(CacheAspectSupport.java:513)
-	at org.springframework.cache.interceptor.CacheAspectSupport.execute(CacheAspectSupport.java:438)
-	at org.springframework.cache.interceptor.CacheAspectSupport.execute(CacheAspectSupport.java:404)
-	at org.springframework.cache.interceptor.CacheInterceptor.invoke(CacheInterceptor.java:64)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
-	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:719)
-	at cn.huava.sys.cache.RoleCache$$SpringCGLIB$$0.getPermUrisByRoleId(<generated>)
-	at cn.huava.sys.cache.RoleCacheTest.should_get_perm_uris_by_role_id(RoleCacheTest.java:21)
-Caused by: tools.jackson.databind.exc.InvalidTypeIdException: Could not resolve type id 'java.util.HashSet' as a subtype of `java.lang.Object`: Configured `PolymorphicTypeValidator` (of type `tools.jackson.databind.jsontype.BasicPolymorphicTypeValidator`) denied resolution
- at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); byte offset: #21]
-	at tools.jackson.databind.exc.InvalidTypeIdException.from(InvalidTypeIdException.java:41)
-	at tools.jackson.databind.DeserializationContext.invalidTypeIdException(DeserializationContext.java:2098)
-	at tools.jackson.databind.DatabindContext._throwSubtypeClassNotAllowed(DatabindContext.java:285)
-	at tools.jackson.databind.DatabindContext.resolveAndValidateSubType(DatabindContext.java:240)
-	at tools.jackson.databind.jsontype.impl.ClassNameIdResolver._typeFromId(ClassNameIdResolver.java:87)
-	at tools.jackson.databind.jsontype.impl.ClassNameIdResolver.typeFromId(ClassNameIdResolver.java:70)
-	at tools.jackson.databind.jsontype.impl.TypeDeserializerBase._findDeserializer(TypeDeserializerBase.java:154)
-	at tools.jackson.databind.jsontype.impl.AsArrayTypeDeserializer._deserialize(AsArrayTypeDeserializer.java:92)
-	at tools.jackson.databind.jsontype.impl.AsArrayTypeDeserializer.deserializeTypedFromAny(AsArrayTypeDeserializer.java:65)
-	at tools.jackson.databind.deser.jdk.UntypedObjectDeserializerNR.deserializeWithType(UntypedObjectDeserializerNR.java:98)
-	at tools.jackson.databind.deser.impl.TypeWrappedDeserializer.deserialize(TypeWrappedDeserializer.java:72)
-	at tools.jackson.databind.deser.DeserializationContextExt.readRootValue(DeserializationContextExt.java:265)
-	at tools.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:2615)
-	at tools.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:1676)
-	at org.springframework.data.redis.serializer.JacksonObjectReader.lambda$create$0(JacksonObjectReader.java:52)
-	at org.springframework.data.redis.serializer.GenericJacksonJsonRedisSerializer.deserialize(GenericJacksonJsonRedisSerializer.java:210)
-	... 16 more
-
-Disconnected from the target VM, address: '127.0.0.1:59081', transport: 'socket'
-
-Process finished with exit code 255
+Write tests for src/main/java/cn/huava/sys/service/user/RefreshTokenService.java:
+1. Every test method's name should start with `should_`, use underscore style, no camelcase at all.
+2. Use assertj(org.assertj.core.api.Assertions) instead of junit to set assertions.
+3. Cover every method, every line, every instruction, every branch.
+4. Add at least one assertion to each test case, if there is nothing to assert, use `verify()`.
+5. The test class should not be public.
+6. The author of the new file should be Camio1945.
+7. Each class need a separate test file.
+8. Give priority to `@ExtendWith(MockitoExtension.class)` over `extends WithSpringBootTestAnnotation`.

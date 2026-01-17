@@ -8,9 +8,10 @@ import cn.huava.sys.pojo.po.RefreshTokenPo;
 import cn.huava.sys.pojo.po.UserExtPo;
 import cn.huava.sys.service.jwt.AceJwtService;
 import cn.huava.sys.service.refreshtoken.AceRefreshTokenService;
+import cn.hutool.v7.json.jwt.*;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
-import cn.hutool.v7.json.jwt.*;
+import org.jspecify.annotations.NullMarked;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,13 +21,14 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
+@NullMarked
 @RequiredArgsConstructor
 class RefreshTokenService extends BaseService<UserMapper, UserExtPo> {
 
   private final AceRefreshTokenService aceRefreshTokenService;
   private final AceJwtService aceJwtService;
 
-  protected String refreshToken(@NonNull String refreshToken) {
+  protected String refreshToken(String refreshToken) {
     RefreshTokenPo po = aceRefreshTokenService.getByRefreshToken(refreshToken);
     if (po == null || po.getDeleteInfo() > 0) {
       throw new IllegalArgumentException("Refresh token invalid");
