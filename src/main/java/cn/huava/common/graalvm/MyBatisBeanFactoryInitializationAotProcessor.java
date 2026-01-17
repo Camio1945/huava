@@ -1,7 +1,7 @@
 package cn.huava.common.graalvm;
 
 import cn.huava.common.annotation.UnreachableForTesting;
-import java.lang.annotation.Annotation;
+
 import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,12 +17,10 @@ import org.springframework.beans.factory.aot.BeanRegistrationExcludeFilter;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.RegisteredBean;
-import org.springframework.beans.factory.support.RootBeanDefinition;
-import org.springframework.core.ResolvableType;
 import org.springframework.util.ReflectionUtils;
 
-import static cn.huava.common.graalvm.MyBatisMapperTypeUtils.resolveParameterClasses;
-import static cn.huava.common.graalvm.MyBatisMapperTypeUtils.resolveReturnClass;
+import static cn.huava.common.graalvm.MyBatisMapperTypeUtil.resolveParameterClasses;
+import static cn.huava.common.graalvm.MyBatisMapperTypeUtil.resolveReturnClass;
 
 /**
  * AOT processor for MyBatis mapper factory beans.
@@ -57,7 +55,7 @@ public class MyBatisBeanFactoryInitializationAotProcessor
       for (String beanName : beanNames) {
         // Skip if bean name doesn't start with '#' (this appears to be a special prefix)
         if (!beanName.startsWith("#")) continue;
-        
+
         String actualBeanName = beanName.substring(1); // Remove the '#' prefix
         try {
           BeanDefinition beanDefinition = beanFactory.getBeanDefinition(actualBeanName);

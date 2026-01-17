@@ -13,7 +13,6 @@ import org.mockito.Mockito;
 import org.mybatis.spring.mapper.MapperFactoryBean;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.aot.hint.RuntimeHints;
-import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -241,18 +240,18 @@ class RuntimeHintsRegistrarConfigTest {
     MyBatisBeanFactoryInitializationAotProcessor processor =
         config.myBatisBeanFactoryInitializationAotProcessor();
     ConfigurableListableBeanFactory factory = Mockito.mock(ConfigurableListableBeanFactory.class);
-    
+
     // Setup to return a valid bean name
     Mockito.when(factory.getBeanNamesForType(MapperFactoryBean.class))
         .thenReturn(new String[] {"#testBean"});
-        
+
     // Create a proper RootBeanDefinition with mapperInterface property
     RootBeanDefinition beanDef = new RootBeanDefinition();
     beanDef.getPropertyValues().add("mapperInterface", UserMapper.class);
     Mockito.when(factory.getBeanDefinition("testBean")).thenReturn(beanDef);
 
     var contribution = processor.processAheadOfTime(factory);
-    
+
     assertThat(contribution).isNotNull(); // Contribution should be created when beans exist
   }
 
@@ -260,15 +259,15 @@ class RuntimeHintsRegistrarConfigTest {
   void should_test_type_to_class_method_with_various_inputs() {
     // Testing the private method through reflection or by testing its effects
     // Since it's a static utility method, we can test its behavior indirectly
-    
+
     // Testing with a simple class
-    Class<?> result = MyBatisMapperTypeUtils.typeToClass(String.class, Object.class);
+    Class<?> result = MyBatisMapperTypeUtil.typeToClass(String.class, Object.class);
     assertThat(result).isEqualTo(String.class);
   }
 
   @Test
   void should_test_type_to_class_method_with_array() {
-    Class<?> result = MyBatisMapperTypeUtils.typeToClass(int[].class, Object.class);
+    Class<?> result = MyBatisMapperTypeUtil.typeToClass(int[].class, Object.class);
     assertThat(result).isEqualTo(int.class); // Array component type
   }
 
@@ -276,8 +275,8 @@ class RuntimeHintsRegistrarConfigTest {
   void should_test_type_to_class_method_with_parameterized_type() {
     // Testing with parameterized types would require more complex setup
     // For now, just verify the method can be called without exceptions
-    assertThatCode(() -> 
-        MyBatisMapperTypeUtils.typeToClass(null, Object.class)
+    assertThatCode(() ->
+        MyBatisMapperTypeUtil.typeToClass(null, Object.class)
     ).doesNotThrowAnyException();
   }
 
@@ -285,16 +284,16 @@ class RuntimeHintsRegistrarConfigTest {
   void should_call_post_process_merged_bean_definition_correctly() {
     MyBatisMapperFactoryBeanPostProcessor processor =
         new MyBatisMapperFactoryBeanPostProcessor();
-    
+
     ConfigurableBeanFactory beanFactory = Mockito.mock(ConfigurableBeanFactory.class);
     processor.setBeanFactory(beanFactory);
-    
+
     RootBeanDefinition beanDefinition = new RootBeanDefinition();
     beanDefinition.setBeanClass(MapperFactoryBean.class);
-    
+
     // This should trigger the resolveMapperFactoryBeanTypeIfNecessary method
     processor.postProcessMergedBeanDefinition(beanDefinition, Object.class, "testBean");
-    
+
     // Verify that the method executed without throwing an exception
     assertThat(beanDefinition).isNotNull();
   }
@@ -307,10 +306,10 @@ class RuntimeHintsRegistrarConfigTest {
     assertThatCode(() -> {
       // Create a mock method to test the functionality
       Method method = Object.class.getMethod("toString");
-      
-      Class<?> returnType = MyBatisMapperTypeUtils.resolveReturnClass(
+
+      Class<?> returnType = MyBatisMapperTypeUtil.resolveReturnClass(
           UserMapper.class, method);
-      
+
       // The method should execute without throwing an exception
       // Note: the actual result may be null depending on the method
     }).doesNotThrowAnyException();
@@ -324,11 +323,11 @@ class RuntimeHintsRegistrarConfigTest {
     assertThatCode(() -> {
       // Create a mock method to test the functionality
       Method method = Object.class.getMethod("toString");
-      
+
       Set<Class<?>> paramClasses =
-          MyBatisMapperTypeUtils.resolveParameterClasses(
+          MyBatisMapperTypeUtil.resolveParameterClasses(
               UserMapper.class, method);
-      
+
       // The method should execute without throwing an exception
       // Note: the actual result may be empty depending on the method
     }).doesNotThrowAnyException();

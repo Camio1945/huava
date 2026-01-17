@@ -16,8 +16,8 @@ import org.apache.ibatis.reflection.TypeParameterResolver;
  *
  * @author Camio1945
  */
-public class MyBatisMapperTypeUtils {
-  protected MyBatisMapperTypeUtils() {
+public class MyBatisMapperTypeUtil {
+  protected MyBatisMapperTypeUtil() {
     // NOP
   }
 
