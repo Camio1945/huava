@@ -1,0 +1,1 @@
+Refactor RuntimeHintsRegistrarConfig, move inner classes out.
