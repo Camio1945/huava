@@ -1,1 +1,6 @@
-Refactor RuntimeHintsRegistrarConfig, move inner classes out.
+Analyze the reports in /home/camio/git/huava/target/site/jacoco or the /home/camio/git/huava/target/jacoco.exec file.
+Currently , only MyBatisBeanFactoryInitializationAotProcessor has not been fully covered with test.
+Edit MyBatisBeanFactoryInitializationAotProcessorTest.java to achieve 100% code coverage.
+Don't change pom.xml.
+Use `mvn clean verify` to check if your change is a success or not.
+If `mvn clean verify` succeed, you job is done, if it failed, continue, try another approach.
