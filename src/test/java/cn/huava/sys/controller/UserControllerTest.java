@@ -4,6 +4,7 @@ import static cn.huava.common.constant.CommonConstant.*;
 import static cn.huava.common.constant.TestConstant.*;
 import static cn.huava.common.util.ApiTestUtil.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import cn.huava.common.WithSpringBootTestAnnotation;
@@ -58,7 +59,7 @@ class UserControllerTest extends WithSpringBootTestAnnotation {
 
   @Test
   @SneakyThrows
-  void should_get_info_of_myself() {
+  void should_get_info_of_admin() {
     RequestBuilder req = initReq().get("/sys/user/myself").build();
     MvcResult res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
     String resJsonStr = res.getResponse().getContentAsString();
@@ -70,9 +71,18 @@ class UserControllerTest extends WithSpringBootTestAnnotation {
 
   @Test
   @SneakyThrows
-  void should_create_user() {
-    UserExtPo createdUser = createUser();
-    assertThat(createdUser.getId()).isNotNull();
+  void should_get_info_of_readonly() {
+    loginByReadonlyUser();
+    RequestBuilder req = initReq().get("/sys/user/myself").build();
+    MvcResult res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
+    String resJsonStr = res.getResponse().getContentAsString();
+    UserInfoDto userInfoDto = JSONUtil.toBean(resJsonStr, UserInfoDto.class);
+    assertThat(userInfoDto).isNotNull();
+    assertThat(userInfoDto.getUsername()).isEqualTo(READONLY_USERNAME);
+    assertThat(userInfoDto.getMenu()).isNotEmpty();
+    // log in by admin again (important, don't remove)
+    accessToken = null;
+    loginByAdmin();
   }
 
   @SneakyThrows
@@ -93,6 +103,37 @@ class UserControllerTest extends WithSpringBootTestAnnotation {
     assertThat(NumberUtil.isLong(createdIdStr)).isTrue();
     createParamObj.setId(Long.parseLong(createdIdStr));
     return createParamObj;
+  }
+
+  private void loginByReadonlyUser() throws Exception {
+    RequestBuilder req = buildLoginReq(READONLY_USERNAME, READONLY_PASSWORD);
+    MvcResult res = mockMvc.perform(req).andExpect(status().isOk()).andReturn();
+    String resJsonStr = res.getResponse().getContentAsString();
+    UserJwtDto userJwtDto = JSONUtil.toBean(resJsonStr, UserJwtDto.class);
+    assertFalse(userJwtDto.getRefreshToken().isEmpty());
+    accessToken = userJwtDto.getAccessToken();
+    refreshToken = userJwtDto.getRefreshToken();
+  }
+
+  private static RequestBuilder buildLoginReq(@NonNull String username, @NonNull String password) {
+    LoginQo loginQo = new LoginQo();
+    loginQo.setUsername(username);
+    loginQo.setPassword(password);
+    // 由于第一次登录以后已经把 session 中的验证码清空了，因此这一次不传验证码了
+    loginQo.setIsCaptchaDisabledForTesting(true);
+    return initReq()
+        .post("/sys/user/login")
+        // 这里需要 new 一个新的 session，以免跟之前的 session 搞混淆了
+        .session(new MockHttpSession())
+        .contentJson(loginQo)
+        .build();
+  }
+
+  @Test
+  @SneakyThrows
+  void should_create_user() {
+    UserExtPo createdUser = createUser();
+    assertThat(createdUser.getId()).isNotNull();
   }
 
   @Test
@@ -245,20 +286,6 @@ class UserControllerTest extends WithSpringBootTestAnnotation {
     updatePasswordQo.setNewPassword(ADMIN_PASSWORD);
     req = initReq().patch("/sys/user/updatePassword").contentJson(updatePasswordQo).build();
     mockMvc.perform(req).andExpect(status().isOk());
-  }
-
-  private static RequestBuilder buildLoginReq(@NonNull String username,  @NonNull String password) {
-    LoginQo loginQo = new LoginQo();
-    loginQo.setUsername(username);
-    loginQo.setPassword(password);
-    // 由于第一次登录以后已经把 session 中的验证码清空了，因此这一次不传验证码了
-    loginQo.setIsCaptchaDisabledForTesting(true);
-    return initReq()
-        .post("/sys/user/login")
-        // 这里需要 new 一个新的 session，以免跟之前的 session 搞混淆了
-        .session(new MockHttpSession())
-        .contentJson(loginQo)
-        .build();
   }
 
   @Test

@@ -34,6 +34,12 @@ public interface CommonConstant {
   /** 超级管理员用户 id ，规范定死的，不要改 */
   long ADMIN_USER_ID = 1L;
 
+  /** 只读角色 id ，规范定死的，不要改 */
+  long READONLY_ROLE_ID = 2L;
+
+  /** 只读用户 id ，规范定死的，不要改 */
+  long READONLY_USER_ID = 2L;
+
   /** 刷新 token 对应的接口 uri 跑到 */
   String REFRESH_TOKEN_URI = "/sys/user/refreshToken";
 

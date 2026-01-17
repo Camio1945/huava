@@ -1,14 +1,13 @@
 package cn.huava.sys.service.user;
 
+import static cn.huava.sys.service.user.UserServiceUtil.buildMenuTree;
 import static java.util.stream.Collectors.toSet;
 
 import cn.huava.common.constant.CommonConstant;
 import cn.huava.common.service.BaseService;
 import cn.huava.common.util.Fn;
 import cn.huava.sys.cache.UserRoleCache;
-import cn.huava.sys.enumeration.PermTypeEnum;
 import cn.huava.sys.mapper.UserMapper;
-import cn.huava.sys.pojo.dto.PermDto;
 import cn.huava.sys.pojo.dto.UserInfoDto;
 import cn.huava.sys.pojo.po.*;
 import cn.huava.sys.service.perm.AcePermService;
@@ -42,20 +41,6 @@ class GetUserInfoService extends BaseService<UserMapper, UserExtPo> {
     return userInfoDto;
   }
 
-  private static List<String> buildUris(List<PermPo> perms, boolean isAdmin, Set<Long> permIds) {
-    if (isAdmin) {
-      return List.of("*");
-    }
-    return perms.stream()
-        .filter(perm -> Fn.isNotBlank(perm.getUri()))
-        .filter(perm -> permIds.contains(perm.getId()))
-        .map(PermPo::getUri)
-        .collect(toSet())
-        .stream()
-        .sorted()
-        .toList();
-  }
-
   private void setBaseInfo(UserPo loginUser, UserInfoDto dto) {
     dto.setUsername(loginUser.getUsername());
     String avatar = loginUser.getAvatar();
@@ -71,48 +56,15 @@ class GetUserInfoService extends BaseService<UserMapper, UserExtPo> {
   private void setMenuAndPerms(UserPo loginUser, UserInfoDto userInfoDto) {
     List<PermPo> perms = getPerms();
     // 根据用户 ID 或用户所属的角色 ID 来判断是否属于超级管理员
-    boolean isAdmin = loginUser.getId() == CommonConstant.ADMIN_USER_ID;
+    boolean isAdminRole = loginUser.getId() == CommonConstant.ADMIN_USER_ID;
     List<Long> roleIds = null;
-    if (!isAdmin) {
+    if (!isAdminRole) {
       roleIds = userRoleCache.getRoleIdsByUserId(loginUser.getId());
-      isAdmin = roleIds.contains(CommonConstant.ADMIN_ROLE_ID);
+      isAdminRole = roleIds.contains(CommonConstant.ADMIN_ROLE_ID);
     }
-    final Set<Long> permIds = getPermIds(isAdmin, roleIds);
-    userInfoDto.setMenu(buildMenuTree(perms, isAdmin, permIds));
-    userInfoDto.setUris(buildUris(perms, isAdmin, permIds));
-  }
-
-  /**
-   * build the perms to tree, they are the menus that user can see on the left panel in their
-   * browser
-   */
-  private List<PermDto> buildMenuTree(List<PermPo> perms, boolean isAdmin, Set<Long> permIds) {
-    List<PermDto> menu =
-        perms.stream()
-            .filter(perm -> perm.getPid() == 0)
-            .filter(perm -> !perm.getType().equals(PermTypeEnum.E.name()))
-            .filter(perm -> isAdmin || permIds.contains(perm.getId()))
-            .map(perm -> Fn.toBean(perm, PermDto.class))
-            .toList();
-    for (PermDto permDto : menu) {
-      permDto.setChildren(getChildren(permDto.getId(), perms, isAdmin, permIds));
-    }
-    return menu;
-  }
-
-  /** Get all the perm ids the user have */
-  private Set<Long> getPermIds(boolean isAdmin, List<Long> roleIds) {
-    final Set<Long> permIds = new HashSet<>();
-    if (!isAdmin) {
-      Wrapper<RolePermPo> wrapper =
-          new LambdaQueryWrapper<RolePermPo>()
-              .in(RolePermPo::getRoleId, roleIds)
-              .select(RolePermPo::getPermId);
-      Set<Long> permIdSet =
-          rolePermService.list(wrapper).stream().map(RolePermPo::getPermId).collect(toSet());
-      permIds.addAll(permIdSet);
-    }
-    return permIds;
+    final Set<Long> permIds = getPermIds(isAdminRole, roleIds);
+    userInfoDto.setMenu(buildMenuTree(perms, isAdminRole, permIds));
+    userInfoDto.setUris(buildUris(perms, isAdminRole, permIds));
   }
 
   /** Get enabled perms, (just directories and menus, without elements) */
@@ -124,18 +76,33 @@ class GetUserInfoService extends BaseService<UserMapper, UserExtPo> {
     return permService.list(wrapper);
   }
 
-  private List<PermDto> getChildren(
-      long pid, List<PermPo> perms, boolean isAdmin, Set<Long> permIds) {
-    List<PermDto> children =
-        perms.stream()
-            .filter(perm -> perm.getPid() == pid)
-            .filter(perm -> !perm.getType().equals(PermTypeEnum.E.name()))
-            .filter(perm -> isAdmin || permIds.contains(perm.getId()))
-            .map(perm -> Fn.toBean(perm, PermDto.class))
-            .toList();
-    for (PermDto child : children) {
-      child.setChildren(getChildren(child.getId(), perms, isAdmin, permIds));
+  /** Get all the perm ids the user have */
+  private Set<Long> getPermIds(boolean isAdminRole, List<Long> roleIds) {
+    final Set<Long> permIds = new HashSet<>();
+    if (!isAdminRole) {
+      Wrapper<RolePermPo> wrapper =
+          new LambdaQueryWrapper<RolePermPo>()
+              .in(RolePermPo::getRoleId, roleIds)
+              .select(RolePermPo::getPermId);
+      Set<Long> permIdSet =
+          rolePermService.list(wrapper).stream().map(RolePermPo::getPermId).collect(toSet());
+      permIds.addAll(permIdSet);
     }
-    return children;
+    return permIds;
+  }
+
+  private static List<String> buildUris(
+      List<PermPo> perms, boolean isAdminRole, Set<Long> permIds) {
+    if (isAdminRole) {
+      return List.of("*");
+    }
+    return perms.stream()
+        .filter(perm -> Fn.isNotBlank(perm.getUri()))
+        .filter(perm -> permIds.contains(perm.getId()))
+        .map(PermPo::getUri)
+        .collect(toSet())
+        .stream()
+        .sorted()
+        .toList();
   }
 }

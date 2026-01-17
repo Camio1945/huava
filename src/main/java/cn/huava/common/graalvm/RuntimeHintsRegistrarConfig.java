@@ -1,7 +1,6 @@
 package cn.huava.common.graalvm;
 
 import cn.huava.common.annotation.UnreachableForTesting;
-import cn.huava.common.annotation.VisibleForTesting;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -51,7 +50,6 @@ import org.springframework.util.ReflectionUtils;
  * @author Camio1945
  */
 @Configuration
-@VisibleForTesting
 @UnreachableForTesting("很多代码在单元测试时执行不到，因为那就是在 GraalVM native image 里面调用的。")
 @ImportRuntimeHints(NativeRuntimeHintsRegistrar.class)
 public class RuntimeHintsRegistrarConfig {

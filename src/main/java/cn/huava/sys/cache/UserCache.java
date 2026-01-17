@@ -38,7 +38,7 @@ public class UserCache {
    * @return 用户
    */
   @Cacheable(value = USER_ID_CACHE_PREFIX, key = "#id", unless = "#result == null")
-  public UserExtPo getById(Long id) {
+  public @Nullable UserExtPo getById(Long id) {
     String key = USER_ID_CACHE_PREFIX + "::" + id;
     return SingleFlightUtil.execute(key, () -> userMapper.selectById(id));
   }

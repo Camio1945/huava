@@ -75,5 +75,7 @@ public class ApiTestUtil {
     req = initReq().post("/sys/user/refreshToken").contentTypeText().content(refreshToken).build();
     mockMvc.perform(req).andExpect(status().isBadRequest());
     mockMvc = null;
+    accessToken = null;
+    refreshToken = null;
   }
 }

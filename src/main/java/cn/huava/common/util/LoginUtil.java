@@ -30,6 +30,9 @@ class LoginUtil {
     String username = userDetails.getUsername();
     UserCache userCache = Fn.getBean(UserCache.class);
     Long id = userCache.getIdByUsername(username);
+    if (id == null) {
+      return null;
+    }
     return userCache.getById(id);
   }
 }
