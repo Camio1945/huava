@@ -7,6 +7,7 @@ import cn.huava.sys.pojo.po.UserExtPo;
 import cn.huava.sys.service.refreshtoken.AceRefreshTokenService;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NullMarked;
 import org.springframework.stereotype.Service;
 
 /**
@@ -14,12 +15,13 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
+@NullMarked
 @RequiredArgsConstructor
 class LogoutService extends BaseService<UserMapper, UserExtPo> {
 
   private final AceRefreshTokenService aceRefreshTokenService;
 
-  protected void logout(@NonNull final String refreshToken) {
+  protected void logout(final String refreshToken) {
     RefreshTokenPo refreshTokenPo = aceRefreshTokenService.getByRefreshToken(refreshToken);
     if (refreshTokenPo != null) {
       aceRefreshTokenService.softDelete(refreshTokenPo.getId());
